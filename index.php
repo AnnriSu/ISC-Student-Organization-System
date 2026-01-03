@@ -41,12 +41,7 @@
     </nav>
 
 
-
-
-
     <!-- Apply Now Container -->
-
-
     <div class="container-fluid introduction-container p-0 shadow-sm pb-0">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark align-self-center">
@@ -73,7 +68,12 @@
 
     </div>
 
-
+    <!-- footer -->
+     <footer class="text-center text-lg-start mt-4">
+        <div class="text-center p-3">
+            © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
+        </div>
+    </footer>
 
     </div>
 
