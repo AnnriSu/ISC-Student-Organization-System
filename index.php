@@ -13,9 +13,9 @@
 <body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar shadow-sm">
+    <nav class="navbar shadow-sm ">
 
-        <div class="container-fluid sticky-top">
+        <div class="container-fluid ">
 
             <div class="d-flex gap-4 me-4">
                 <a class="navbar-brand d-flex ms-4" href="index.php">
@@ -70,7 +70,7 @@
 
 
     <!-- footer -->
-    <footer class="footer text-center text-lg-start mt-4 fixed-bottom">
+    <footer class="footer text-center text-lg-start mt-auto fixed-bottom">
         <div class="text-center p-3">
             © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
         </div>

@@ -4,7 +4,8 @@
 }
 
 body {
-background: linear-gradient(117deg, #FEE5DE 0%, #F4E1A8 50.66%, #DAE3F1 100.36%);
+    background: linear-gradient(117deg, #FEE5DE 0%, #F4E1A8 50.66%, #DAE3F1 100.36%);
+    background-attachment: fixed;
 }
 
 
