@@ -37,13 +37,17 @@
                         <div class="rounded-circle bg-white text-primary d-flex
                                 align-items-center justify-content-center mx-auto mb-2"
                             style="width:80px; height:80px; font-size:40px;">
-                            👤
+
                         </div>
-                        <small>Juan Dela Cruz</small>
+                        <medium class="d-block text-white fw-medium">
+                            Juan Dela Cruz
+                        </medium>
+                        <hr class="border border-white opacity-100 my-1">
+
                     </div>
 
                     <div class="d-grid gap-2">
-                    <button class=" btn btn-sidebar">Events</button>
+                        <button class=" btn btn-sidebar">Events</button>
                         <button class="btn btn-sidebar">Newsletters</button>
                         <button class="btn btn-sidebar">Report</button>
                         <button class="btn btn-sidebar">Edit Profile</button>
