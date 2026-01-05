@@ -13,7 +13,6 @@
 
 <body>
 
-    <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
 
         <div class="container-fluid sticky-top">
@@ -100,7 +99,7 @@ $result = $conn->query("SELECT * FROM membership_applications");
         </tr>
     </thead>
     <tbody>
-        <?php while($row = $result->fetch_assoc()): ?>
+        <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
             <td><?= $row['fullname']; ?></td>
             <td><?= $row['department']; ?></td>
@@ -108,13 +107,13 @@ $result = $conn->query("SELECT * FROM membership_applications");
             <td><?= $row['email']; ?></td>
             <td>
                 <select class="form-select form-select-sm status-select 
-                    <?= strtolower(str_replace(' ','-',$row['status'])) ?>"
+                    <?= strtolower(str_replace(' ', '-', $row['status'])) ?>"
                     data-id="<?= $row['id']; ?>">
 
-                    <option <?= $row['status']=="Pending"?"selected":"" ?>>Pending</option>
-                    <option <?= $row['status']=="For Interview"?"selected":"" ?>>For Interview</option>
-                    <option <?= $row['status']=="Approved"?"selected":"" ?>>Approved</option>
-                    <option <?= $row['status']=="Denied"?"selected":"" ?>>Denied</option>
+                    <option <?= $row['status'] == "Pending" ? "selected" : "" ?>>Pending</option>
+                    <option <?= $row['status'] == "For Interview" ? "selected" : "" ?>>For Interview</option>
+                    <option <?= $row['status'] == "Approved" ? "selected" : "" ?>>Approved</option>
+                    <option <?= $row['status'] == "Denied" ? "selected" : "" ?>>Denied</option>
                 </select>
             </td>
         </tr>
