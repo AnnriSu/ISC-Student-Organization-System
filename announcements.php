@@ -40,7 +40,7 @@
         <div class="row mt-2">
             <div class="col-12 px-1">
                 <label for="subject" class="form-label ms-5">Subject<span style="color: red;">*</span></label>
-                <input type="subject" placeholder="Enter email subject here (e.g., Event Name, Event Reminder)..." class="form-control mx-auto" style="max-width: 900px;" id="subject" name="subject"
+                <input type="subject" placeholder="Enter email subject here (e.g., event name, event reminder)..." class="form-control mx-auto" style="max-width: 900px;" id="subject" name="subject"
                     required>
             </div>
         </div>
