@@ -135,33 +135,7 @@
                             <button type="submit" class="btn btn-primary rounded-3 px-5 py-2"><h4>Register</h4></button>
                         </div>
                     </div>
-
-                    <script>
-                        
-                        const form = document.querySelector('form'); //
-                        const submitBtn = document.querySelector('button[type="submit"]');
-                        const requiredFields = form.querySelectorAll('[required]');
-                        const emailInput = document.getElementById('email');
-                        const confirmEmailInput = document.getElementById('confirmEmail');
-
-                        function validateForm() {
-                            const allFilled = Array.from(requiredFields).every(field => {
-                                if (field.tagName === 'SELECT') {
-                                    return field.value !== '' && field.value !== 'Select';
-                                }
-                                return field.value.trim() !== '';
-                            });
-                            const emailsMatch = emailInput.value === confirmEmailInput.value && emailInput.value !== '';
-                            submitBtn.disabled = !(allFilled && emailsMatch);
-                        }
-
-                        requiredFields.forEach(field => {
-                            field.addEventListener('input', validateForm);
-                            field.addEventListener('change', validateForm);
-                        });
-
-                        submitBtn.disabled = true;
-                    </script>
+                    
                 </form>
             </div>
         </div>
@@ -171,7 +145,7 @@
 
 
     <!-- footer -->
-    <footer class="footer text-center text-lg-start mt-4 ">
+    <footer class="footer text-center text-lg-start mt-4 fixed-bottom ">
         <div class="text-center p-3">
             © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
         </div>
