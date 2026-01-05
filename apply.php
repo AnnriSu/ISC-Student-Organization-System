@@ -26,8 +26,8 @@
         </div>
     </nav>
 
-    <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3 " style="max-width: 500px;">
-        <div class="row mt-2">
+    <div class="container form-container mt-3 mb-3 p-4 shadow-sm rounded-3 " style="max-width: 700px;">
+        <div class="row mt-2 ">
             <div class="col-12 ">
                 <h2 class="text-center mb-4">Membership Application</h2>
                 <form action="submit_application.php" method="POST">
@@ -135,33 +135,7 @@
                             <button type="submit" class="btn btn-primary rounded-3 px-5 py-2"><h4>Register</h4></button>
                         </div>
                     </div>
-
-                    <script>
-                        
-                        const form = document.querySelector('form'); //
-                        const submitBtn = document.querySelector('button[type="submit"]');
-                        const requiredFields = form.querySelectorAll('[required]');
-                        const emailInput = document.getElementById('email');
-                        const confirmEmailInput = document.getElementById('confirmEmail');
-
-                        function validateForm() {
-                            const allFilled = Array.from(requiredFields).every(field => {
-                                if (field.tagName === 'SELECT') {
-                                    return field.value !== '' && field.value !== 'Select';
-                                }
-                                return field.value.trim() !== '';
-                            });
-                            const emailsMatch = emailInput.value === confirmEmailInput.value && emailInput.value !== '';
-                            submitBtn.disabled = !(allFilled && emailsMatch);
-                        }
-
-                        requiredFields.forEach(field => {
-                            field.addEventListener('input', validateForm);
-                            field.addEventListener('change', validateForm);
-                        });
-
-                        submitBtn.disabled = true;
-                    </script>
+                    
                 </form>
             </div>
         </div>
