@@ -32,7 +32,16 @@ background: linear-gradient(117deg, #FEE5DE 0%, #F4E1A8 50.66%, #DAE3F1 100.36%)
     background-color: rgb(90, 16, 31);
 }
 
+.form-container {
+    background-color: #FFF6DD;
+}
+
 body footer.footer {
   background-color: rgb(90, 16, 31) !important;
   color: white !important;
+}
+
+.form-container .btn {
+    background-color: rgba(132, 21, 44, 1);
+    border: none;
 }
