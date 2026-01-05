@@ -40,7 +40,7 @@
         <div class="row mt-2">
             <div class="col-12 px-1">
                 <label for="subject" class="form-label ms-5">Subject<span style="color: red;">*</span></label>
-                <input type="subject" placeholder="Enter here..." class="form-control mx-auto" style="max-width: 900px;" id="subject" name="subject"
+                <input type="subject" placeholder="Enter email subject here (e.g., Event Name, Event Reminder)..." class="form-control mx-auto" style="max-width: 900px;" id="subject" name="subject"
                     required>
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="row mt-2">
             <div class="col-12 px-1">
                 <label for="message" class="form-label ms-5">Message<span style="color: red;">*</span></label><br>
-                <textarea placeholder="Enter here..." name="message" class="form-control mx-auto" style="max-width: 900px;" id="message" rows="6"
+                <textarea placeholder="Enter message to be sent via email here (e.g., schedule updates, reminders)..." name="message" class="form-control mx-auto" style="max-width: 900px;" id="message" rows="6"
                     cols="120"></textarea>
             </div>
         </div>
