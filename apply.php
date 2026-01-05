@@ -26,8 +26,8 @@
         </div>
     </nav>
 
-    <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3 " style="max-width: 500px;">
-        <div class="row mt-2">
+    <div class="container form-container mt-3 mb-3 p-4 shadow-sm rounded-3 " style="max-width: 700px;">
+        <div class="row mt-2 ">
             <div class="col-12 ">
                 <h2 class="text-center mb-4">Membership Application</h2>
                 <form action="submit_application.php" method="POST">
@@ -171,7 +171,7 @@
 
 
     <!-- footer -->
-    <footer class="footer text-center text-lg-start mt-4 fixed-bottom ">
+    <footer class="footer text-center text-lg-start mt-4 ">
         <div class="text-center p-3">
             © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
         </div>
