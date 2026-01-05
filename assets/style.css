@@ -32,9 +32,7 @@ background: linear-gradient(117deg, #FEE5DE 0%, #F4E1A8 50.66%, #DAE3F1 100.36%)
     background-color: rgb(90, 16, 31);
 }
 
-footer {
-  display: block;
-  text-align: center;
-  background-color:rgba(132, 21, 44, 1);
-  color: rgb(224, 202, 167);
+body footer.footer {
+  background-color: rgb(90, 16, 31) !important;
+  color: white !important;
 }
