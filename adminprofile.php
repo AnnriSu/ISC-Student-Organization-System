@@ -5,62 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Profile Update</title>
- 
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/style.css" rel="stylesheet">
 
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff8e6;
-        }
-
-        .main-header {
-            background: #FFBE00;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-logo {
-            height: 45px;
-        }
-
-        .header-text {
-            color: #fff;
-            font-size: 14px;
-            line-height: 1.2;
-        }
-
-        .header-right {
-            color: #fff;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            opacity: 0.8;
-        }
-
-        .container {
+        .profile-container {
             max-width: 1000px;
             margin: 30px auto;
             padding: 20px;
@@ -82,64 +32,26 @@
             background: #8b1d2c;
             color: #fff;
             margin-top: 20px;
-        }
-
-        form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        form label {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        form input,
-        form select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .full-width {
-            grid-column: span 2;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #8b1d2c;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            margin-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-            form {
-                grid-template-columns: 1fr;
-            }
-
-            .full-width {
-                grid-column: span 1;
-            }
-        }
+        }        
     </style>
 </head>
 
+
 <body>
 
-    <header class="main-header">
-        <div class="header-left">
-            <img src="header.png" alt="Logo" class="header-logo">
+    <nav class="navbar shadow-sm ">
 
+        <div class="container-fluid d-flex align-items-center">
+
+            <div class="d-flex gap-4 me-4">
+                <a class="navbar-brand d-flex ms-4" href="index.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
         </div>
+    </nav>
 
-
-    </header>
-
-    <div class="container">
+    <div class="container profile-container">
         <h2>User Profile</h2>
         <p>Admin Profile Form</p>
 
@@ -255,12 +167,14 @@
         </div>
     </div>
 
-    <footer>
-        © 2025 Iskonnovators Student Community PUPSTC. All Rights Reserved
+    <footer class="footer text-center text-lg-start mt-auto ">
+        <div class="text-center p-3">
+            © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
+        </div>
     </footer>
 
     <script>
-        document.getElementById("profileForm").addEventListener("submit", function (e) {
+        document.getElementById("profileForm").addEventListener("submit", function(e) {
             e.preventDefault();
             alert("Profile successfully updated!");
         });
