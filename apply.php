@@ -1,3 +1,64 @@
+<?php
+include("connect.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // get form data
+    $fname        = $_POST['firstName'];
+    $lname        = $_POST['lastName'];
+    $mname        = $_POST['middleName'] ?? '';
+    $suffix       = $_POST['suffix'] ?? '';
+    $salutation   = $_POST['salutation'];
+    $pronoun      = $_POST['genderPronoun'];
+    $birthDate    = $_POST['birthDate'];
+    $department   = $_POST['department'];
+    $section      = $_POST['section'];
+    $institution  = $_POST['institution'];
+    $mobile       = $_POST['mobileNumber'];
+    $email        = $_POST['email'];
+    $confirmEmail = $_POST['confirmEmail'];
+
+    if ($email !== $confirmEmail) {
+        echo "<script>alert('Emails do not match'); window.history.back();</script>";
+        exit();
+    }
+
+    $apStatusID = 1;
+
+    $sql = "INSERT INTO tbl_applications
+        (apFname, apLname, apMname, apSuffix, apSalutations, apPronouns, apBirthDate, apDepartment, apSection, apInstitution, apMobileNo, apEmail, apStatusID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "ssssssssssssi",
+        $fname,
+        $lname,
+        $mname,
+        $suffix,
+        $salutation,
+        $pronoun,
+        $birthDate,
+        $department,
+        $section,
+        $institution,
+        $mobile,
+        $email,
+        $apStatusID
+    );
+
+
+    if (!$stmt->execute()) {
+        die("SQL Error: " . $stmt->error);
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    header("Location: pending.php");
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -30,7 +91,7 @@
         <div class="row mt-2 ">
             <div class="col-12 ">
                 <h2 class="text-center mb-4">Membership Application</h2>
-                <form action="submit_application.php" method="POST">
+                <form method="POST">
                     <div class="mb-3">
 
                         <div class="row mt-2">
@@ -132,10 +193,12 @@
 
                     <div class="row mt-4">
                         <div class="col-12 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary rounded-3 px-5 py-2"><h4>Register</h4></button>
+                            <button type="submit" class="btn btn-primary rounded-3 px-5 py-2">
+                                <h4>Register</h4>
+                            </button>
                         </div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
