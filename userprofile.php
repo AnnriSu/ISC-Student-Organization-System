@@ -56,7 +56,7 @@
         <p>Member Profile Form</p>
 
         <div class="profile-card">
-            <button class="btn btn-back mb-3" onclick="history.back()">Go Back</button>
+            <a href="homepage-member.php" class="btn btn-back mb-3">Go Back</a>
 
             <div class="row mt-2">
                 <div class="col-6 px-1 px-1">
