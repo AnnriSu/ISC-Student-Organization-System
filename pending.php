@@ -52,6 +52,11 @@
             If you do not receive a reply within a few days, please contact the organization for assistance.
         </p>
 
+        <hr>
+
+        <div class="d-flex align-items-center justify-content-center">
+            <a href="index.php" class="btn btn-primary px-4 my-3 pt-2"><h4>Return to Home</h4></a>
+        </div>
     </div>
 
     
