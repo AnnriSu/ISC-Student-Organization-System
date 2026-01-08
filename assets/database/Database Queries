@@ -11,8 +11,8 @@ CREATE TABLE tbl_admin (
   adDepartment VARCHAR(100) NOT NULL,
   adSection VARCHAR(20) NOT NULL,
   adInstitution VARCHAR(100) NOT NULL,
-  adMobileNo INT NOT NULL,
-  adEmail VARCHAR(20) NOT NULL,
+  adMobileNo VARCHAR(20) NOT NULL,
+  adEmail VARCHAR(100) NOT NULL,
   PRIMARY KEY (adID)
 ) ENGINE=InnoDB;
 
@@ -41,8 +41,8 @@ CREATE TABLE tbl_applications (
   apDepartment VARCHAR(100) NOT NULL,
   apSection VARCHAR(20) NOT NULL,
   apInstitution VARCHAR(100) NOT NULL,
-  apMobileNo INT NOT NULL,
-  apEmail VARCHAR(20) NOT NULL,
+  apMobileNo VARCHAR(20) NOT NULL,
+  apEmail VARCHAR(100) NOT NULL,
   apStatusID INT NOT NULL,
   PRIMARY KEY (apID),
   FOREIGN KEY (apStatusID) REFERENCES tbl_applicationstatus(apStatusID)
@@ -87,8 +87,8 @@ CREATE TABLE tbl_members (
   mbDepartment VARCHAR(100) NOT NULL,
   mbSection VARCHAR(20) NOT NULL,
   mbInstitution VARCHAR(100) NOT NULL,
-  mbMobileNo INT NOT NULL,
-  mbEmail VARCHAR(20) NOT NULL,
+  mbMobileNo VARCHAR(20) NOT NULL,
+  mbEmail VARCHAR(100) NOT NULL,
   PRIMARY KEY (mbID)
 ) ENGINE=InnoDB;
 

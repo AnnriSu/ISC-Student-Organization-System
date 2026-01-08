@@ -23,6 +23,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Convert +63 to 09 for mobile number
+    if (strpos($mobile, '+63') === 0) {
+        $mobile = '0' . substr($mobile, 3);
+    }
+
+    // Validate required fields
+    $requiredFields = [
+        'firstName' => $fname,
+        'lastName' => $lname,
+        'salutation' => $salutation,
+        'genderPronoun' => $pronoun,
+        'birthDate' => $birthDate,
+        'department' => $department,
+        'section' => $section,
+        'institution' => $institution,
+        'mobileNumber' => $mobile,
+        'email' => $email,
+        'confirmEmail' => $confirmEmail
+    ];
+
+    foreach ($requiredFields as $fieldName => $fieldValue) {
+        if (empty($fieldValue)) {
+            echo "<script>alert('Please fill in all required fields.'); window.history.back();</script>";
+            exit();
+        }
+    }
     $apStatusID = 1;
 
     $sql = "INSERT INTO tbl_applications
@@ -188,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="col-6 px-1">
                                 <label for="mobileNumber" class="form-label ms-1">Mobile Number<span style="color: red;">*</span></label>
-                                <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="+63" required>
+                                <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="+63" value="+63" required onfocus="this.value = this.value.slice(0, 3);" oninput="this.value = '+63' + this.value.slice(3);" pattern="^\+63[0-9]*$">
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -208,9 +234,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="row mt-4">
                         <div class="col-12 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary rounded-3 px-5 py-2">
+                            <button type="submit" class="btn btn-primary rounded-3 px-5 py-2"
+                                onclick="return validateForm()">
                                 <h4>Register</h4>
                             </button>
+
+                           
                         </div>
                     </div>
 
