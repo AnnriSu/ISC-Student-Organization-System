@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Iskonnovators Student Community PUPSTC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #fff6df;
+      color: #2b2b2b;
+    }
+
+    header {
+      background: #ffc107;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .logo img {
+      width: 90px;
+
+    }
+
+    .auth-buttons button,
+    .primary-btn {
+      background: #8b0f23;
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 60px;
+      min-height: 70vh;
+    }
+
+    .hero-text {
+      max-width: 520px;
+    }
+
+    .hero-text h1 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .hero-text p {
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .hero img {
+      width: 550px;
+      height: 550px;
+      max-width: 100%;
+      margin-right: -90px;
+      margin-bottom: -156px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 60px;
+      background: #f6e7bf;
+    }
+
+    .card {
+      height: 300px;
+      background: #fff6df;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .sponsor {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      padding: 80px 60px;
+    }
+
+    .sponsor img {
+      width: 550px;
+      margin-top: -80px;
+    }
+
+    .sponsor h2 {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .sponsor p {
+      max-width: 550px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    footer {
+      background: #8b0f23;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-size: 14px;
+
+
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      width: 320px;
+      border-radius: 12px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+
+    .close {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 1000px) {
+
+      .hero,
+      .sponsor {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #chat-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #d2b48c;
+      color: white;
+      font-size: 26px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 400px;
+      height: 520px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+    .modal-content button {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="d-flex gap-4 me-4">
+      <img src="img/header.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
+    </div>
+
+    <div class="auth-buttons">
+      <button onclick="openModal('loginModal')">Login</button>
+      <button onclick="openModal('applyModal')">Apply</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Iskonnovators Student Community PUPSTC</h1>
+      <p>
+        Empowering innovation, leadership, and collaboration among students.
+      </p>
+      <button class="primary-btn" onclick="openModal('applyModal')">
+        Apply Now
+      </button>
+    </div>
+
+
+    <img src="img/mascot.png" alt="Banner" class="img-fluid d-none d-lg-block" style="object-fit:contain;">
+  </section>
+
+  <section class="cards">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </section>
+
+  <section class="sponsor" id="sponsor">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 "></div>
+    <img src="img/hanging_right 1.png" alt="Banner" class="img-fluid d-lg-none" style="object-fit:contain;">
+
+    <div>
+      <h2>Support. Inspire. Innovate.</h2>
+      <p>
+        Your sponsorship plays a vital role in shaping the future of student
+        leaders by supporting the Iskonnovators Student Community.
+      </p>
+      <button class="primary-btn">Become a Sponsor</button>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Iskonnovators Student Community PUPSTC. All Rights Reserved
+  </footer>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h3>Login</h3>
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button class="primary-btn">Login</button>
+    </div>
+  </div>
+
+  <!-- APPLY MODAL -->
+  <div class="modal" id="applyModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('applyModal')">&times;</span>
+      <h3>Apply</h3>
+      <input type="text" placeholder="Full Name">
+      <input type="email" placeholder="Email">
+      <input type="text" placeholder="Course / Year">
+      <button class="primary-btn" onclick="submitApplication()">
+        Submit Application
+      </button>
+    </div>
+  </div>
+
+  <style>
+    #chat-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #ffc107;
+      color: white;
+      font-size: 26px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 400px;
+      height: 520px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window iframe {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <div id="chat-button">
+    💬
+  </div>
+
+  <div id="chat-window">
+    <iframe src="chat.php" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function submitApplication() {
+      alert("Application submitted!");
+      closeModal('applyModal');
+    }
+
+    document.getElementById("chat-button").onclick = function () {
+      const windowChat = document.getElementById("chat-window");
+      windowChat.style.display = (windowChat.style.display === "none" || windowChat.style.display === "")
+        ? "block"
+        : "none";
+    };
+  </script>
+
+
+
+</body>
+
+</html>
