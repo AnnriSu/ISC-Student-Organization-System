@@ -23,11 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Convert +63 to 09 for mobile number
-    if (strpos($mobile, '+63') === 0) {
-        $mobile = '0' . substr($mobile, 3);
-    }
-
+    
     // Validate required fields
     $requiredFields = [
         'firstName' => $fname,
