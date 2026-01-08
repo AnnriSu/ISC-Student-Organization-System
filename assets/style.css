@@ -71,12 +71,3 @@ body footer.footer {
     margin-top: 20px !important;
 }
 
-.btn-primary {
-    background-color: #DEA500;
-    border: none;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #CFA300;
-}

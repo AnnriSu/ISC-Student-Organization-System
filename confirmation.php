@@ -57,24 +57,12 @@
 
         <hr>
 
-        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">Access Your Account</h3>
+        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">user found</h3>
 
 
         <hr>
 
-        <form>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-        </form>
-
-        <hr>
-        <a href="apply.php" class="btn btn-primary w-100 text-center" style="background: #DEA500;">Register</a>
-
-        <p class="text-center"><br>Not a member yet? Join now and start your journey with our organization today.<br></p>
-        <hr>
+        
     </div>
 
     
