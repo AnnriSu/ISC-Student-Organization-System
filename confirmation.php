@@ -1,26 +1,73 @@
 <?php
- include("connect.php");
-    session_start();
+session_start();
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-        
-        $query = "SELECT * FROM tbl_members WHERE email = '$email'";
-        $result = mysqli_query($conn, $query);
-        
-        if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['email'] = $row['email'];
-            header("Location: confirmation.php");
-            echo "<script>alert('User found! Redirecting...');</script>";
+// Check if mobile number is sent from login.php
+$recipient = $_GET['mobile'] ?? "+639948669327"; // fallback
+$userType  = $_GET['type'] ?? "member"; // "member" or "admin"
+
+// Store userType in session to use after redirect
+$_SESSION['userType'] = $userType;
+
+$gateway_url = "http://192.168.18.12:8080";
+$username    = "ISCSystem";
+$password    = "ISC_2025";
+
+// Check if user submitted OTP
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
+    $inputOtp = $_POST['otp'];
+
+    if (isset($_SESSION['otp']) && $inputOtp == $_SESSION['otp']) {
+        // OTP is correct, redirect based on user type
+        unset($_SESSION['otp']); // remove OTP after verification
+
+        if ($_SESSION['userType'] === "admin") {
+            header("Location: adminhomepage.php");
             exit();
         } else {
-            $error = "Email not found in our records.";
+            header("Location: homepage-member.php");
+            exit();
         }
+    } else {
+        echo "<h3>Invalid OTP. Please try again.</h3>";
     }
+} else {
+    // Generate OTP and send SMS
+    $otp = rand(100000, 999999);
+    $_SESSION['otp'] = $otp; // store OTP in session
 
+    $message = "Your OTP is $otp. Do not share this code with anyone.";
+    $url = rtrim($gateway_url, '/') . '/messages';
+
+    $payload = [
+        "phoneNumbers" => [$recipient],
+        "message"      => $message
+    ];
+
+    $options = [
+        'http' => [
+            'method'  => 'POST',
+            'header'  => [
+                'Content-Type: application/json',
+                'Authorization: Basic ' . base64_encode("$username:$password")
+            ],
+            'content' => json_encode($payload)
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $response = @file_get_contents($url, false, $context); // suppress errors
+
+    // // Show debug info
+    // echo "<h3>OTP Sent</h3>";
+    // echo "<p>Recipient: <strong>$recipient</strong></p>";
+    // echo "<p>Generated OTP: <strong>$otp</strong></p>";
+    // echo "<h4>API Response:</h4>";
+    // echo "<pre>" . htmlspecialchars($response ?: "No response from SMS Gateway.") . "</pre>";
+
+  
+}
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -50,22 +97,43 @@
     </nav>
 
     <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3 " style="max-width: 500px;">
-        
+
         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded icon-box">
             <img src="assets\img\ISC brand logo.png" alt="Application Received" width="150" height="auto">
         </div>
 
         <hr>
 
-        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">user found</h3>
+        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">Enter One Time Password</h3>
+        <hr>
+        <p class="text-center small">
+            An OTP has been sent to your registered phone number:
+            <strong><?= htmlspecialchars($recipient) ?></strong><br>
+            Logging in as: <strong><?= htmlspecialchars(ucfirst($userType)) ?></strong><br>
+            Please enter it below to proceed.
+        </p>
 
+        <?php
+        // Show debug output for development
+        if (isset($debugOutput)) {
+            echo '<div class="alert alert-info">' . $debugOutput . '</div>';
+        }
+        ?>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="otp" class="form-label">OTP</label>
+                <input type="text" class="form-control" id="otp" name="otp" required placeholder="Enter OTP here">
+            </div>
 
+            <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
+        </form>
+        <hr>
+        <p class="text-center">If you did not receive the text message or if the OTP has expired, click here to request a new OTP.</p>
         <hr>
 
-        
     </div>
 
-    
+
 
 
 

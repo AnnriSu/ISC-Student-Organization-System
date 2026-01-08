@@ -1,26 +1,55 @@
 <?php
- include("connect.php");
-    session_start();
+include("connect.php");
+session_start();
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-        
-        $query = "SELECT * FROM tbl_members WHERE email = '$email'";
-        $result = mysqli_query($conn, $query);
-        
-        if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['email'] = $row['email'];
-            header("Location: confirmation.php");
-            echo "<script>alert('User found! Redirecting...');</script>";
-            exit();
+$error = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    if (empty($_POST['email'])) {
+        $error = "Email is required.";
+    } else {
+        $email = trim($_POST['email']);
+        $mobileNumber = null;
+        $userType = null; // will store "member" or "admin"
+
+        // Check in members table
+        $stmt = $conn->prepare("SELECT mbMobileNo FROM tbl_members WHERE mbEmail = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            $mobileNumber = $row['mbMobileNo'];
+            $userType = "member";
         } else {
-            $error = "Email not found in our records.";
+            // Check in admin table
+            $stmt = $conn->prepare("SELECT adMobileNo FROM tbl_admin WHERE adEmail = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result && $result->num_rows === 1) {
+                $row = $result->fetch_assoc();
+                $mobileNumber = $row['adMobileNo'];
+                $userType = "admin";
+            } else {
+                $error = "Email not found in our records.";
+            }
+        }
+
+        $stmt->close();
+
+        if ($mobileNumber && $userType) {
+            // Pass mobile number and user type to confirmation.php
+            header("Location: confirmation.php?mobile=" . urlencode($mobileNumber) . "&type=" . urlencode($userType));
+            exit();
         }
     }
-
+}
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -50,7 +79,7 @@
     </nav>
 
     <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3 " style="max-width: 500px;">
-        
+
         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded icon-box">
             <img src="assets\img\ISC brand logo.png" alt="Application Received" width="150" height="auto">
         </div>
@@ -62,13 +91,21 @@
 
         <hr>
 
-        <form>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+        <form method="POST" action="">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <?php if (!empty($error)) : ?>
+            <div class="alert alert-danger text-center">
+                <?= htmlspecialchars($error) ?>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-        </form>
+        <?php endif; ?>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+
 
         <hr>
         <a href="apply.php" class="btn btn-primary w-100 text-center" style="background: #DEA500;">Register</a>
@@ -77,7 +114,7 @@
         <hr>
     </div>
 
-    
+
 
 
 
