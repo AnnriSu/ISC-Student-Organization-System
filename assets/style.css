@@ -24,12 +24,12 @@ body {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-.introduction-container .btn {
+.introduction-container .btn{
     background-color: rgba(132, 21, 44, 1);
     border: none;
 }
 
-.introduction-container .btn:hover {
+.introduction-container .btn{
     background-color: rgb(90, 16, 31);
 }
 
@@ -71,3 +71,12 @@ body footer.footer {
     margin-top: 20px !important;
 }
 
+.btn-isc {
+    background-color: rgba(132, 21, 44, 1)  !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.btn-isc:hover {
+    background-color: rgb(90, 16, 31)  !important;
+}
