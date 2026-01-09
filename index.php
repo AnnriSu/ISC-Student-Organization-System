@@ -9,6 +9,48 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="assets/style.css" rel="stylesheet">
+
+    <style>
+
+    #chat-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgb(232, 174, 0);
+      color: white;
+      font-size: 26px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 400px;
+      height: 520px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #chat-window iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+   
+  </style>
 </head>
 
 <body>
@@ -71,6 +113,36 @@
         </div>
 
     </div>
+
+     <div id="chat-button">
+    💬
+  </div>
+
+  <div id="chat-window">
+    <iframe src="chat.php" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function submitApplication() {
+      alert("Application submitted!");
+      closeModal('applyModal');
+    }
+
+    document.getElementById("chat-button").onclick = function () {
+      const windowChat = document.getElementById("chat-window");
+      windowChat.style.display = (windowChat.style.display === "none" || windowChat.style.display === "")
+        ? "block"
+        : "none";
+    };
+  </script>
 
 
     <!-- footer -->

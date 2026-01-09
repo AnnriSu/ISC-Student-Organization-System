@@ -2,7 +2,7 @@
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['prompt'])) {
 
 
-    $file_path = __DIR__ . '/data.txt';
+    $file_path = __DIR__ . '/assets/data.txt';
 
     $data = file_exists($file_path) ? file_get_contents($file_path) : '';
 
@@ -131,7 +131,7 @@ exit;
         }
 
         .ai {
-            background: #ffd469ff; --reply--
+            background: #ffd469ff;
             align-self: flex-start;
         }
 
