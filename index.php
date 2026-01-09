@@ -11,46 +11,43 @@
     <link href="assets/style.css" rel="stylesheet">
 
     <style>
+        #chat-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgb(232, 174, 0);
+            color: white;
+            font-size: 26px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-    #chat-button {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background: rgb(232, 174, 0);
-      color: white;
-      font-size: 26px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 9999;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 400px;
+            height: 520px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    #chat-window {
-      position: fixed;
-      bottom: 100px;
-      right: 25px;
-      width: 400px;
-      height: 520px;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      display: none;
-      z-index: 9999;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    #chat-window iframe {
-      width: 100%;
-      height: 100%;
-    }
-
-   
-  </style>
+        #chat-window iframe {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -87,13 +84,13 @@
     <div class="container-fluid introduction-container p-0 shadow-sm pb-0">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark align-self-center">
-                <div class="p-4 m-2 text-lg-start text-center">
+                <div class="p-4 m-2 ps-5 text-lg-start text-center">
                     <h1 class="fw-bold">Join the Iskonnovators Student
                         Community!</h1>
-                    <p>Become a part of our vibrant community and unlock a world of opportunities. By joining the ISC,
+                    <big>Become a part of our vibrant community and unlock a world of opportunities. By joining the ISC,
                         you'll connect with others, grow your skills, and take part in meaningful experiences. Apply now
-                        and embark on an exciting journey with the ISC.</p>
-
+                        and embark on an exciting journey with the ISC.</big>
+                    <br><br>
                     <button class="btn btn-primary btn-lg rounded rounded-5 px-5 pb-2 pt-2">
                         <a class="nav-link text-light" href="apply.php">
                             <h4 class="fw-bold">Apply Now!</h4>
@@ -114,35 +111,35 @@
 
     </div>
 
-     <div id="chat-button">
-    💬
-  </div>
+    <div id="chat-button">
+        💬
+    </div>
 
-  <div id="chat-window">
-    <iframe src="chat.php" frameborder="0"></iframe>
-  </div>
+    <div id="chat-window">
+        <iframe src="chat.php" frameborder="0"></iframe>
+    </div>
 
-  <script>
-    function openModal(id) {
-      document.getElementById(id).style.display = "flex";
-    }
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
 
-    function closeModal(id) {
-      document.getElementById(id).style.display = "none";
-    }
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
 
-    function submitApplication() {
-      alert("Application submitted!");
-      closeModal('applyModal');
-    }
+        function submitApplication() {
+            alert("Application submitted!");
+            closeModal('applyModal');
+        }
 
-    document.getElementById("chat-button").onclick = function () {
-      const windowChat = document.getElementById("chat-window");
-      windowChat.style.display = (windowChat.style.display === "none" || windowChat.style.display === "")
-        ? "block"
-        : "none";
-    };
-  </script>
+        document.getElementById("chat-button").onclick = function() {
+            const windowChat = document.getElementById("chat-window");
+            windowChat.style.display = (windowChat.style.display === "none" || windowChat.style.display === "") ?
+                "block" :
+                "none";
+        };
+    </script>
 
 
     <!-- footer -->
