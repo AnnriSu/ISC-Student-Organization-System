@@ -1,3 +1,38 @@
+<?php
+session_start();
+include("connect.php");
+
+// Check if user is logged in and is a member
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['userType']) || $_SESSION['userType'] !== 'member') {
+    // User is not authenticated or not a member, redirect to login
+    header("Location: login.php");
+    exit();
+}
+
+// Get member's name from database
+$memberName = "Member"; // Default fallback
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $stmt = $conn->prepare("SELECT mbFname, mbLname, mbMname, mbSuffix FROM tbl_members WHERE mbEmail = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result && $result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        // Build full name: First Name + Middle Name (if exists) + Last Name + Suffix (if exists)
+        $memberName = trim($row['mbFname']);
+        if (!empty($row['mbMname'])) {
+            $memberName .= " " . trim($row['mbMname']);
+        }
+        $memberName .= " " . trim($row['mbLname']);
+        if (!empty($row['mbSuffix'])) {
+            $memberName .= " " . trim($row['mbSuffix']);
+        }
+    }
+    $stmt->close();
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -40,7 +75,7 @@
 
                         </div>
                         <medium class="d-block text-white fw-medium">
-                            Juan Dela Cruz
+                            <?= htmlspecialchars($memberName) ?>
                         </medium>
                         <hr class="border border-white opacity-100 my-1">
 

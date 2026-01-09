@@ -42,6 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->close();
 
         if ($mobileNumber && $userType) {
+            // Store email and user type in session for authentication
+            $_SESSION['email'] = $email;
+            $_SESSION['userType'] = $userType;
+            $_SESSION['mobileNumber'] = $mobileNumber;
+            
             // Pass mobile number and user type to confirmation.php
             header("Location: confirmation.php?mobile=" . urlencode($mobileNumber) . "&type=" . urlencode($userType));
             exit();

@@ -1,3 +1,38 @@
+<?php
+session_start();
+include("connect.php");
+
+// Check if user is logged in and is an admin
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['userType']) || $_SESSION['userType'] !== 'admin') {
+    // User is not authenticated or not an admin, redirect to login
+    header("Location: login.php");
+    exit();
+}
+
+// Get admin's name from database
+$adminName = "Admin"; // Default fallback
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $stmt = $conn->prepare("SELECT adFname, adLname, adMname, adSuffix FROM tbl_admin WHERE adEmail = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result && $result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        // Build full name: First Name + Middle Name (if exists) + Last Name + Suffix (if exists)
+        $adminName = trim($row['adFname']);
+        if (!empty($row['adMname'])) {
+            $adminName .= " " . trim($row['adMname']);
+        }
+        $adminName .= " " . trim($row['adLname']);
+        if (!empty($row['adSuffix'])) {
+            $adminName .= " " . trim($row['adSuffix']);
+        }
+    }
+    $stmt->close();
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -40,7 +75,7 @@
 
                         </div>
                         <medium class="d-block text-white fw-medium">
-                            Juan Dela Cruz
+                            <?= htmlspecialchars($adminName) ?>
                         </medium>
 
                         <hr class="border border-white opacity-100 my-1">

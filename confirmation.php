@@ -2,10 +2,17 @@
 session_start();
 
 // Check if mobile number is sent from login.php
-$recipient = $_GET['mobile'] ?? "+639948669327"; // fallback
-$userType  = $_GET['type'] ?? "member"; // "member" or "admin"
+$recipient = $_GET['mobile'] ?? ($_SESSION['mobileNumber'] ?? "+639948669327"); // fallback
+$userType  = $_GET['type'] ?? ($_SESSION['userType'] ?? "member"); // "member" or "admin"
 
-// Store userType in session to use after redirect
+// Ensure session has email and userType from login.php
+if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
+    // If session is missing, redirect back to login
+    header("Location: login.php");
+    exit();
+}
+
+// Store userType in session to use after redirect (in case it was passed via GET)
 $_SESSION['userType'] = $userType;
 
 $gateway_url = "http://192.168.18.12:8080";
@@ -17,8 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
     $inputOtp = $_POST['otp'];
 
     if (isset($_SESSION['otp']) && $inputOtp == $_SESSION['otp']) {
-        // OTP is correct, redirect based on user type
+        // OTP is correct, set logged-in flag and redirect based on user type
         unset($_SESSION['otp']); // remove OTP after verification
+        $_SESSION['logged_in'] = true; // Set authentication flag
 
         if ($_SESSION['userType'] === "admin") {
             header("Location: adminhomepage.php");
