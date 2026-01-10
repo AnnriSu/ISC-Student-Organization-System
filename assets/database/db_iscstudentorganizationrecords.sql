@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2026 at 09:54 AM
+-- Generation Time: Jan 10, 2026 at 02:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -90,7 +90,7 @@ CREATE TABLE `tbl_applications` (
 --
 
 INSERT INTO `tbl_applications` (`apID`, `apFname`, `apLname`, `apMname`, `apSuffix`, `apSalutations`, `apPronouns`, `apBirthDate`, `apDepartment`, `apSection`, `apInstitution`, `apMobileNo`, `apEmail`, `apStatusID`) VALUES
-(2, 'Anne', 'Sumague', 'De Guzman', '', 'mr', 'she', '2026-01-10', 'bsit', '3-1', 'Polytechnic University of the Philippines', '+639948669327', 'anneritchel.deguzman.sumague@gmail.com', 1);
+(2, 'Anne', 'Sumague', 'De Guzman', '', 'mr', 'she', '2026-01-10', 'bsit', '3-1', 'Polytechnic University of the Philippines', '+639948669327', 'anneritchel.deguzman.sumague@gmail.com', 3);
 
 -- --------------------------------------------------------
 
@@ -175,8 +175,17 @@ CREATE TABLE `tbl_eventstatus` (
 CREATE TABLE `tbl_feedback` (
   `fbID` int(11) NOT NULL,
   `fbContent` varchar(500) NOT NULL,
-  `mbID` int(11) NOT NULL
+  `mbID` int(11) NOT NULL,
+  `mbMobileNo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_feedback`
+--
+
+INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`) VALUES
+(5, 'the system woeks fine', 1, '09948669327'),
+(6, 'try again', 1, '09948669327');
 
 -- --------------------------------------------------------
 
@@ -291,13 +300,15 @@ ALTER TABLE `tbl_eventstatus`
 --
 ALTER TABLE `tbl_feedback`
   ADD PRIMARY KEY (`fbID`),
-  ADD KEY `mbID` (`mbID`);
+  ADD KEY `mbID` (`mbID`),
+  ADD KEY `fk_feedback_mobile` (`mbMobileNo`);
 
 --
 -- Indexes for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
-  ADD PRIMARY KEY (`mbID`);
+  ADD PRIMARY KEY (`mbID`),
+  ADD UNIQUE KEY `uq_mbMobileNo` (`mbMobileNo`);
 
 --
 -- Indexes for table `tbl_newsletter`
@@ -344,7 +355,7 @@ ALTER TABLE `tbl_events`
 -- AUTO_INCREMENT for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
-  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
@@ -392,6 +403,7 @@ ALTER TABLE `tbl_events`
 -- Constraints for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
+  ADD CONSTRAINT `fk_feedback_mobile` FOREIGN KEY (`mbMobileNo`) REFERENCES `tbl_members` (`mbMobileNo`),
   ADD CONSTRAINT `tbl_feedback_ibfk_1` FOREIGN KEY (`mbID`) REFERENCES `tbl_members` (`mbID`);
 
 --
