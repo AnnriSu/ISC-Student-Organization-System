@@ -1,8 +1,89 @@
 <!doctype html>
 <html lang="en">
 
+<?php 
+include ("shared/head.php");
+include ("connect.php");
+
+// Handle sponsor request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    handleSponsorRequest();
+}
+
+// Process sponsor submission and save to database
+ 
+function handleSponsorRequest(): void {
+    header('Content-Type: application/json; charset=utf-8');
+    
+    try {
+        $sponsorName = sanitizeInput($_POST['sponsorName'] ?? '');
+        
+        // Use "anonymous" if name is empty
+        if (empty($sponsorName)) {
+            $sponsorName = 'anonymous';
+        }
+
+        $sponsorId = saveSponsorToDatabase($sponsorName);
+        
+        http_response_code(201);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Sponsor saved successfully',
+            'data' => [
+                'sponsorId' => $sponsorId,
+                'sponsorName' => $sponsorName
+            ]
+        ]);
+        exit;
+        
+    } catch (Exception $error) {
+        error_log("Sponsor request error: " . $error->getMessage());
+        http_response_code($error->getCode() ?: 500);
+        echo json_encode([
+            'success' => false,
+            'message' => $error->getMessage()
+        ]);
+        exit;
+    }
+}
+
+// Sanitize user input
+
+function sanitizeInput(string $input): string {
+    return trim(strip_tags($input));
+}
+
+// Validate sponsor name
+
+function validateSponsorName(string $name): bool {
+    return !empty($name) && strlen($name) > 0 && strlen($name) <= 200;
+}
+
+ // Save sponsor to database using prepared statement
+
+ function saveSponsorToDatabase(string $sponsorName): int {
+    global $conn;
+    
+    $stmt = $conn->prepare("INSERT INTO tbl_sponsors (spName) VALUES (?)");
+    
+    if (!$stmt) {
+        throw new Exception("Database prepare error: " . $conn->error);
+    }
+
+    $stmt->bind_param('s', $sponsorName);
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Database execute error: " . $stmt->error);
+    }
+
+    $sponsorId = $stmt->insert_id;
+    $stmt->close();
+    
+    return $sponsorId;
+}
+?>
+
 <head>
-    <?php include("shared/head.php") ?>
 </head>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AWXiLk5YzaHQXWeE7asEGI2j1gCP3gbWw4Kq89QXRl5Lfst4S32h7K46LZuV0bi1r-M38LP_Mkod9K14" ></script>
@@ -66,6 +147,101 @@
         border-radius: 12px;
         border: 2px solid #dea500;
     }
+
+    /* Success Modal Styles */
+    .success-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .success-modal.show {
+        display: flex;
+    }
+
+    .success-card {
+        background: white;
+        border-radius: 15px;
+        padding: 48px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        max-width: 520px;
+        width: 90%;
+        text-align: center;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .success-card h2 {
+        color: var(--pink4);
+        font-weight: 800;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .success-card p {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .btn-success-ok {
+        background-color: #3769b2;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .btn-success-ok:hover {
+        background-color: #2a50a0;
+    }
+
+    .btn-success-home {
+        background-color: #84152c;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .btn-success-home:hover {
+        background-color: #6c1122;
+    }
+
 </style>
 
 <body>
@@ -106,6 +282,19 @@
         <div id="paypal-button-container" class="mt-4"></div>
 
     </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-card">
+            <h2>Thank You!</h2>
+            <p>Money has been sent successfully.</p>
+            <div class="button-group">
+                <button id="okayBtn" class="btn-success-ok">Okay</button>
+                <button id="homeBtn" class="btn-success-home">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
     <?php include("shared/footer.php") ?>
 
     <script>
@@ -149,15 +338,71 @@
                     }]
                 });
             },
-            onApprove: function (data, actions) {
-                return actions.order.capture().then(function (details) {
-                    alert("Thank you! Donation completed.");
-                });
+            onApprove: async (data, actions) => {
+                try {
+                    const paymentDetails = await actions.order.capture();
+                    let sponsorName = document.getElementById('donorName').value.trim();
+                    
+                    // Use "anonymous" if name field is empty
+                    if (!sponsorName) {
+                        sponsorName = 'anonymous';
+                    }
+                    
+                    await saveSponsor(sponsorName);
+                    showSuccessModal();
+                } catch (error) {
+                    console.error('Error:', error);
+                    showSuccessModal();
+                }
             },
-            onError: function (err) {
+            onError: (error) => {
+                console.error('PayPal error:', error);
                 alert("An error occurred while processing the donation.");
             }
         }).render('#paypal-button-container');
+
+        /**
+         * Save sponsor to database
+         */
+        async function saveSponsor(sponsorName) {
+            const formData = new FormData();
+            formData.append('sponsorName', sponsorName);
+
+            const response = await fetch(window.location.pathname, {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to save sponsor');
+            }
+
+            return result.data;
+        }
+
+        /**
+         * Show success modal
+         */
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('show');
+        }
+
+        /**
+         * Handle okay button click - reload sponsor page
+         */
+        document.getElementById('okayBtn').addEventListener('click', () => {
+            window.location.reload();
+        });
+
+        /**
+         * Handle back to home button click - go to index.php
+         */
+        document.getElementById('homeBtn').addEventListener('click', () => {
+            window.location.href = 'index.php';
+        });
     </script>
 
 
