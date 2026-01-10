@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-require 'connect.php'; // your DB connection
+require 'connect.php'; 
 
 use Google\Client;
 use Google\Service\Gmail;
