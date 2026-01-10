@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 
@@ -29,21 +28,21 @@
     <div class="container-fluid mt-4">
         <div class="bg-white rounded-4 p-4 shadow" style="border:3px solid #2f6fed; min-height:450px;">
 
-            <h5 class="fw-bold mb-3">Membership Application</h5>
+            <h5 class="fw-bold mb-3">Event</h5>
 
             <div class="table-responsive">
                 <table class="table table-bordered align-middle text-center">
                     <thead class="table-white">
                         <tr>
-                            <th>Name</th>
-                            <th>Department</th>
-                            <th>Section</th>
-                            <th>Institution</th>
-                            <th>Email</th>
-                            <th>Application Status</th>
+                            <th>Event Name</th>
+                            <th>Description</th>
+                            <th>Date & Time</th>
+                            <th>Instructor</th>
+                            <th>Evaluation</th>
+                            <th>Event Status</th>
                         </tr>
                     </thead>
-                    
+                   
                     </tbody>
                 </table>
             </div>
@@ -63,7 +62,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     
-   
+
 </body>
 
 </html>
