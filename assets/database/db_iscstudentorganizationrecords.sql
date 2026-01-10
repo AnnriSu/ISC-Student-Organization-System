@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2026 at 02:24 PM
+-- Generation Time: Jan 10, 2026 at 02:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -176,16 +176,19 @@ CREATE TABLE `tbl_feedback` (
   `fbID` int(11) NOT NULL,
   `fbContent` varchar(500) NOT NULL,
   `mbID` int(11) NOT NULL,
-  `mbMobileNo` varchar(20) NOT NULL
+  `mbMobileNo` varchar(20) NOT NULL,
+  `mbEmail` varchar(100) NOT NULL,
+  `fbWebsiteName` varchar(100) NOT NULL,
+  `fbCategory` varchar(50) NOT NULL,
+  `fbName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_feedback`
 --
 
-INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`) VALUES
-(5, 'the system woeks fine', 1, '09948669327'),
-(6, 'try again', 1, '09948669327');
+INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`, `mbEmail`, `fbWebsiteName`, `fbCategory`, `fbName`) VALUES
+(7, 'ayaw ko na', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague');
 
 -- --------------------------------------------------------
 
@@ -301,14 +304,16 @@ ALTER TABLE `tbl_eventstatus`
 ALTER TABLE `tbl_feedback`
   ADD PRIMARY KEY (`fbID`),
   ADD KEY `mbID` (`mbID`),
-  ADD KEY `fk_feedback_mobile` (`mbMobileNo`);
+  ADD KEY `fk_feedback_mobile` (`mbMobileNo`),
+  ADD KEY `fk_feedback_email` (`mbEmail`);
 
 --
 -- Indexes for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
   ADD PRIMARY KEY (`mbID`),
-  ADD UNIQUE KEY `uq_mbMobileNo` (`mbMobileNo`);
+  ADD UNIQUE KEY `uq_mbMobileNo` (`mbMobileNo`),
+  ADD UNIQUE KEY `uq_mbEmail` (`mbEmail`);
 
 --
 -- Indexes for table `tbl_newsletter`
@@ -355,7 +360,7 @@ ALTER TABLE `tbl_events`
 -- AUTO_INCREMENT for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
-  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
@@ -403,6 +408,7 @@ ALTER TABLE `tbl_events`
 -- Constraints for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
+  ADD CONSTRAINT `fk_feedback_email` FOREIGN KEY (`mbEmail`) REFERENCES `tbl_members` (`mbEmail`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_feedback_mobile` FOREIGN KEY (`mbMobileNo`) REFERENCES `tbl_members` (`mbMobileNo`),
   ADD CONSTRAINT `tbl_feedback_ibfk_1` FOREIGN KEY (`mbID`) REFERENCES `tbl_members` (`mbID`);
 
