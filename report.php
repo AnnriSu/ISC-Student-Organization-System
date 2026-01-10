@@ -18,8 +18,8 @@ $feedbackType = ""; // 'success' or 'danger'
 
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
-    // Retrieve mbID, mbMobileNo, and name fields from tbl_members
-    $stmt = $conn->prepare("SELECT mbID, mbMobileNo, mbFname, mbLname, mbMname, mbSuffix FROM tbl_members WHERE mbEmail = ?");
+    // Retrieve mbID, mbMobileNo, mbEmail, and name fields from tbl_members
+    $stmt = $conn->prepare("SELECT mbID, mbMobileNo, mbEmail, mbFname, mbLname, mbMname, mbSuffix FROM tbl_members WHERE mbEmail = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -30,6 +30,7 @@ if (isset($_SESSION['email'])) {
         // Use the exact mobile number format as stored in tbl_members (required for foreign key)
         // Trim to remove any whitespace but keep exact format
         $memberMobileNo = trim($row['mbMobileNo']);
+        $memberEmail = $row['mbEmail'];
         
         // Build full name: First Name + Middle Name (if exists) + Last Name + Suffix (if exists)
         $memberName = trim($row['mbFname']);
@@ -40,6 +41,9 @@ if (isset($_SESSION['email'])) {
         if (!empty($row['mbSuffix'])) {
             $memberName .= " " . trim($row['mbSuffix']);
         }
+        
+        // Build fbName: First Name + Last Name (for foreign key)
+        $fbName = trim($row['mbFname']) . " " . trim($row['mbLname']);
     }
     $stmt->close();
 }
@@ -47,6 +51,7 @@ if (isset($_SESSION['email'])) {
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
     $feedbackContent = trim($_POST['feedback']);
+    $feedbackCategory = isset($_POST['category']) ? trim($_POST['category']) : 'Feedback';
     
     // Validate feedback content
     if (empty($feedbackContent)) {
@@ -61,48 +66,56 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
     } elseif ($memberMobileNo === null) {
         $feedbackMessage = "Error: Member mobile number not found. Please try logging in again.";
         $feedbackType = "danger";
+    } elseif ($memberEmail === null) {
+        $feedbackMessage = "Error: Member email not found. Please try logging in again.";
+        $feedbackType = "danger";
+    } elseif ($fbName === null) {
+        $feedbackMessage = "Error: Member name not found. Please try logging in again.";
+        $feedbackType = "danger";
     } else {
-        // Verify and get the exact mobile number format from database to match foreign key
-        $verifyStmt = $conn->prepare("SELECT mbMobileNo FROM tbl_members WHERE mbID = ?");
+        // Verify and get all required fields from database to match foreign keys
+        $verifyStmt = $conn->prepare("SELECT mbMobileNo, mbEmail, mbFname, mbLname FROM tbl_members WHERE mbID = ?");
         $verifyStmt->bind_param("i", $memberID);
         $verifyStmt->execute();
         $verifyResult = $verifyStmt->get_result();
         
         if ($verifyResult && $verifyResult->num_rows === 1) {
             $verifyRow = $verifyResult->fetch_assoc();
-            // Use the exact mobile number format as stored in tbl_members (required for foreign key)
+            // Use the exact format as stored in tbl_members (required for foreign keys)
             $memberMobileNo = trim($verifyRow['mbMobileNo']);
+            $memberEmail = trim($verifyRow['mbEmail']);
+            $fbName = trim($verifyRow['mbFname']) . " " . trim($verifyRow['mbLname']);
         }
         $verifyStmt->close();
         
-        // Insert feedback into database with member ID (mbID) and mobile number (mbMobileNo)
-        $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo) VALUES (?, ?, ?)");
-        $stmt->bind_param("sis", $feedbackContent, $memberID, $memberMobileNo);
+        // Set website name constant
+        $fbWebsiteName = "ISC Organization System";
+        
+        // Try to insert with all fields (fbID is auto-increment, so we don't include it)
+        $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo, mbEmail, fbWebsiteName, fbCategory, fbName) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisssss", $feedbackContent, $memberID, $memberMobileNo, $memberEmail, $fbWebsiteName, $feedbackCategory, $fbName);
         
         if ($stmt->execute()) {
             $feedbackMessage = "Thank you! Your feedback has been submitted successfully.";
             $feedbackType = "success";
             // Clear the form field by resetting POST data (will show empty on page reload)
             $_POST['feedback'] = "";
+            $_POST['category'] = "";
         } else {
             $errorMsg = $conn->error;
-            // If the error is about mbMobileNo column not existing, try without it
-            if (strpos($errorMsg, 'mbMobileNo') !== false && strpos($errorMsg, "Unknown column") !== false) {
-                // Retry without mbMobileNo if column doesn't exist
-                $stmt->close();
-                $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID) VALUES (?, ?)");
-                $stmt->bind_param("si", $feedbackContent, $memberID);
-                
-                if ($stmt->execute()) {
-                    $feedbackMessage = "Thank you! Your feedback has been submitted successfully.";
-                    $feedbackType = "success";
-                    $_POST['feedback'] = "";
-                } else {
-                    $feedbackMessage = "Error submitting feedback: " . $conn->error . ". Please try again later.";
-                    $feedbackType = "danger";
-                }
+            // If some columns don't exist, try with basic fields first
+            $stmt->close();
+            // Try with basic required fields
+            $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo) VALUES (?, ?, ?)");
+            $stmt->bind_param("sis", $feedbackContent, $memberID, $memberMobileNo);
+            
+            if ($stmt->execute()) {
+                $feedbackMessage = "Thank you! Your feedback has been submitted successfully. (Note: Some fields may not be saved - please update database schema)";
+                $feedbackType = "success";
+                $_POST['feedback'] = "";
+                $_POST['category'] = "";
             } else {
-                $feedbackMessage = "Error submitting feedback: " . $errorMsg . ". Please try again later.";
+                $feedbackMessage = "Error submitting feedback: " . $conn->error . ". Please try again later.";
                 $feedbackType = "danger";
             }
         }
@@ -156,10 +169,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
 
         <form method="POST" action="">
             <div class="mb-3">
-              <textarea class="form-control" id="feedback" name="feedback" rows="5" maxlength="500" required placeholder="Please share your feedback below (max 500 characters)."><?= isset($_POST['feedback']) && $feedbackType !== 'success' ? htmlspecialchars($_POST['feedback']) : '' ?></textarea>
-              <small class="text-muted">
-                  <span id="charCount">0</span>/500 characters
-              </small>
+                <label for="category" class="form-label">Feedback Category <span class="text-danger">*</span></label>
+                <select class="form-select" id="category" name="category" required>
+                    <option value="Feedback" <?= (isset($_POST['category']) && $_POST['category'] === 'Feedback') || !isset($_POST['category']) ? 'selected' : '' ?>>Feedback</option>
+                    <option value="Complaint" <?= isset($_POST['category']) && $_POST['category'] === 'Complaint' ? 'selected' : '' ?>>Complaint</option>
+                    <option value="Donation" <?= isset($_POST['category']) && $_POST['category'] === 'Donation' ? 'selected' : '' ?>>Donation</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="feedback" class="form-label">Your Feedback <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="feedback" name="feedback" rows="5" maxlength="500" required placeholder="Please share your feedback below (max 500 characters)."><?= isset($_POST['feedback']) && $feedbackType !== 'success' ? htmlspecialchars($_POST['feedback']) : '' ?></textarea>
+                <small class="text-muted">
+                    <span id="charCount">0</span>/500 characters
+                </small>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
