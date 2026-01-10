@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2026 at 02:53 PM
+-- Generation Time: Jan 10, 2026 at 03:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -180,15 +180,9 @@ CREATE TABLE `tbl_feedback` (
   `mbEmail` varchar(100) NOT NULL,
   `fbWebsiteName` varchar(100) NOT NULL,
   `fbCategory` varchar(50) NOT NULL,
-  `fbName` varchar(100) NOT NULL
+  `fbName` varchar(100) NOT NULL,
+  `fbStatus` varchar(20) NOT NULL DEFAULT 'Open'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_feedback`
---
-
-INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`, `mbEmail`, `fbWebsiteName`, `fbCategory`, `fbName`) VALUES
-(7, 'ayaw ko na', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague');
 
 -- --------------------------------------------------------
 
@@ -360,7 +354,7 @@ ALTER TABLE `tbl_events`
 -- AUTO_INCREMENT for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
-  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
