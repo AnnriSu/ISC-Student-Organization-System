@@ -88,12 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
         }
         $verifyStmt->close();
         
-        // Set website name constant
+        // Set website name constant and status default
         $fbWebsiteName = "ISC Organization System";
+        $fbStatus = "Open";
         
         // Try to insert with all fields (fbID is auto-increment, so we don't include it)
-        $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo, mbEmail, fbWebsiteName, fbCategory, fbName) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sisssss", $feedbackContent, $memberID, $memberMobileNo, $memberEmail, $fbWebsiteName, $feedbackCategory, $fbName);
+        $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo, mbEmail, fbWebsiteName, fbCategory, fbName, fbStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sissssss", $feedbackContent, $memberID, $memberMobileNo, $memberEmail, $fbWebsiteName, $feedbackCategory, $fbName, $fbStatus);
         
         if ($stmt->execute()) {
             $feedbackMessage = "Thank you! Your feedback has been submitted successfully.";
