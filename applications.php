@@ -1,6 +1,16 @@
 <?php
 include("connect.php");
 
+// Fetch all status options from tbl_applicationstatus
+$statusQuery = "SELECT apStatusID, apStatusDesc FROM tbl_applicationstatus ORDER BY apStatusID";
+$statusResult = $conn->query($statusQuery);
+$statusOptions = [];
+if ($statusResult && $statusResult->num_rows > 0) {
+    while ($statusRow = $statusResult->fetch_assoc()) {
+        $statusOptions[] = $statusRow;
+    }
+}
+
 // Fetch all applications with their status
 $query = "SELECT a.apID, a.apFname, a.apLname, a.apMname, a.apSuffix, 
                  a.apDepartment, a.apSection, a.apInstitution, a.apEmail, 
@@ -94,10 +104,12 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '') {
                                     <select class="form-select form-select-sm status-select" 
                                             data-id="<?= $row['apID'] ?>" 
                                             data-status-id="<?= $row['apStatusID'] ?>">
-                                        <option value="1" <?= $row['apStatusID'] == 1 ? 'selected' : '' ?>>Pending</option>
-                                        <option value="2" <?= $row['apStatusID'] == 2 ? 'selected' : '' ?>>For Interview</option>
-                                        <option value="3" <?= $row['apStatusID'] == 3 ? 'selected' : '' ?>>Approved</option>
-                                        <option value="4" <?= $row['apStatusID'] == 4 ? 'selected' : '' ?>>Denied</option>
+                                        <?php foreach ($statusOptions as $status): ?>
+                                            <option value="<?= $status['apStatusID'] ?>" 
+                                                    <?= $row['apStatusID'] == $status['apStatusID'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($status['apStatusDesc']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </td>
                             </tr>
@@ -131,14 +143,18 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '') {
         document.querySelectorAll('.status-select').forEach(select => {
             select.addEventListener('change', function() {
                 const applicationId = this.getAttribute('data-id');
+                const oldStatusId = this.getAttribute('data-status-id');
                 const newStatusId = this.value;
                 
-                // You can add AJAX call here to update the status in the database
-                // For now, we'll just log it
-                console.log('Application ID:', applicationId, 'New Status ID:', newStatusId);
+                // If no change, do nothing
+                if (newStatusId === oldStatusId) {
+                    return;
+                }
                 
-                // Example AJAX call (uncomment and configure as needed):
-                /*
+                // Disable select while updating
+                this.disabled = true;
+                
+                // Make AJAX call to update the status in the database
                 fetch('update_application_status.php', {
                     method: 'POST',
                     headers: {
@@ -152,17 +168,26 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '') {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Status updated successfully');
+                        // Update the data-status-id attribute to reflect the new status
+                        this.setAttribute('data-status-id', newStatusId);
+                        // Optional: Show success message
+                        console.log('Status updated successfully');
                     } else {
-                        alert('Error updating status');
-                        this.value = this.getAttribute('data-status-id'); // Revert
+                        // Revert to old value on error
+                        alert('Error updating status: ' + (data.message || 'Unknown error'));
+                        this.value = oldStatusId;
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    this.value = this.getAttribute('data-status-id'); // Revert
+                    alert('Error updating status. Please try again.');
+                    // Revert to old value on error
+                    this.value = oldStatusId;
+                })
+                .finally(() => {
+                    // Re-enable select after update
+                    this.disabled = false;
                 });
-                */
             });
         });
     </script>
