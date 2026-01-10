@@ -83,9 +83,9 @@ if (isset($_SESSION['email'])) {
 
                     <div class="d-grid gap-2">
                         <button class=" btn btn-sidebar">Events</button>
-                        <button class="btn btn-sidebar">Newsletters</button>
+                        <a href="newsletter.php" class="btn btn-sidebar">Newsletters</a>
                         <a href="report.php" class="btn btn-sidebar">Report</a>
-                        <button class="btn btn-sidebar">Edit Profile</button>
+                        <a href="userprofile.php" class="btn btn-sidebar">Edit Profile</a>
                     </div>
                 </div>
             </div>
