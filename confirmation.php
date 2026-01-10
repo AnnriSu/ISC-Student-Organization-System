@@ -15,7 +15,7 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
 // Store userType in session to use after redirect (in case it was passed via GET)
 $_SESSION['userType'] = $userType;
 
-$gateway_url = "http://192.168.18.12:8080";
+$gateway_url = "http://192.168.128.131:8080";
 $username    = "ISCSystem";
 $password    = "ISC_2025";
 
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
     $context  = stream_context_create($options);
     $response = @file_get_contents($url, false, $context); // suppress errors
 
-    // // Show debug info
+    // Show debug info
     // echo "<h3>OTP Sent</h3>";
     // echo "<p>Recipient: <strong>$recipient</strong></p>";
     // echo "<p>Generated OTP: <strong>$otp</strong></p>";
