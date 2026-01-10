@@ -47,32 +47,124 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #chat-window {
+                width: 85vw;
+                height: 400px;
+                bottom: 80px;
+                right: 10px;
+            }
+
+            #chat-button {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .navbar {
+                padding: 0.5rem 0 !important;
+            }
+
+            .navbar-brand img {
+                height: auto !important;
+                max-width: 180px;
+            }
+
+            .introduction-container {
+                padding: 2rem 0 !important;
+            }
+
+            .introduction-container .p-4 {
+                padding: 1.5rem !important;
+                margin: 0.5rem !important;
+            }
+
+            .introduction-container h1 {
+                font-size: 1.75rem !important;
+            }
+
+            .introduction-container big {
+                font-size: 0.95rem !important;
+            }
+
+            .btn-lg {
+                padding: 0.5rem 1.25rem !important;
+                font-size: 0.9rem !important;
+            }
+
+            .btn-lg h4 {
+                margin: 0;
+                font-size: 1rem !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                max-width: 150px;
+            }
+
+            .introduction-container .p-4 {
+                padding: 1rem !important;
+                margin: 0 !important;
+            }
+
+            .introduction-container h1 {
+                font-size: 1.5rem !important;
+            }
+
+            .introduction-container big {
+                font-size: 0.9rem !important;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            #chat-button {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+
+            #chat-window {
+                width: 90vw;
+                height: 350px;
+                bottom: 70px;
+                right: 5px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar shadow-sm ">
-
-        <div class="container-fluid d-flex align-items-center">
-
-            <div class="d-flex gap-4 me-4">
-                <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
+    <nav class="navbar shadow-sm navbar-expand-lg">
+        <div class="container-fluid d-flex align-items-center flex-wrap">
+            <div class="d-flex gap-4 me-auto">
+                <a class="navbar-brand d-flex ms-2 ms-lg-4" href="index.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1" style="max-width: 200px; width: auto;">
                 </a>
             </div>
 
-            <div class="d-flex gap-4 ms-auto me-auto me-sm-4 align-items-center">
-                <button class="btn rounded rounded-5 pb-2 pt-2 px-4">
+            <div class="d-flex gap-2 gap-lg-4 align-items-center flex-wrap justify-content-center">
+                <button class="btn rounded rounded-5 pb-2 pt-2 px-3 px-lg-4">
                     <a class="nav-link text-light fw-bold" href="login.php">
-                        <h5>Login</h5>
+                        <h6 class="mb-0 d-lg-none">Login</h6>
+                        <h5 class="mb-0 d-none d-lg-block">Login</h5>
                     </a>
                 </button>
 
-                <button class="btn rounded rounded-5 pb-2 pt-2 px-4">
+                <button class="btn rounded rounded-5 pb-2 pt-2 px-3 px-lg-4">
                     <a class="nav-link text-light fw-bold" href="apply.php">
-                        <h5>Apply</h5>
+                        <h6 class="mb-0 d-lg-none">Apply</h6>
+                        <h5 class="mb-0 d-none d-lg-block">Apply</h5>
                     </a>
                 </button>
             </div>
@@ -82,33 +174,50 @@
 
     <!-- Apply Now Container -->
     <div class="container-fluid introduction-container p-0 shadow-sm pb-0">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark align-self-center">
-                <div class="p-4 m-2 ps-5 text-lg-start text-center">
-                    <h1 class="fw-bold">Join the Iskonnovators Student
-                        Community!</h1>
-                    <big>Become a part of our vibrant community and unlock a world of opportunities. By joining the ISC,
-                        you'll connect with others, grow your skills, and take part in meaningful experiences. Apply now
-                        and embark on an exciting journey with the ISC.</big>
-                    <br><br>
-                    <button class="btn btn-primary btn-lg rounded rounded-5 px-5 pb-2 pt-2">
+        <div class="row g-0">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark d-flex align-items-center justify-content-center">
+                <div class="p-4 p-lg-5 text-lg-start text-center w-100">
+                    <h1 class="fw-bold">Join the Iskonnovators Student Community!</h1>
+                    <p>Become a part of our vibrant community and unlock a world of opportunities. By joining the ISC, you'll connect with others, grow your skills, and take part in meaningful experiences. Apply now and embark on an exciting journey with the ISC.</p>
+                    <br>
+                    <button class="btn btn-lg rounded rounded-5 px-4 px-lg-5 pb-2 pt-2" style="background-color: #84152c; color: white;">
                         <a class="nav-link text-light" href="apply.php">
-                            <h4 class="fw-bold">Apply Now!</h4>
+                            <h5 class="fw-bold mb-0">Apply Now!</h5>
                         </a>
                     </button>
-
                 </div>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                <img src="assets/img/mascot.png" alt="Banner" class="img-fluid d-none d-lg-block"
-                    style="object-fit:contain;">
-                <img src="assets/img/mascot full.png" alt="Banner" class="img-fluid d-lg-none"
-                    style="object-fit:contain;">
-
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-flex align-items-center justify-content-center">
+                <img src="assets/img/mascot.png" alt="Banner" class="img-fluid d-none d-lg-block" style="object-fit:contain; max-height: 500px;">
+                <img src="assets/img/mascot full.png" alt="Banner" class="img-fluid d-lg-none" style="object-fit:contain; max-height: 400px;">
             </div>
         </div>
+    </div>
 
+    <!-- Sponsorship Container -->
+    <div class="container-fluid introduction-container p-0 shadow-sm pb-0">
+        <div class="row g-0">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-flex align-items-center justify-content-center">
+                <img src="assets/img/mascot.png" alt="Mascot" class="img-fluid d-none d-lg-block" style="object-fit:contain; max-height: 500px;">
+                <img src="assets/img/mascot full.png" alt="Mascot" class="img-fluid d-lg-none" style="object-fit:contain; max-height: 400px;">
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark d-flex align-items-center justify-content-center">
+                <div class="p-4 p-lg-5 text-lg-end text-center w-100">
+                    <h1 class="fw-bold">Support. Inspire. Innovate.</h1>
+                    <p>Your sponsorship plays a vital role in shaping the future of student leaders. By supporting the Iskonnovators Student Community PUPSTC, you help us continue creating meaningful events, impactful programs, and enriching experiences that inspire personal growth and academic excellence among students. Together, we can empower young minds, build community, and turn ideas into lasting impact.</p>
+                    <br>
+                    <div class="text-lg-end text-center">
+                        <button class="btn btn-lg rounded rounded-5 px-4 px-lg-5 pb-2 pt-2" style="background-color: #84152c; color: white;">
+                            <a class="nav-link text-light" href="sponsorship.php">
+                                <h5 class="fw-bold mb-0">Become a Sponsor</h5>
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="chat-button">
