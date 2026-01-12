@@ -10,6 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     handleSponsorRequest();
 }
 
+// Fetch all sponsors from database
+$sponsors = [];
+$query = "SELECT spName FROM tbl_sponsors ORDER BY spID DESC";
+$result = $conn->query($query);
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $name = trim($row['spName']);
+        if ($name === '' || strcasecmp($name, 'anonymous') === 0) {
+            continue; // skip anonymous/blank entries
+        }
+        $sponsors[] = $name;
+    }
+}
+
 // Process sponsor submission and save to database
  
 function handleSponsorRequest(): void {
@@ -247,23 +261,25 @@ function validateSponsorName(string $name): bool {
 <body>
     <?php include("shared/navbar.php") ?>
 
-    <div class="container form-container mt-3 mb-3 p-4 shadow-sm rounded-3 " style="max-width: 700px;">
-        <div class="row mt-2 ">
-            <div class="col-12 ">
-                <h1 class="text-center mb-2">Sponsorship</h1>
+    <div class="container mt-3 mb-3" style="max-width: 1200px;">
+        <div class="row g-4">
+            <!-- Donation Card -->
+            <div class="col-12 col-lg-9">
+                <div class="donate-card">
+                    <h1 class="text-center mb-2">Sponsorship</h1>
                 <p class="text-center text-muted mb-4">
                     Your generous sponsorship would provide the essential resources needed to create a lasting, positive
                     impact on our student community through Iskonnovators.
                 </p>
 
-                <!-- Name Input -->
-                <div class="mb-3">
-                    <label for="donorName" class="form-label">Name</label>
-                    <input id="donorName" type="text" class="form-control" placeholder="ex: John Doe">
-                </div>
+                    <!-- Name Input -->
+                    <div class="mb-3">
+                        <label for="donorName" class="form-label">Name</label>
+                        <input id="donorName" type="text" class="form-control" placeholder="ex: John Doe">
+                    </div>
 
-                <!-- Donation Amount -->
-                <div class="my-3">
+                    <!-- Donation Amount -->
+                    <div class="my-3">
                     <label class="form-label">Amount<span style="color: red;">*</span></label>
 
                     <input id="custom-amount" type="number" min="0.01" step="0.01" class="form-control mb-3"
@@ -276,9 +292,31 @@ function validateSponsorName(string $name): bool {
                         <button data-amount="100.00" class="preset btn btn-sm">₱100</button>
                     </div>
                 </div>
+
+                <div id="paypal-button-container" class="mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Sponsors Card -->
+            <div class="col-12 col-lg-3 d-flex justify-content-center">
+                <div class="donate-card" style="height: 100%; max-height: 600px; overflow-y: auto; max-width: 360px; width: auto;">
+                    <h2 class="text-center mb-4" style="color: var(--pink4); font-weight: 700;">SPECIAL THANKS</h2>
+                    <h4 class="text-center mb-4">to the following sponsors:</h4>
+                    <?php if (count($sponsors) > 0): ?>
+                        <ul class="list-unstyled">
+                            <?php foreach ($sponsors as $sponsor): ?>
+                                <li class="mb-3 p-3" style="background: #fff3f8; border-radius: 12px; border-left: 4px solid var(--pink3); display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;">
+                                    <i class="bi bi-heart-fill" style="color: var(--pink3);"></i>
+                                    <span style="color: var(--pink4); font-weight: 400;"><?php echo htmlspecialchars($sponsor); ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="text-center text-muted">No sponsors yet. Be the first to support us!</p>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
-
         <div id="paypal-button-container" class="mt-4"></div>
 
     </div>
