@@ -1,67 +1,136 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
 
-// Database connection
-$conn = new mysqli(
-    "localhost",
-    "root",
-    "",
-    "db_iscstudentorganizationrecords"
-);
+include("connect.php"); // Make sure $pdo (PDO connection) is properly set up
 
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode([
-        "error" => "Database connection failed",
-        "details" => $conn->connect_error
-    ]);
-    exit;
+$method = $_SERVER['REQUEST_METHOD'];
+$input  = json_decode(file_get_contents("php://input"), true);
+
+switch ($method) {
+  case 'GET':
+    handleGet($pdo);
+    break;
+
+  case 'POST':
+    handlePost($pdo, $input);
+    break;
+
+  case 'PUT':
+    handlePut($pdo, $input);
+    break;
+
+  case 'DELETE':
+    handleDelete($pdo, $input);
+    break;
+
+  default:
+    echo json_encode(['message' => 'Invalid request method']);
+    break;
 }
 
-// Check if mbID is provided
-$mbID = $_GET['mbID'] ?? null;
+/* =========================
+   GET – FETCH LOCAL + REMOTE MEMBERS
+   ========================= */
+function handleGet($pdo)
+{
+  // 🔹 LOCAL MEMBERS
+  $sql = "SELECT * FROM tbl_members ORDER BY mbID DESC";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+  $localData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 🔹 CASE 1: Get ALL members
-if (!$mbID) {
+  // 🔹 REMOTE API (OTHER WEBSITE)
+  $remoteUrl = "https://example-remote-api-url.com/wala pa nakalagay dito babaguhin pa to pag nagsend sina ash"; // Replace with actual URL
 
-    $sql = "SELECT * FROM tbl_members";
-    $result = $conn->query($sql);
+  $remoteData = [];
+  $ch = curl_init($remoteUrl);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+  $response = curl_exec($ch);
+  curl_close($ch);
 
-    $members = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $members[] = $row;
+  if ($response) {
+    $decoded = json_decode($response, true);
+    if (is_array($decoded)) {
+      $remoteData = $decoded;
     }
+  }
 
-    echo json_encode([
-        "status" => "success",
-        "count" => count($members),
-        "members" => $members
-    ], JSON_PRETTY_PRINT);
+  // 🔹 MERGE LOCAL + REMOTE
+  $merged = array_merge($localData, $remoteData);
 
-    $conn->close();
-    exit;
+  echo json_encode($merged);
 }
 
-// 🔹 CASE 2: Get ONE member
-$sql = "SELECT * FROM tbl_members WHERE mbID = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $mbID);
-$stmt->execute();
-$result = $stmt->get_result();
+/* =========================
+   POST – CREATE NEW MEMBER
+   ========================= */
+function handlePost($pdo, $input)
+{
+  if (!isset($input['firstName'], $input['lastName'], $input['email'])) {
+    echo json_encode(['error' => 'Missing required fields']);
+    return;
+  }
 
-if ($result->num_rows === 1) {
-    echo json_encode([
-        "status" => "found",
-        "data" => $result->fetch_assoc()
-    ], JSON_PRETTY_PRINT);
-} else {
-    echo json_encode([
-        "status" => "not_found"
-    ]);
+  $sql = "INSERT INTO tbl_members (firstName, lastName, email)
+          VALUES (:firstName, :lastName, :email)";
+
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([
+    'firstName' => $input['firstName'],
+    'lastName'  => $input['lastName'],
+    'email'     => $input['email']
+  ]);
+
+  echo json_encode(['message' => 'Member created successfully']);
 }
 
-$stmt->close();
-$conn->close();
+/* =========================
+   PUT – UPDATE MEMBER
+   ========================= */
+function handlePut($pdo, $input)
+{
+  if (!isset($input['mbID'], $input['firstName'], $input['lastName'], $input['email'])) {
+    echo json_encode(['error' => 'Missing required fields']);
+    return;
+  }
+
+  $sql = "UPDATE tbl_members SET
+            firstName = :firstName,
+            lastName = :lastName,
+            email = :email
+          WHERE mbID = :mbID";
+
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([
+    'firstName' => $input['firstName'],
+    'lastName'  => $input['lastName'],
+    'email'     => $input['email'],
+    'mbID'      => $input['mbID']
+  ]);
+
+  echo json_encode(['message' => 'Member updated successfully']);
+}
+
+/* =========================
+   DELETE – DELETE MEMBER
+   ========================= */
+function handleDelete($pdo, $input)
+{
+  if (!isset($input['mbID'])) {
+    echo json_encode(['error' => 'Missing member ID']);
+    return;
+  }
+
+  $sql = "DELETE FROM tbl_members WHERE mbID = :mbID";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([
+    'mbID' => $input['mbID']
+  ]);
+
+  echo json_encode(['message' => 'Member deleted successfully']);
+}
 ?>
