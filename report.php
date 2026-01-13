@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
                 <select class="form-select" id="category" name="category" required>
                     <option value="Feedback" <?= (isset($_POST['category']) && $_POST['category'] === 'Feedback') || !isset($_POST['category']) ? 'selected' : '' ?>>Feedback</option>
                     <option value="Complaint" <?= isset($_POST['category']) && $_POST['category'] === 'Complaint' ? 'selected' : '' ?>>Complaint</option>
-                    <option value="Donation" <?= isset($_POST['category']) && $_POST['category'] === 'Donation' ? 'selected' : '' ?>>Donation</option>
+                    <option value="Report" <?= isset($_POST['category']) && $_POST['category'] === 'Report' ? 'selected' : '' ?>>Report</option>
                 </select>
             </div>
             
