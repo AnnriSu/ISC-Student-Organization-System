@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="col-6 px-1">
                                 <label for="mobileNumber" class="form-label ms-1">Mobile Number<span style="color: red;">*</span></label>
-                                <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="09" value="09" required onfocus="this.value = this.value.slice(0, 2);" oninput="this.value = '09' + this.value.slice(2);" pattern="^09[0-9]{9}$">
+                                <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="09" value="09" required maxlength="11" onfocus="this.value = this.value.slice(0, 2);" oninput="this.value = '09' + this.value.slice(2).replace(/[^0-9]/g, '').slice(0, 9);" pattern="^09[0-9]{9}$">
                             </div>
                         </div>
                         <div class="row mt-2">
