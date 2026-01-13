@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
         
         // Set website name constant and status default
         $fbWebsiteName = "ISC Organization System";
-        $fbStatus = "Open";
+        $fbStatus = "open";
         
         // Try to insert with all fields (fbID is auto-increment, so we don't include it)
         $stmt = $conn->prepare("INSERT INTO tbl_feedback (fbContent, mbID, mbMobileNo, mbEmail, fbWebsiteName, fbCategory, fbName, fbStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");

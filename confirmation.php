@@ -2,7 +2,7 @@
 session_start();
 
 // Check if mobile number is sent from login.php
-$recipient = $_GET['mobile'] ?? ($_SESSION['mobileNumber'] ?? "+639948669327"); // fallback
+$recipient = $_GET['mobile'] ?? ($_SESSION['mobileNumber'] ?? "+639922623280"); // fallback
 $userType  = $_GET['type'] ?? ($_SESSION['userType'] ?? "member"); // "member" or "admin"
 
 // Ensure session has email and userType from login.php
@@ -15,7 +15,7 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
 // Store userType in session to use after redirect (in case it was passed via GET)
 $_SESSION['userType'] = $userType;
 
-$gateway_url = "http://192.168.18.12:8080";
+$gateway_url = "http://192.168.l.62:8080";
 $username    = "ISCSystem";
 $password    = "ISC_2025";
 
@@ -140,11 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         <hr>
 
     </div>
-
-
-
-
-
     <!-- footer -->
     <footer class="footer text-center text-lg-start mt-4  ">
         <div class="text-center p-3">
