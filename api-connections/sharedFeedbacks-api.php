@@ -87,17 +87,30 @@ function handlePost($pdo, $input)
    ========================= */
 function handlePut($pdo, $input)
 {
-  $sql = "UPDATE tbl_feedback SET
-            fbContent = :fbContent
-          WHERE fbID = :fbID";
+  $fields = [];
+  $params = [];
 
+  if (isset($input['fbContent'])) {
+    $fields[] = "fbContent = :fbContent";
+    $params['fbContent'] = $input['fbContent'];
+  }
+
+  if (isset($input['fbStatus'])) {
+    $fields[] = "fbStatus = :fbStatus";
+    $params['fbStatus'] = $input['fbStatus'];
+  }
+
+  if (empty($fields) || !isset($input['fbID'])) {
+    echo json_encode(['success' => false, 'message' => 'Missing fbID or fields']);
+    return;
+  }
+
+  $sql = "UPDATE tbl_feedback SET " . implode(", ", $fields) . " WHERE fbID = :fbID";
   $stmt = $pdo->prepare($sql);
-  $stmt->execute([
-    'fbContent' => $input['fbContent'],
-    'fbID'      => $input['fbID']
-  ]);
+  $params['fbID'] = $input['fbID'];
+  $stmt->execute($params);
 
-  echo json_encode(['message' => 'Feedback updated successfully']);
+  echo json_encode(['success' => true, 'message' => 'Feedback updated successfully']);
 }
 
 /* =========================

@@ -195,12 +195,45 @@
         </div>
     </div>
 
+    <!-- Photo Cards Container -->
+    <div class="container-fluid py-5">
+        <div class="row g-5 px-4 justify-content-center">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm rounded-4">
+                    <img src="assets/img/card1.jpg" class="card-img-top" alt="Photo 1" style="object-fit:cover; height:220px;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Community Event</h5>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12  col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm rounded-4">
+                    <img src="assets/img/card2.jpg" class="card-img-top" alt="Photo 2" style="object-fit:cover; height:220px;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Workshop Highlights</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm rounded-4">
+                    <img src="assets/img/card3.jpg" class="card-img-top" alt="Photo 3" style="object-fit:cover; height:220px;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Project Showcase</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sponsorship Container -->
     <div class="container-fluid introduction-container p-0 shadow-sm pb-0">
         <div class="row g-0">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-flex align-items-center justify-content-center">
-                <img src="assets/img/mascot.png" alt="Mascot" class="img-fluid d-none d-lg-block" style="object-fit:contain; max-height: 500px;">
-                <img src="assets/img/mascot full.png" alt="Mascot" class="img-fluid d-lg-none" style="object-fit:contain; max-height: 400px;">
+                <img src="assets/img/Hanging_Right.png" alt="Mascot" class="img-fluid d-none d-lg-block" style="object-fit:contain; max-height: 500px;">
+                <img src="assets/img/Hanging_Right.png" alt="Mascot" class="img-fluid d-lg-none" style="object-fit:contain; max-height: 400px;">
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-dark d-flex align-items-center justify-content-center">
