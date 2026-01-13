@@ -60,11 +60,16 @@ $eventsResult = $conn->query($eventsQuery);
 
         <div class="container-fluid sticky-top">
 
-            <div class="d-flex gap-4 me-4 w-100 justify-content-between align-items-center">
-                <a class="navbar-brand d-flex ms-4" href="index.php">
+            <div class="d-flex gap-4 me-4">
+                <a class="navbar-brand d-flex ms-4" href="adminhomepage.php">
                     <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
                 </a>
-                <a href="logout.php" class="btn me-4" style="background-color: #dc3545; color: white;">Logout</a>
+            </div>
+
+            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="logout.php">
+                    <img src="assets\img\Log out.svg" alt="Logout" width="30" height="auto" class="mt-1 mb-1">
+                </a>
             </div>
         </div>
     </nav>

@@ -154,17 +154,17 @@
             </div>
 
             <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
-                <button class="btn rounded rounded-5 pb-2 pt-2 px-3 px-lg-4 w-100 w-sm-auto  mb-sm-0">
+                <button class="btn rounded rounded-5 pb-2 px-3 px-lg-4 w-100 w-sm-auto  mb-sm-0">
                     <a class="nav-link text-light fw-bold text-center" href="login.php">
                         <h6 class="mb-0 d-lg-none">Login</h6>
-                        <h5 class="mb-0 d-none d-lg-block">Login</h5>
+                        <h5 class="mb-0 d-none py-1 d-lg-block">Login</h5>
                     </a>
                 </button>
 
-                <button class="btn rounded rounded-5 pb-2 pt-2 px-3 px-lg-4 w-100 w-sm-auto">
+                <button class="btn rounded rounded-5 pb-2 px-3 px-lg-4 w-100 w-sm-auto">
                     <a class="nav-link text-light fw-bold text-center" href="apply.php">
                         <h6 class="mb-0 d-lg-none">Apply</h6>
-                        <h5 class="mb-0 d-none d-lg-block">Apply</h5>
+                        <h5 class="mb-0 d-none py-1 d-lg-block">Apply</h5>
                     </a>
                 </button>
             </div>

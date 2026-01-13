@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
             exit();
         }
     } else {
-        echo "<h3>Invalid OTP. Please try again.</h3>";
+        echo "<script>window.onload = function(){ alert('Invalid OTP. Please try again.'); };</script>";
     }
 } else {
     // Generate OTP and send SMS
@@ -136,7 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
             <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
         </form>
         <hr>
-        <p class="text-center">If you did not receive the text message or if the OTP has expired, click here to request a new OTP.</p>
+        <p class="text-center">
+            If you did not receive the text message or if the OTP has expired,
+            <a href="?resend=1&mobile=<?= rawurlencode($recipient) ?>&type=<?= rawurlencode($userType) ?>">click here to request a new OTP.</a>
+            
+        </p>
         <hr>
 
     </div>
