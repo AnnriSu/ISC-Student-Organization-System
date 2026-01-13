@@ -32,6 +32,14 @@ if (isset($_SESSION['email'])) {
     }
     $stmt->close();
 }
+
+// Fetch events from database
+$eventsQuery = "SELECT e.*, s.evStatusDesc 
+                FROM tbl_events e 
+                INNER JOIN tbl_eventstatus s ON e.evStatusID = s.evStatusID 
+                ORDER BY e.evDate DESC, e.evTime DESC
+                LIMIT 10";
+$eventsResult = $conn->query($eventsQuery);
 ?>
 <!doctype html>
 <html lang="en">
@@ -52,10 +60,11 @@ if (isset($_SESSION['email'])) {
 
         <div class="container-fluid sticky-top">
 
-            <div class="d-flex gap-4 me-4">
+            <div class="d-flex gap-4 me-4 w-100 justify-content-between align-items-center">
                 <a class="navbar-brand d-flex ms-4" href="index.php">
                     <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
                 </a>
+                <a href="logout.php" class="btn me-4" style="background-color: #dc3545; color: white;">Logout</a>
             </div>
         </div>
     </nav>
@@ -84,10 +93,10 @@ if (isset($_SESSION['email'])) {
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-sidebar">Applications</button>
-                        <button class=" btn btn-sidebar">Events</button>
-                        <button class="btn btn-sidebar">Newsletters</button>
-                        <button class="btn btn-sidebar">Edit Profile</button>
+                        <a href="applications.php" class="btn btn-sidebar">Applications</a>
+                        <a href="admin-events.php" class="btn btn-sidebar">Events</a>
+                        <a href="announcements.php" class="btn btn-sidebar">Announcements</a>
+                        <a href="adminprofile.php" class="btn btn-sidebar">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -98,25 +107,42 @@ if (isset($_SESSION['email'])) {
                     <h5 class="fw-bold mb-0">Home</h5>
                     <small class="text-muted">Dashboard</small>
 
-                    <!-- EVENT CARD TEMPLATE -->
-                    <div class="border rounded-3 p-3 mt-4 d-flex gap-3 align-items-start">
+                    <!-- Events Display -->
+                    <?php if ($eventsResult && $eventsResult->num_rows > 0): ?>
+                        <?php while ($event = $eventsResult->fetch_assoc()): 
+                            $dateTime = date('M d, Y', strtotime($event['evDate'])) . ' ' . date('g:i A', strtotime($event['evTime']));
+                        ?>
+                            <div class="border rounded-3 p-3 mt-4 d-flex gap-3 align-items-start">
 
-                        <div class="bg-light rounded d-flex align-items-center justify-content-center"
-                            style="width:120px; height:120px;">
-                            <span class="text-muted">Image</span>
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                    style="width:120px; height:120px;">
+                                    <span class="text-muted">Image</span>
+                                </div>
+
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-1"><?= htmlspecialchars($event['evTitle']) ?></h6>
+                                    <small class="d-block text-muted"><?= htmlspecialchars(substr($event['evDesc'], 0, 100)) ?><?= strlen($event['evDesc']) > 100 ? '...' : '' ?></small>
+                                    <small class="d-block"><strong>Date & Time:</strong> <?= htmlspecialchars($dateTime) ?></small>
+                                    <small class="d-block"><strong>Venue:</strong> <?= htmlspecialchars($event['evVenue']) ?></small>
+                                    <small class="d-block"><strong>Instructor:</strong> <?= htmlspecialchars($event['evInstructor']) ?></small>
+                                    <small class="d-block"><strong>Status:</strong> <span class="badge bg-info"><?= htmlspecialchars($event['evStatusDesc']) ?></span></small>
+
+                                    <div class="mt-2 d-flex gap-2">
+                                        <?php if (!empty($event['evLink'])): ?>
+                                            <a href="<?= htmlspecialchars($event['evLink']) ?>" target="_blank" class="btn btn-primary btn-sm">Event Link</a>
+                                        <?php endif; ?>
+                                        <?php if (!empty($event['evEvaluationLink'])): ?>
+                                            <a href="<?= htmlspecialchars($event['evEvaluationLink']) ?>" target="_blank" class="btn btn-outline-primary btn-sm">Evaluation</a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="border rounded-3 p-4 mt-4 text-center">
+                            <p class="text-muted mb-0">No events available at the moment.</p>
                         </div>
-
-                        <!-- Idouble na lang to -->
-                        <div class="flex-grow-1">
-                            <h6 class="fw-bold mb-1">Event Name</h6>
-                            <small class="d-block">Description</small>
-                            <small class="d-block">Date & Time</small>
-                            <small class="d-block">Instructor</small>
-
-                            <button class="btn btn-primary btn-sm mt-2">Button</button>
-                        </div>
-                    </div>
-                    <!-- END OF EVENT CARD TEMPLATE -->
+                    <?php endif; ?>
 
                 </div>
             </div>

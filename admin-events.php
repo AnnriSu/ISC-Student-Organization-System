@@ -129,6 +129,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                             <th>Event Link</th>
                             <th>Evaluation Link</th>
                             <th>Status</th>
+                            <th>Attendance</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,6 +146,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                                     <td><a href="<?= htmlspecialchars($event['evLink']) ?>" target="_blank">View Link</a></td>
                                     <td><a href="<?= htmlspecialchars($event['evEvaluationLink']) ?>" target="_blank">View Link</a></td>
                                     <td><?= htmlspecialchars($event['evStatusDesc']) ?></td>
+                                    <td><a href="admin-eventattendance.php?eventId=<?= htmlspecialchars($event['evID']) ?>" class="btn btn-sm btn-primary">View Attendance</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
