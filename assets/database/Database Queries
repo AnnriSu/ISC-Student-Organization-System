@@ -104,6 +104,7 @@ CREATE TABLE tbl_eventparticipantsattendance (
 CREATE TABLE tbl_feedback (
   fbID INT NOT NULL AUTO_INCREMENT,
   fbContent VARCHAR(500) NOT NULL,
+  mbMobileNo VARCHAR(20) NOT NULL,
   mbID INT NOT NULL,
   PRIMARY KEY (fbID),
   FOREIGN KEY (mbID) REFERENCES tbl_members(mbID)

@@ -37,7 +37,7 @@ switch ($method) {
 function handleGet($pdo)
 {
   // 🔹 LOCAL FEEDBACK
-  $sql = "SELECT fbID, fbContent, mbID FROM tbl_feedback ORDER BY fbID DESC";
+  $sql = "SELECT fbID, fbContent, mbID, mbMobileNo, mbEmail, fbWebsiteName, fbCategory, fbName, fbStatus FROM tbl_feedback ORDER BY fbID DESC";
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
   $localData = $stmt->fetchAll(PDO::FETCH_ASSOC);
