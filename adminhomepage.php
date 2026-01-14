@@ -17,7 +17,7 @@ if (isset($_SESSION['email'])) {
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result && $result->num_rows === 1) {
         $row = $result->fetch_assoc();
         // Build full name: First Name + Middle Name (if exists) + Last Name + Suffix (if exists)
@@ -66,7 +66,8 @@ $eventsResult = $conn->query($eventsQuery);
                 </a>
             </div>
 
-            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+            <div
+                class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
                 <a class="navbar-brand d-flex" href="logout.php">
                     <img src="assets\img\Log out.svg" alt="Logout" width="30" height="auto" class="mt-1 mb-1">
                 </a>
@@ -114,30 +115,38 @@ $eventsResult = $conn->query($eventsQuery);
 
                     <!-- Events Display -->
                     <?php if ($eventsResult && $eventsResult->num_rows > 0): ?>
-                        <?php while ($event = $eventsResult->fetch_assoc()): 
+                        <?php while ($event = $eventsResult->fetch_assoc()):
                             $dateTime = date('M d, Y', strtotime($event['evDate'])) . ' ' . date('g:i A', strtotime($event['evTime']));
-                        ?>
+                            ?>
                             <div class="border rounded-3 p-3 mt-4 d-flex gap-3 align-items-start">
 
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                     style="width:120px; height:120px;">
-                                    <img src="assets/img/ISC brand logo.png" alt="ISC Logo" style="max-width: 100%; max-height: 100%;">
+                                    <img src="assets/img/ISC brand logo.png" alt="ISC Logo"
+                                        style="max-width: 100%; max-height: 100%;">
                                 </div>
 
                                 <div class="flex-grow-1">
                                     <h6 class="fw-bold mb-1"><?= htmlspecialchars($event['evTitle']) ?></h6>
-                                    <small class="d-block text-muted"><?= htmlspecialchars(substr($event['evDesc'], 0, 100)) ?><?= strlen($event['evDesc']) > 100 ? '...' : '' ?></small>
-                                    <small class="d-block"><strong>Date & Time:</strong> <?= htmlspecialchars($dateTime) ?></small>
-                                    <small class="d-block"><strong>Venue:</strong> <?= htmlspecialchars($event['evVenue']) ?></small>
-                                    <small class="d-block"><strong>Instructor:</strong> <?= htmlspecialchars($event['evInstructor']) ?></small>
-                                    <small class="d-block"><strong>Status:</strong> <span class="badge bg-info"><?= htmlspecialchars($event['evStatusDesc']) ?></span></small>
+                                    <small
+                                        class="d-block text-muted"><?= htmlspecialchars(substr($event['evDesc'], 0, 100)) ?><?= strlen($event['evDesc']) > 100 ? '...' : '' ?></small>
+                                    <small class="d-block"><strong>Date & Time:</strong>
+                                        <?= htmlspecialchars($dateTime) ?></small>
+                                    <small class="d-block"><strong>Venue:</strong>
+                                        <?= htmlspecialchars($event['evVenue']) ?></small>
+                                    <small class="d-block"><strong>Instructor:</strong>
+                                        <?= htmlspecialchars($event['evInstructor']) ?></small>
+                                    <small class="d-block"><strong>Status:</strong> <span
+                                            class="badge bg-info"><?= htmlspecialchars($event['evStatusDesc']) ?></span></small>
 
                                     <div class="mt-2 d-flex gap-2">
                                         <?php if (!empty($event['evLink'])): ?>
-                                            <a href="<?= htmlspecialchars($event['evLink']) ?>" target="_blank" class="btn btn-primary btn-sm">Event Link</a>
+                                            <a href="<?= htmlspecialchars($event['evLink']) ?>" target="_blank"
+                                                class="btn btn-primary btn-sm">Event Link</a>
                                         <?php endif; ?>
                                         <?php if (!empty($event['evEvaluationLink'])): ?>
-                                            <a href="<?= htmlspecialchars($event['evEvaluationLink']) ?>" target="_blank" class="btn btn-outline-primary btn-sm">Evaluation</a>
+                                            <a href="<?= htmlspecialchars($event['evEvaluationLink']) ?>" target="_blank"
+                                                class="btn btn-outline-primary btn-sm">Evaluation</a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -153,12 +162,8 @@ $eventsResult = $conn->query($eventsQuery);
             </div>
 
 
-            <!-- footer -->
-            <footer class="footer text-center text-lg-start mt-4 fixed-bottom ">
-                <div class="text-center p-3">
-                    © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
-                </div>
-            </footer>
+            <?php include("shared/footer.php"); ?>
+
 
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

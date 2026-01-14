@@ -192,11 +192,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
 
     </div>
 
-    <footer class="footer text-center mt-4">
-        <div class="text-center p-3">
-            © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
-        </div>
-    </footer>
+        <?php include("shared/footer.php"); ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
