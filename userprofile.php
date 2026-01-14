@@ -130,7 +130,14 @@ if ($currentEmail) {
             background: #8b1d2c;
             color: #fff;
             margin-top: 20px;
-        }        
+        }
+
+        .full-width {
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
     </style>
 </head>
 
@@ -161,8 +168,6 @@ if ($currentEmail) {
         <?php endif; ?>
 
         <div class="profile-card">
-            <a href="homepage-member.php" class="btn btn-back mb-3">Go Back</a>
-
             <form method="POST" id="profileForm">
             <div class="row mt-2">
                 <div class="col-6 px-1 px-1">
@@ -268,6 +273,7 @@ if ($currentEmail) {
             </div>
 
             <div class="full-width">
+                <a href="homepage-member.php" class="btn btn-back me-2">Back</a>
                 <button type="submit" class="btn btn-update">Update</button>
             </div>
             </form>
