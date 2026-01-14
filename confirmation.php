@@ -129,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         ?>
         <form method="POST">
             <div class="mb-3">
-                <label for="otp" class="form-label">OTP</label>
                 <input type="text" class="form-control" id="otp" name="otp" required placeholder="Enter OTP here">
             </div>
 
