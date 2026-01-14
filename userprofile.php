@@ -273,7 +273,7 @@ if ($currentEmail) {
             </div>
 
             <div class="full-width">
-                <a href="homepage-member.php" class="btn btn-back me-2">Back</a>
+                <a href="homepage-member.php" class="btn btn-back me-2 mt-3">Back</a>
                 <button type="submit" class="btn btn-update">Update</button>
             </div>
             </form>
