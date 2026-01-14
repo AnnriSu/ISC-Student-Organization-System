@@ -43,7 +43,7 @@ function handleGet($pdo)
   $localData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   // 🔹 REMOTE API (OTHER WEBSITE)
-  $remoteUrl = "https://example-remote-api-url.com/wala pa nakalagay dito babaguhin pa to pag nagsend sina ash"; // Replace with actual URL
+  $remoteUrl = "https://coletta-parecious-improperly.ngrok-free.dev/CampusWear/api/shared/isc.php"; // Replace with actual URL
 
   $remoteData = [];
   $ch = curl_init($remoteUrl);
