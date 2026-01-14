@@ -103,7 +103,8 @@ function saveSponsorToDatabase(string $sponsorName): int
 <head>
 </head>
 
-<script src="https://www.paypal.com/sdk/js?client-id=AWXiLk5YzaHQXWeE7asEGI2j1gCP3gbWw4Kq89QXRl5Lfst4S32h7K46LZuV0bi1r-M38LP_Mkod9K14"></script>
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AWXiLk5YzaHQXWeE7asEGI2j1gCP3gbWw4Kq89QXRl5Lfst4S32h7K46LZuV0bi1r-M38LP_Mkod9K14"></script>
 
 </script>
 
@@ -269,15 +270,14 @@ function saveSponsorToDatabase(string $sponsorName): int
 
             <div class="d-flex gap-4 me-4">
                 <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
-                        height="auto" class="mt-1 mb-1">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
                 </a>
             </div>
 
-            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+            <div
+                class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
                 <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\Log out.svg" alt="Logo" width="30"
-                        height="auto" class="mt-1 mb-1">
+                    <img src="assets\img\Log out.svg" alt="Logo" width="30" height="auto" class="mt-1 mb-1">
                 </a>
             </div>
         </div>
@@ -290,7 +290,8 @@ function saveSponsorToDatabase(string $sponsorName): int
                 <div class="donate-card">
                     <h1 class="text-center mb-2">Sponsorship</h1>
                     <p class="text-center text-muted mb-4">
-                        Your generous sponsorship would provide the essential resources needed to create a lasting, positive
+                        Your generous sponsorship would provide the essential resources needed to create a lasting,
+                        positive
                         impact on our student community through Iskonnovators.
                     </p>
 
@@ -318,15 +319,21 @@ function saveSponsorToDatabase(string $sponsorName): int
 
             <!-- Sponsors Card -->
             <div class="col-12 col-lg-3 d-flex justify-content-center">
-                <div class="donate-card" style="height: 100%; max-height: 600px; overflow-y: auto; max-width: 360px; width: auto;">
-                    <h2 class="text-center mb-4" style="color: var(--pink4); font-weight: 700;">SPECIAL THANKS</h2>
-                    <h4 class="text-center mb-4">to the following sponsors:</h4>
+                <div class="donate-card"
+                    style="height: 100%; max-height: 600px; overflow-y: auto; max-width: 360px; width: auto;">
+                    <h2 class="text-center mb-2" style="color: var(--pink4); font-weight: 700;">SPECIAL THANKS</h2>
+                    <div class="text-center">
+                        <small>to the following sponsors:</small>
+                    </div>
+
                     <?php if (count($sponsors) > 0): ?>
                         <ul class="list-unstyled">
                             <?php foreach ($sponsors as $sponsor): ?>
-                                <li class="mb-3 p-3" style="background: #fff3f8; border-radius: 12px; border-left: 4px solid var(--pink3); display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;">
+                                <li class="mb-3 p-3"
+                                    style="background: #fff3f8; border-radius: 12px; border-left: 4px solid var(--pink3); display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;">
                                     <i class="bi bi-heart-fill" style="color: var(--pink3);"></i>
-                                    <span style="color: var(--pink4); font-weight: 400;"><?php echo htmlspecialchars($sponsor); ?></span>
+                                    <span
+                                        style="color: var(--pink4); font-weight: 400;"><?php echo htmlspecialchars($sponsor); ?></span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -380,14 +387,14 @@ function saveSponsorToDatabase(string $sponsorName): int
         });
 
         paypal.Buttons({
-            onClick: function(data, actions) {
+            onClick: function (data, actions) {
                 if (parseFloat(selectedAmount) <= 0) {
                     alert("Please enter a valid amount.");
                     return actions.reject();
                 }
                 return actions.resolve();
             },
-            createOrder: function(data, actions) {
+            createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
