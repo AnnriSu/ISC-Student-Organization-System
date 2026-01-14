@@ -106,6 +106,28 @@ exit;
             left: 0;
             width: 100%;
             z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.2);
         }
 
         #chat {
@@ -172,7 +194,10 @@ exit;
 <body>
 
     <div class="chat-container">
-        <div class="header">AI Assistant</div>
+        <div class="header">
+            <span style="flex: 1; text-align: center;">AI Assistant</span>
+            <button class="close-btn" onclick="resetChat()">&times;</button>
+        </div>
 
         <div id="chat"></div>
 
@@ -183,6 +208,15 @@ exit;
     </div>
 
     <script>
+    function resetChat() {
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('input');
+        
+        chat.innerHTML = '';
+        input.value = '';
+        input.focus();
+    }
+
     function send_to_chat() {
         const chat = document.getElementById('chat');
         const input = document.getElementById('input');
