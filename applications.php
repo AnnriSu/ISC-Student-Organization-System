@@ -259,6 +259,8 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
         });
     </script>
 
+     <?php include("shared/footer.php"); ?>
+
 </body>
 
 </html>
