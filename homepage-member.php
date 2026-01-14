@@ -57,8 +57,13 @@ $eventsResult = $conn->query($eventsQuery);
 <body style="padding-bottom: 120px;">
 
     <nav class="navbar shadow-sm">
-        <?php include("shared/navbar.php"); ?>
-
+        <div class="container-fluid d-flex align-items-center flex-wrap ">
+            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
+                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="homepage-member.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
+                        style="max-width: 250px; width: auto;">
+                </a>
+            </div>
             <div
                 class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
                 <a class="navbar-brand d-flex" href="logout.php">

@@ -45,11 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['firstName'])) {
     $mobile = trim($_POST['mobileNumber'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $confirmEmail = trim($_POST['confirmEmail'] ?? '');
-    
+
     // Validate required fields
-    if (empty($fname) || empty($lname) || empty($salutation) || empty($pronoun) || 
-        empty($birthDate) || empty($department) || empty($section) || 
-        empty($institution) || empty($mobile) || empty($email)) {
+    if (
+        empty($fname) || empty($lname) || empty($salutation) || empty($pronoun) ||
+        empty($birthDate) || empty($department) || empty($section) ||
+        empty($institution) || empty($mobile) || empty($email)
+    ) {
         $updateMessage = "Please fill in all required fields.";
         $updateType = "danger";
     } elseif ($email !== $confirmEmail) {
@@ -62,16 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['firstName'])) {
         // Update member information in database
         $updateStmt = $conn->prepare("UPDATE tbl_members SET mbFname = ?, mbLname = ?, mbMname = ?, mbSuffix = ?, mbSalutations = ?, mbPronouns = ?, mbBirthDate = ?, mbDepartment = ?, mbSection = ?, mbInstitution = ?, mbMobileNo = ?, mbEmail = ? WHERE mbID = ?");
         $updateStmt->bind_param("ssssssssssssi", $fname, $lname, $mname, $suffix, $salutation, $pronoun, $birthDate, $department, $section, $institution, $mobile, $email, $memberID);
-        
+
         if ($updateStmt->execute()) {
             $updateMessage = "Profile updated successfully!";
             $updateType = "success";
-            
+
             // Update session email if email was changed
             if ($email !== $currentEmail) {
                 $_SESSION['email'] = $email;
             }
-            
+
             // Refresh member data
             $currentEmail = $email;
         } else {
@@ -89,7 +91,7 @@ if ($currentEmail) {
     $stmt->bind_param("s", $currentEmail);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result && $result->num_rows === 1) {
         $memberData = $result->fetch_assoc();
     }
@@ -145,8 +147,14 @@ if ($currentEmail) {
 <body>
 
     <nav class="navbar shadow-sm ">
-
-        <?php include("shared/navbar.php"); ?>
+        <div class="container-fluid d-flex align-items-center flex-wrap ">
+            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
+                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="homepage-member.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
+                        style="max-width: 250px; width: auto;">
+                </a>
+            </div>
+            </div>
     </nav>
 
     <div class="container profile-container">
@@ -162,113 +170,134 @@ if ($currentEmail) {
 
         <div class="profile-card">
             <form method="POST" id="profileForm">
-            <div class="row mt-2">
-                <div class="col-6 px-1 px-1">
-                    <label for="firstName" class="form-label ms-1">First Name<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" value="<?= $memberData ? htmlspecialchars($memberData['mbFname']) : '' ?>" required>
+                <div class="row mt-2">
+                    <div class="col-6 px-1 px-1">
+                        <label for="firstName" class="form-label ms-1">First Name<span
+                                style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="firstName" name="firstName"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbFname']) : '' ?>" required>
+                    </div>
+                    <div class="col-6 px-1 px-1">
+                        <label for="lastName" class="form-label ms-1">Last Name<span
+                                style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="lastName" name="lastName"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbLname']) : '' ?>" required>
+                    </div>
                 </div>
-                <div class="col-6 px-1 px-1">
-                    <label for="lastName" class="form-label ms-1">Last Name<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" value="<?= $memberData ? htmlspecialchars($memberData['mbLname']) : '' ?>" required>
+                <div class="row mt-2">
+                    <div class="col-6 px-1">
+                        <label for="middleName" class="form-label ms-1">Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" name="middleName"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbMname'] ?? '') : '' ?>">
+                    </div>
+                    <div class="col-6 px-1">
+                        <label for="suffix" class="form-label ms-1">Suffix</label>
+                        <input type="text" class="form-control" id="suffix" name="suffix"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbSuffix'] ?? '') : '' ?>">
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-6 px-1">
-                    <label for="middleName" class="form-label ms-1">Middle Name</label>
-                    <input type="text" class="form-control" id="middleName" name="middleName" value="<?= $memberData ? htmlspecialchars($memberData['mbMname'] ?? '') : '' ?>">
-                </div>
-                <div class="col-6 px-1">
-                    <label for="suffix" class="form-label ms-1">Suffix</label>
-                    <input type="text" class="form-control" id="suffix" name="suffix" value="<?= $memberData ? htmlspecialchars($memberData['mbSuffix'] ?? '') : '' ?>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col  px-1">
-                    <div class="row mt-2">
-                        <div class="col pe-1 ">
-                            <label for="salutation" class="form-label ms-1">Salutation<span
-                                    style="color: red;">*</span></label>
-                            <select class="form-select" id="salutation" name="salutation" required>
-                                <option value="" disabled>Select</option>
-                                <option value="mr" <?= $memberData && $memberData['mbSalutations'] == 'mr' ? 'selected' : '' ?>>Mr.</option>
-                                <option value="ms" <?= $memberData && $memberData['mbSalutations'] == 'ms' ? 'selected' : '' ?>>Ms.</option>
-                                <option value="mrs" <?= $memberData && $memberData['mbSalutations'] == 'mrs' ? 'selected' : '' ?>>Mrs.</option>
-                            </select>
+                <div class="row">
+                    <div class="col  px-1">
+                        <div class="row mt-2">
+                            <div class="col pe-1 ">
+                                <label for="salutation" class="form-label ms-1">Salutation<span
+                                        style="color: red;">*</span></label>
+                                <select class="form-select" id="salutation" name="salutation" required>
+                                    <option value="" disabled>Select</option>
+                                    <option value="mr" <?= $memberData && $memberData['mbSalutations'] == 'mr' ? 'selected' : '' ?>>Mr.</option>
+                                    <option value="ms" <?= $memberData && $memberData['mbSalutations'] == 'ms' ? 'selected' : '' ?>>Ms.</option>
+                                    <option value="mrs" <?= $memberData && $memberData['mbSalutations'] == 'mrs' ? 'selected' : '' ?>>Mrs.</option>
+                                </select>
+                            </div>
+                            <div class="col ps-1">
+                                <label for="genderPronoun" class="form-label ms-1">Pronoun<span
+                                        style="color: red;">*</span></label>
+                                <select class="form-select" id="genderPronoun" name="genderPronoun" required>
+                                    <option value="" disabled>Select</option>
+                                    <option value="he" <?= $memberData && $memberData['mbPronouns'] == 'he' ? 'selected' : '' ?>>He/Him</option>
+                                    <option value="she" <?= $memberData && $memberData['mbPronouns'] == 'she' ? 'selected' : '' ?>>She/Her</option>
+                                    <option value="they" <?= $memberData && $memberData['mbPronouns'] == 'they' ? 'selected' : '' ?>>They/Them</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col ps-1">
-                            <label for="genderPronoun" class="form-label ms-1">Pronoun<span
-                                    style="color: red;">*</span></label>
-                            <select class="form-select" id="genderPronoun" name="genderPronoun" required>
-                                <option value="" disabled>Select</option>
-                                <option value="he" <?= $memberData && $memberData['mbPronouns'] == 'he' ? 'selected' : '' ?>>He/Him</option>
-                                <option value="she" <?= $memberData && $memberData['mbPronouns'] == 'she' ? 'selected' : '' ?>>She/Her</option>
-                                <option value="they" <?= $memberData && $memberData['mbPronouns'] == 'they' ? 'selected' : '' ?>>They/Them</option>
-                            </select>
+                    </div>
+                    <div class="col  px-1">
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label for="birthDate" class="form-label ms-1">Birth Date<span
+                                        style="color: red;">*</span></label>
+                                <input type="date" class="form-control" id="birthDate" name="birthDate"
+                                    value="<?= $memberData ? htmlspecialchars($memberData['mbBirthDate']) : '' ?>"
+                                    required>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col  px-1">
-                    <div class="row mt-2">
-                        <div class="col">
-                            <label for="birthDate" class="form-label ms-1">Birth Date<span
-                                    style="color: red;">*</span></label>
-                            <input type="date" class="form-control" id="birthDate" name="birthDate" value="<?= $memberData ? htmlspecialchars($memberData['mbBirthDate']) : '' ?>" required>
-                        </div>
+                <div class="row mt-2">
+                    <div class="col  px-1">
+                        <label for="department" class="form-label ms-1">Department<span
+                                style="color: red;">*</span></label>
+                        <select class="form-select" id="department" name="department" required>
+                            <option value="" disabled>Select</option>
+                            <option value="cs" <?= $memberData && $memberData['mbDepartment'] == 'cs' ? 'selected' : '' ?>>
+                                Computer Science</option>
+                            <option value="it" <?= $memberData && $memberData['mbDepartment'] == 'it' ? 'selected' : '' ?>>
+                                Information Technology</option>
+                            <option value="is" <?= $memberData && $memberData['mbDepartment'] == 'is' ? 'selected' : '' ?>>
+                                Information Systems</option>
+                            <option value="bsit" <?= $memberData && $memberData['mbDepartment'] == 'bsit' ? 'selected' : '' ?>>BSIT</option>
+                        </select>
+                    </div>
+                    <div class="col  px-1">
+                        <label for="section" class="form-label ms-1">Section<span style="color: red;">*</span></label>
+                        <select class="form-select" id="section" name="section" required>
+                            <option value="" disabled>Select</option>
+                            <option value="a" <?= $memberData && $memberData['mbSection'] == 'a' ? 'selected' : '' ?>>
+                                Section A</option>
+                            <option value="b" <?= $memberData && $memberData['mbSection'] == 'b' ? 'selected' : '' ?>>
+                                Section B</option>
+                            <option value="c" <?= $memberData && $memberData['mbSection'] == 'c' ? 'selected' : '' ?>>
+                                Section C</option>
+                            <option value="3-1" <?= $memberData && $memberData['mbSection'] == '3-1' ? 'selected' : '' ?>>
+                                3-1</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col  px-1">
-                    <label for="department" class="form-label ms-1">Department<span style="color: red;">*</span></label>
-                    <select class="form-select" id="department" name="department" required>
-                        <option value="" disabled>Select</option>
-                        <option value="cs" <?= $memberData && $memberData['mbDepartment'] == 'cs' ? 'selected' : '' ?>>Computer Science</option>
-                        <option value="it" <?= $memberData && $memberData['mbDepartment'] == 'it' ? 'selected' : '' ?>>Information Technology</option>
-                        <option value="is" <?= $memberData && $memberData['mbDepartment'] == 'is' ? 'selected' : '' ?>>Information Systems</option>
-                        <option value="bsit" <?= $memberData && $memberData['mbDepartment'] == 'bsit' ? 'selected' : '' ?>>BSIT</option>
-                    </select>
+                <div class="row mt-2 ">
+                    <div class="col-6 px-1">
+                        <label for="institution" class="form-label ms-1">Institution<span
+                                style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="institution" name="institution"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbInstitution']) : '' ?>" required>
+                    </div>
+                    <div class="col-6 px-1">
+                        <label for="mobileNumber" class="form-label ms-1">Mobile Number<span
+                                style="color: red;">*</span></label>
+                        <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbMobileNo']) : '' ?>"
+                            placeholder="+63" required>
+                    </div>
                 </div>
-                <div class="col  px-1">
-                    <label for="section" class="form-label ms-1">Section<span style="color: red;">*</span></label>
-                    <select class="form-select" id="section" name="section" required>
-                        <option value="" disabled>Select</option>
-                        <option value="a" <?= $memberData && $memberData['mbSection'] == 'a' ? 'selected' : '' ?>>Section A</option>
-                        <option value="b" <?= $memberData && $memberData['mbSection'] == 'b' ? 'selected' : '' ?>>Section B</option>
-                        <option value="c" <?= $memberData && $memberData['mbSection'] == 'c' ? 'selected' : '' ?>>Section C</option>
-                        <option value="3-1" <?= $memberData && $memberData['mbSection'] == '3-1' ? 'selected' : '' ?>>3-1</option>
-                    </select>
+                <div class="row mt-2">
+                    <div class="col-12  px-1">
+                        <label for="email" class="form-label ms-1">Email<span style="color: red;">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbEmail']) : '' ?>" required>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2 ">
-                <div class="col-6 px-1">
-                    <label for="institution" class="form-label ms-1">Institution<span
-                            style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="institution" name="institution" value="<?= $memberData ? htmlspecialchars($memberData['mbInstitution']) : '' ?>" required>
+                <div class="row mt-2">
+                    <div class="col-12  px-1">
+                        <label for="confirmEmail" class="form-label ms-1">Confirm Email<span
+                                style="color: red;">*</span></label>
+                        <input type="email" class="form-control" id="confirmEmail" name="confirmEmail"
+                            value="<?= $memberData ? htmlspecialchars($memberData['mbEmail']) : '' ?>" required>
+                    </div>
                 </div>
-                <div class="col-6 px-1">
-                    <label for="mobileNumber" class="form-label ms-1">Mobile Number<span
-                            style="color: red;">*</span></label>
-                    <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" value="<?= $memberData ? htmlspecialchars($memberData['mbMobileNo']) : '' ?>" placeholder="+63" required>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12  px-1">
-                    <label for="email" class="form-label ms-1">Email<span style="color: red;">*</span></label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?= $memberData ? htmlspecialchars($memberData['mbEmail']) : '' ?>" required>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12  px-1">
-                    <label for="confirmEmail" class="form-label ms-1">Confirm Email<span
-                            style="color: red;">*</span></label>
-                    <input type="email" class="form-control" id="confirmEmail" name="confirmEmail" value="<?= $memberData ? htmlspecialchars($memberData['mbEmail']) : '' ?>" required>
-                </div>
-            </div>
 
-            <div class="full-width">
-                <a href="homepage-member.php" class="btn btn-back me-2 mt-3">Back</a>
-                <button type="submit" class="btn btn-update">Update</button>
-            </div>
+                <div class="full-width">
+                    <a href="homepage-member.php" class="btn btn-back me-2 mt-3">Back</a>
+                    <button type="submit" class="btn btn-update">Update</button>
+                </div>
             </form>
         </div>
     </div>
@@ -285,12 +314,12 @@ if ($currentEmail) {
                 bsAlert.close();
             }, 5000);
         }
-        
+
         // Optional: Add form validation before submit
-        document.getElementById("profileForm").addEventListener("submit", function(e) {
+        document.getElementById("profileForm").addEventListener("submit", function (e) {
             const email = document.getElementById("email").value;
             const confirmEmail = document.getElementById("confirmEmail").value;
-            
+
             if (email !== confirmEmail) {
                 e.preventDefault();
                 alert("Email addresses do not match!");
