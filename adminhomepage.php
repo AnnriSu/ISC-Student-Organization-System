@@ -54,7 +54,7 @@ $eventsResult = $conn->query($eventsQuery);
     <link href="assets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="padding-bottom: 80px;">
 
     <nav class="navbar shadow-sm">
 
@@ -121,7 +121,7 @@ $eventsResult = $conn->query($eventsQuery);
 
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                     style="width:120px; height:120px;">
-                                    <span class="text-muted">Image</span>
+                                    <img src="assets/img/ISC brand logo.png" alt="ISC Logo" style="max-width: 100%; max-height: 100%;">
                                 </div>
 
                                 <div class="flex-grow-1">
