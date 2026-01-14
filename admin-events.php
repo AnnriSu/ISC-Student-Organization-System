@@ -9,6 +9,35 @@ if (!isset($_SESSION['logged_in']) || !isset($_SESSION['userType']) || $_SESSION
     exit();
 }
 
+// Define $showHidden for hidden events toggle
+$showHidden = isset($_GET['showHidden']) && $_GET['showHidden'] == 1;
+
+// Hide Event
+if (isset($_GET['hideEvent']) && isset($_GET['eventId'])) {
+    $eventId = intval($_GET['eventId']);
+
+    $stmt = $conn->prepare("UPDATE tbl_events SET isHidden = 1 WHERE evID = ?");
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: admin-events.php");
+    exit();
+}
+
+// --- Unhide Event---
+if (isset($_GET['unhideEvent']) && isset($_GET['eventId'])) {
+    $eventId = intval($_GET['eventId']);
+
+    $stmt = $conn->prepare("UPDATE tbl_events SET isHidden = 0 WHERE evID = ?");
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: admin-events.php?showHidden=1");
+    exit();
+}
+
 // Fetch event statuses from database
 $statusQuery = "SELECT evStatusID, evStatusDesc FROM tbl_eventstatus ORDER BY evStatusID";
 $statusResult = $conn->query($statusQuery);
@@ -22,8 +51,10 @@ if ($statusResult && $statusResult->num_rows > 0) {
 // Fetch existing events
 $eventsQuery = "SELECT e.*, s.evStatusDesc 
                 FROM tbl_events e 
-                INNER JOIN tbl_eventstatus s ON e.evStatusID = s.evStatusID 
-                ORDER BY e.evDate DESC, e.evTime DESC";
+                INNER JOIN tbl_eventstatus s ON e.evStatusID = s.evStatusID
+                " . ($showHidden ? "" : "WHERE e.isHidden = 0") . "
+                ORDER BY e.evDate DESC, e.evTime DESC
+                ";
 $eventsResult = $conn->query($eventsQuery);
 
 // Handle form submission
@@ -113,10 +144,16 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 </div>
             <?php endif; ?>
 
-            
+            <?php
+            $showHidden = isset($_GET['showHidden']) && $_GET['showHidden'] == 1;
+            ?>
+            <a href="admin-events.php<?= $showHidden ? '' : '?showHidden=1' ?>" class="btn btn-sm btn-secondary mb-3">
+                <?= $showHidden ? 'Hide Hidden Events' : 'Show Hidden Events' ?>
+            </a>
+
 
             <!-- Events Table -->
-            <h6 class="fw-bold mb-3">Existing Events</h6>
+            <h5 class="fw-bold mb-3">Existing Events</h5>
             <div class="table-responsive">
                 <table class="table table-bordered align-middle text-center">
                     <thead class="table-light">
@@ -129,7 +166,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                             <th>Event Link</th>
                             <th>Evaluation Link</th>
                             <th>Status</th>
-                            <th>Attendance</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,7 +183,33 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                                     <td><a href="<?= htmlspecialchars($event['evLink']) ?>" target="_blank">View Link</a></td>
                                     <td><a href="<?= htmlspecialchars($event['evEvaluationLink']) ?>" target="_blank">View Link</a></td>
                                     <td><?= htmlspecialchars($event['evStatusDesc']) ?></td>
-                                    <td><a href="admin-eventattendance.php?eventId=<?= htmlspecialchars($event['evID']) ?>" class="btn btn-sm btn-primary">View Attendance</a></td>
+
+                                    <td class="d-flex gap-2 justify-content-center">
+                                        <a href="admin-eventattendance.php?eventId=<?= htmlspecialchars($event['evID']) ?>" 
+                                            class="btn btn-sm btn-primary">View Attendance</a>
+
+                                        <a href="admin-event-edit.php?eventId=<?= $event['evID'] ?>" 
+                                            class="btn btn-sm btn-info"
+                                            onclick="return confirm('Edit this event?')">
+                                            Edit
+                                        </a>
+
+                                        <?php if ($event['isHidden'] == 0): ?>
+                                            <a href="admin-events.php?hideEvent=1&eventId=<?= $event['evID'] ?>" 
+                                                class="btn btn-sm btn-warning"
+                                                onclick="return confirm('Hide this event? It will not be deleted.')">
+                                                Hide
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="admin-events.php?unhideEvent=1&eventId=<?= $event['evID'] ?>" 
+                                                class="btn btn-sm btn-success"
+                                                onclick="return confirm('Unhide this event?')">
+                                                Unhide
+                                            </a>
+                                        <?php endif; ?>
+                                    </td>
+
+
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
