@@ -65,7 +65,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             </div>
 
             <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
-                <a class="navbar-brand d-flex" href="homepage-member.php">
+                <a class="navbar-brand d-flex" href="adminhomepage.php">
                     <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
                 </a>
             </div>

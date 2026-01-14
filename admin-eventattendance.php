@@ -135,9 +135,27 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
-        <?php include("shared/navbar.php"); ?>
+
+        <div class="container-fluid sticky-top">
+
+            <div class="d-flex gap-4 me-4">
+                <a class="navbar-brand d-flex ms-4" href="adminhomepage.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
+                        height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+
+            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="admin-events.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+            
+        </div>
     </nav>
+
 
     <div class="container-fluid mt-4">
         <div class="bg-white rounded-4 p-4 shadow" style="border:3px solid #2f6fed; min-height:450px;">

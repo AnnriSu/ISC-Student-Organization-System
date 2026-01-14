@@ -131,11 +131,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
+
         <div class="container-fluid sticky-top">
+
             <div class="d-flex gap-4 me-4">
-                <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
+                <a class="navbar-brand d-flex ms-4" href="adminhomepage.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
+                        height="auto" class="mt-1 mb-1">
                 </a>
             </div>
 
@@ -144,6 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
                 </a>
             </div>
+            
         </div>
     </nav>
 
