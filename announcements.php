@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-require 'connect.php'; 
+require 'connect.php';
 
 use Google\Client;
 use Google\Service\Gmail;
@@ -70,10 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Save announcement to database
         $insertStmt = $conn->prepare("INSERT INTO tbl_announcements (anTitle, anContent) VALUES (?, ?)");
         $insertStmt->bind_param("ss", $subject, $body);
-        
+
         if ($insertStmt->execute()) {
             $insertStmt->close();
-            
+
             if (!empty($emails)) {
                 $gmail = new Gmail($client);
                 $sentCount = 0;
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <!-- Navigation Bar -->
+
     <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
 
@@ -148,30 +148,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
                 </a>
             </div>
-            
+
         </div>
     </nav>
 
-    <div class="container form-container mt-3 mb-2 p-2 shadow-sm rounded-3" style="max-width: 500px;">
-        <div class="row mt-4">
+    <div class="container form-container mt-3 mb-2 p-3 shadow-sm rounded-3" style="max-width: 800px;">
+        <div class="row ">
             <div class="col-12 text-center">
                 <h2 class="fw-bold">Announcements</h2>
-                <hr class="mx-auto" style="width: 100px; height: 3px; background-color: #000;">
+
             </div>
         </div>
     </div>
 
-    <div class="container mt-2">
-        <?php if ($success): ?>
-            <div class="alert alert-success"><?= $success ?></div>
-        <?php endif; ?>
-        <?php if ($error): ?>
-            <div class="alert alert-danger"><?= $error ?></div>
-        <?php endif; ?>
-    </div>
+
 
     <!-- subject and message -->
-    <div class="container mt-3 mb-5 p-4 shadow rounded-3" style="max-width: 800px;">
+    <div class="container form-container mt-3 mb-5 p-4 shadow rounded-3" style="max-width: 800px;">
+        <div class="container mt-2">
+            <?php if ($success): ?>
+                <div class="alert alert-success"><?= $success ?></div>
+            <?php endif; ?>
+            <?php if ($error): ?>
+                <div class="alert alert-danger"><?= $error ?></div>
+            <?php endif; ?>
+        </div>
         <form method="POST" action="announcements.php">
             <div class="mb-3">
                 <label for="subject" class="form-label">Subject<span class="text-danger">*</span></label>
