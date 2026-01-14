@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2026 at 11:19 AM
+-- Generation Time: Jan 14, 2026 at 12:25 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -48,7 +48,7 @@ CREATE TABLE `tbl_admin` (
 --
 
 INSERT INTO `tbl_admin` (`adID`, `adFname`, `adLname`, `adMname`, `adSuffix`, `adSalutations`, `adPronouns`, `adBirthDate`, `adDepartment`, `adSection`, `adInstitution`, `adMobileNo`, `adEmail`) VALUES
-(1, 'Anne', 'Sumague', 'De Guzman', NULL, 'ms', 'she', '2004-10-03', 'bsit', '3-1', 'PUPSTC', '+639948669327', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph');
+(1, 'Anne Ritchel', 'Sumague', 'De Guzman', '', 'ms', 'she', '2004-10-03', 'bsit', '3-1', 'PUPSTC', '+639948669327', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph');
 
 -- --------------------------------------------------------
 
@@ -83,8 +83,17 @@ CREATE TABLE `tbl_applications` (
   `apMobileNo` varchar(20) NOT NULL,
   `apEmail` varchar(100) NOT NULL,
   `apStatusID` int(11) NOT NULL,
-  `interviewSent` tinyint(1) DEFAULT 0
+  `interviewSent` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_applications`
+--
+
+INSERT INTO `tbl_applications` (`apID`, `apFname`, `apLname`, `apMname`, `apSuffix`, `apSalutations`, `apPronouns`, `apBirthDate`, `apDepartment`, `apSection`, `apInstitution`, `apMobileNo`, `apEmail`, `apStatusID`, `interviewSent`) VALUES
+(2, 'Anne', 'Sumague', 'De Guzman', '', 'mr', 'she', '2026-01-10', 'bsit', '3-1', 'Polytechnic University of the Philippines', '+639948669327', 'anneritchel.deguzman.sumague@gmail.com', 3, 0),
+(3, 'Anne Ritchel', 'Sumague', 'De Guzman', '', 'ms', 'she', '2004-10-03', 'bsit', '1-2', 'PUPSTC', '09276088189', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph', 1, 0),
+(4, 'Anne Ritchel', 'Sumague', 'De Guzman', '', 'ms', 'she', '2004-10-03', 'bsit', '3-2', 'PUPSTC', '09999999999', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -118,6 +127,14 @@ CREATE TABLE `tbl_eventattendancestatus` (
   `evAttendanceStatusDesc` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tbl_eventattendancestatus`
+--
+
+INSERT INTO `tbl_eventattendancestatus` (`evAttendanceStatusID`, `evAttendanceStatusDesc`) VALUES
+(1, 'Present'),
+(2, 'Absent');
+
 -- --------------------------------------------------------
 
 --
@@ -129,6 +146,13 @@ CREATE TABLE `tbl_eventparticipantsattendance` (
   `mbID` int(11) NOT NULL,
   `evAttendanceStatusID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_eventparticipantsattendance`
+--
+
+INSERT INTO `tbl_eventparticipantsattendance` (`evID`, `mbID`, `evAttendanceStatusID`) VALUES
+(2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -155,7 +179,9 @@ CREATE TABLE `tbl_events` (
 --
 
 INSERT INTO `tbl_events` (`evID`, `evTitle`, `evDesc`, `evDate`, `evTime`, `evVenue`, `evInstructor`, `evLink`, `evEvaluationLink`, `evStatusID`, `isHidden`) VALUES
-(1, 'Try1', 'try', '2026-01-14', '13:16:00', 'PUP', 'Maem Rochelle', 'https://www.youtube.com/watch?v=qkJbPcyqr1M', 'https://www.youtube.com/watch?v=qkJbPcyqr1M', 1, 1);
+(1, 'try', 'try', '2026-01-12', '17:13:00', 'bahay', 'ako', 'https://github.com/', 'https://github.com/', 1, 0),
+(2, 'try', 'wdqdqd', '2026-01-12', '17:36:00', 'bahay', 'ako', 'https://github.com/', 'https://github.com/', 2, 0),
+(3, 'presentation', 'sdhajgdja', '2026-01-02', '18:08:00', 'sdhjajk', 'msndjkakjsdhk', 'http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=db_iscstudentorganizationrecords&table=tbl_admin', 'http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=db_iscstudentorganizationrecords&table=tbl_admin', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -173,7 +199,9 @@ CREATE TABLE `tbl_eventstatus` (
 --
 
 INSERT INTO `tbl_eventstatus` (`evStatusID`, `evStatusDesc`) VALUES
-(1, 'Upcoming');
+(1, 'Upcoming'),
+(2, 'Ongoing'),
+(3, 'Completed');
 
 -- --------------------------------------------------------
 
@@ -184,8 +212,30 @@ INSERT INTO `tbl_eventstatus` (`evStatusID`, `evStatusDesc`) VALUES
 CREATE TABLE `tbl_feedback` (
   `fbID` int(11) NOT NULL,
   `fbContent` varchar(500) NOT NULL,
-  `mbID` int(11) NOT NULL
+  `mbID` int(11) NOT NULL,
+  `mbMobileNo` varchar(20) NOT NULL,
+  `mbEmail` varchar(100) NOT NULL,
+  `fbWebsiteName` varchar(100) NOT NULL,
+  `fbCategory` varchar(50) NOT NULL,
+  `fbName` varchar(100) NOT NULL,
+  `fbStatus` varchar(20) NOT NULL DEFAULT 'Open'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_feedback`
+--
+
+INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`, `mbEmail`, `fbWebsiteName`, `fbCategory`, `fbName`, `fbStatus`) VALUES
+(18, 'sbdjkak', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'received'),
+(19, 'sabdnabmn', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'spam'),
+(20, 'updated na', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
+(21, 'try uli jsajdhka', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'received'),
+(22, 'tryyyyyyyyyyyyyyyyy', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'received'),
+(23, 'try email', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
+(24, 'julia acc', 2, '09602518774', 'juliaaquino071405@gmail.com', 'ISC Organization System', 'Complaint', 'Julia Aquino', 'open'),
+(25, 'try dupe', 2, '09602518774', 'juliaaquino071405@gmail.com', 'ISC Organization System', 'Feedback', 'Julia Aquino', 'open'),
+(26, 'anne acc', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'open'),
+(27, 'try dupe', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'open');
 
 -- --------------------------------------------------------
 
@@ -215,8 +265,7 @@ CREATE TABLE `tbl_members` (
 
 INSERT INTO `tbl_members` (`mbID`, `mbFname`, `mbLname`, `mbMname`, `mbSuffix`, `mbSalutations`, `mbPronouns`, `mbBirthDate`, `mbDepartment`, `mbSection`, `mbInstitution`, `mbMobileNo`, `mbEmail`) VALUES
 (1, 'Anne', 'Sumague', 'De Guzman', NULL, 'ms', 'she', '2004-10-03', 'bsit', '3-1', 'Polytechnic University of the Philippines', '09948669327', 'anneritchel.deguzman.sumague@gmail.com'),
-(2, 'Julia', 'Aquino', NULL, NULL, 'ms', 'she', '2005-07-14', 'bsit', '3-1', 'pup stc', '+639602518774', 'juliaaquino071405@gmail.com'),
-(4, 'Raiden', 'Shogun', NULL, NULL, 'ms', 'she', '2005-06-26', 'bsit', '3-1', 'PUP', '+639948669327', 'eispetbirb0626@gmail.com');
+(2, 'Julia', 'Aquino', 'Velasco', NULL, 'ms', 'she', '2005-07-14', 'bsit', '3-1', 'PUP', '09602518774', 'juliaaquino071405@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -230,14 +279,6 @@ CREATE TABLE `tbl_newsletter` (
   `mbID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tbl_newsletter`
---
-
-INSERT INTO `tbl_newsletter` (`nlID`, `nlEmail`, `mbID`) VALUES
-(1, 'anneritchel.deguzman.sumague@gmail.com', 1),
-(2, 'juliaaquino071405@gmail.com', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -248,6 +289,14 @@ CREATE TABLE `tbl_sponsors` (
   `spID` int(11) NOT NULL,
   `spName` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_sponsors`
+--
+
+INSERT INTO `tbl_sponsors` (`spID`, `spName`) VALUES
+(1, 'Anne Ritchel'),
+(2, 'anonymous');
 
 --
 -- Indexes for dumped tables
@@ -310,13 +359,17 @@ ALTER TABLE `tbl_eventstatus`
 --
 ALTER TABLE `tbl_feedback`
   ADD PRIMARY KEY (`fbID`),
-  ADD KEY `mbID` (`mbID`);
+  ADD KEY `mbID` (`mbID`),
+  ADD KEY `fk_feedback_mobile` (`mbMobileNo`),
+  ADD KEY `fk_feedback_email` (`mbEmail`);
 
 --
 -- Indexes for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
-  ADD PRIMARY KEY (`mbID`);
+  ADD PRIMARY KEY (`mbID`),
+  ADD UNIQUE KEY `uq_mbMobileNo` (`mbMobileNo`),
+  ADD UNIQUE KEY `uq_mbEmail` (`mbEmail`);
 
 --
 -- Indexes for table `tbl_newsletter`
@@ -351,37 +404,37 @@ ALTER TABLE `tbl_announcements`
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `apID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `apID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_events`
 --
 ALTER TABLE `tbl_events`
-  MODIFY `evID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `evID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
-  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
-  MODIFY `mbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `mbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_newsletter`
 --
 ALTER TABLE `tbl_newsletter`
-  MODIFY `nlID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `nlID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_sponsors`
 --
 ALTER TABLE `tbl_sponsors`
-  MODIFY `spID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `spID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -411,6 +464,8 @@ ALTER TABLE `tbl_events`
 -- Constraints for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
+  ADD CONSTRAINT `fk_feedback_email` FOREIGN KEY (`mbEmail`) REFERENCES `tbl_members` (`mbEmail`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_feedback_mobile` FOREIGN KEY (`mbMobileNo`) REFERENCES `tbl_members` (`mbMobileNo`),
   ADD CONSTRAINT `tbl_feedback_ibfk_1` FOREIGN KEY (`mbID`) REFERENCES `tbl_members` (`mbID`);
 
 --
