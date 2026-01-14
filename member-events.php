@@ -29,7 +29,7 @@ $eventsResult = $conn->query($eventsQuery);
     <link href="assets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="padding-bottom: 120px;">
 
     <nav class="navbar shadow-sm">
         <div class="container-fluid sticky-top">
@@ -41,7 +41,7 @@ $eventsResult = $conn->query($eventsQuery);
         </div>
     </nav>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4 mb-2">
         <div class="bg-white rounded-4 p-4 shadow" style="border:3px solid #2f6fed; min-height:450px;">
 
             <h5 class="fw-bold mb-3">Events</h5>
@@ -57,7 +57,7 @@ $eventsResult = $conn->query($eventsQuery);
                             <th>Venue</th>
                             <th>Instructor</th>
                             <th>Event Link</th>
-                            <th>Evaluation Link</th>
+                            <th>Evaluation</th>
                             <th>Status</th>
                         </tr>
                     </thead>
