@@ -124,12 +124,20 @@ if ($currentEmail) {
         .btn-back {
             background: #3b82f6;
             color: #fff;
+            display: flex;
+            align-items: center;
         }
 
         .btn-update {
             background: #8b1d2c;
             color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        
+        .full-width {
             margin-top: 20px;
+            align-items: center;
         }        
     </style>
 </head>
@@ -161,7 +169,6 @@ if ($currentEmail) {
         <?php endif; ?>
 
         <div class="profile-card">
-            <a href="adminhomepage.php" class="btn btn-back mb-3">Go Back</a>
 
             <form method="POST" id="profileForm">
             <div class="row mt-2">
@@ -267,7 +274,8 @@ if ($currentEmail) {
                 </div>
             </div>
 
-            <div class="full-width">
+            <div class="full-width d-flex justify-content-end gap-2">
+                <a href="adminhomepage.php" class="btn btn-back mt-3">Back</a>
                 <button type="submit" class="btn btn-update">Update</button>
             </div>
             </form>
