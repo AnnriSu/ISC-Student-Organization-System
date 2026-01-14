@@ -11,6 +11,11 @@
     <link href="assets/style.css" rel="stylesheet">
 
     <style>
+        /* Prevent horizontal scrolling and ensure consistent box-sizing */
+        html, body { overflow-x: hidden; }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* Floating chat button */
         #chat-button {
             position: fixed;
             bottom: 25px;
@@ -29,12 +34,15 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        /* Chat window sizing (responsive) */
         #chat-window {
             position: fixed;
             bottom: 100px;
             right: 25px;
             width: 400px;
+            max-width: 90vw;
             height: 520px;
+            max-height: 80vh;
             background: white;
             border-radius: 12px;
             overflow: hidden;
@@ -43,101 +51,20 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        #chat-window iframe {
-            width: 100%;
-            height: 100%;
-        }
+        #chat-window iframe { width:100%; height:100%; border:0; }
 
-        /* Responsive adjustments */
+        /* Minor responsive tweaks */
         @media (max-width: 768px) {
-            #chat-window {
-                width: 85vw;
-                height: 400px;
-                bottom: 80px;
-                right: 10px;
-            }
-
-            #chat-button {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            .navbar {
-                padding: 0.5rem 0 !important;
-            }
-
-            .navbar-brand img {
-                height: auto !important;
-                max-width: 180px;
-            }
-
-            .introduction-container {
-                padding: 2rem 0 !important;
-            }
-
-            .introduction-container .p-4 {
-                padding: 1.5rem !important;
-                margin: 0.5rem !important;
-            }
-
-            .introduction-container h1 {
-                font-size: 1.75rem !important;
-            }
-
-            .introduction-container big {
-                font-size: 0.95rem !important;
-            }
-
-            .btn-lg {
-                padding: 0.5rem 1.25rem !important;
-                font-size: 0.9rem !important;
-            }
-
-            .btn-lg h4 {
-                margin: 0;
-                font-size: 1rem !important;
-            }
+            #chat-window { width:85vw; height:400px; bottom:80px; right:10px; }
+            #chat-button { bottom:20px; right:20px; width:50px; height:50px; font-size:20px; }
+            .navbar { padding:0.5rem 0 !important; }
+            .navbar-brand img { max-width:180px; height:auto !important; }
         }
 
         @media (max-width: 576px) {
-            .navbar-brand img {
-                max-width: 150px;
-            }
-
-            .introduction-container .p-4 {
-                padding: 1rem !important;
-                margin: 0 !important;
-            }
-
-            .introduction-container h1 {
-                font-size: 1.5rem !important;
-            }
-
-            .introduction-container big {
-                font-size: 0.9rem !important;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            #chat-button {
-                bottom: 15px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-            }
-
-            #chat-window {
-                width: 90vw;
-                height: 350px;
-                bottom: 70px;
-                right: 5px;
-            }
+            #chat-button { bottom:15px; right:15px; width:50px; height:50px; font-size:18px; }
+            #chat-window { width:90vw; height:350px; bottom:70px; right:5px; }
+            .navbar-brand img { max-width:150px; }
         }
     </style>
 </head>
