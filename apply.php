@@ -150,18 +150,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label for="salutation" class="form-label ms-1">Salutation<span style="color: red;">*</span></label>
                                         <select class="form-select" id="salutation" name="salutation" required>
                                             <option selected disabled>Select</option>
-                                            <option value="mr">Mr.</option>
-                                            <option value="ms">Ms.</option>
-                                            <option value="mrs">Mrs.</option>
+                                            <option value="Mr">Mr.</option>
+                                            <option value="Ms">Ms.</option>
+                                            <option value="Mrs">Mrs.</option>
                                         </select>
                                     </div>
                                     <div class="col ps-1">
                                         <label for="genderPronoun" class="form-label ms-1">Pronoun<span style="color: red;">*</span></label>
                                         <select class="form-select" id="genderPronoun" name="genderPronoun" required>
                                             <option selected disabled>Select</option>
-                                            <option value="he">He/Him</option>
-                                            <option value="she">She/Her</option>
-                                            <option value="they">They/Them</option>
+                                            <option value="He-Him">He/Him</option>
+                                            <option value="She-Her">She/Her</option>
+                                            <option value="They-Them">They/Them</option>
                                         </select>
                                     </div>
                                 </div>
@@ -180,18 +180,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="department" class="form-label ms-1">Department<span style="color: red;">*</span></label>
                                 <select class="form-select" id="department" name="department" required>
                                     <option selected disabled>Select</option>
-                                    <option value="bsent">Bachelor of Science in Entrepreneurship (BSENT)</option>
-                                    <option value="bsit">Bachelor of Science in Information Technology (BSIT)</option>
-                                    <option value="domt">Diploma in Office Management Technology (DOMT)</option>
-                                    <option value="dit">Diploma in Information Technology (DIT)</option>
-                                    <option value="bsa">Bachelor of Science in Accountancy (BSA)</option>
-                                    <option value="bsie">Bachelor of Science in Industrial Engineering (BSIE)</option>
-                                    <option value="bsece">Bachelor of Science in Electronics Engineering (BSECE)</option>
-                                    <option value="btled-ict">Bachelor of Technology and Livelihood Education major in Information and Communication Technology (BTLED-ICT)</option>
-                                    <option value="bseden">Bachelor in Secondary Education major in English (BSEDEN)</option>
-                                    <option value="bspsy">Bachelor of Science in Psychology (BSPSY)</option>
-                                    <option value="bsee">Bachelor of Science in Electrical Engineering (BSEE)</option>
-                                    <option value="bpafa">Bachelor of Public Administration with Specialization in Fiscal Administration (BPAFA)</option>
+                                    <option value="BSENT">Bachelor of Science in Entrepreneurship (BSENT)</option>
+                                    <option value="BSIT">Bachelor of Science in Information Technology (BSIT)</option>
+                                    <option value="DOMT">Diploma in Office Management Technology (DOMT)</option>
+                                    <option value="DIT">Diploma in Information Technology (DIT)</option>
+                                    <option value="BSA">Bachelor of Science in Accountancy (BSA)</option>
+                                    <option value="BSIE">Bachelor of Science in Industrial Engineering (BSIE)</option>
+                                    <option value="BSECE">Bachelor of Science in Electronics Engineering (BSECE)</option>
+                                    <option value="BTLED-ICT">Bachelor of Technology and Livelihood Education major in Information and Communication Technology (BTLED-ICT)</option>
+                                    <option value="BSEDEN">Bachelor in Secondary Education major in English (BSEDEN)</option>
+                                    <option value="BSPSY">Bachelor of Science in Psychology (BSPSY)</option>
+                                    <option value="BSEE">Bachelor of Science in Electrical Engineering (BSEE)</option>
+                                    <option value="BPAFA">Bachelor of Public Administration with Specialization in Fiscal Administration (BPAFA)</option>
 
                                 </select>
                             </div>

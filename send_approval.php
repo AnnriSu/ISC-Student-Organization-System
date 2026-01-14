@@ -90,18 +90,33 @@ try {
     exit();
 }
 
-// Insert into members automatically if not exists
+// Insert into members automatically if not exists - copy all data from application
 $check = $conn->prepare("SELECT mbID FROM tbl_members WHERE mbEmail = ?");
 $check->bind_param("s", $app['apEmail']);
 $check->execute();
 if ($check->get_result()->num_rows === 0) {
-    $insert = $conn->prepare("INSERT INTO tbl_members (mbFname, mbLname, mbMname, mbSuffix, mbDepartment, mbSection, mbInstitution, mbEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $insert = $conn->prepare("INSERT INTO tbl_members (mbFname, mbLname, mbMname, mbSuffix, mbSalutations, mbPronouns, mbBirthDate, mbDepartment, mbSection, mbInstitution, mbMobileNo, mbEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $insert->bind_param(
-        "ssssssss",
-        $app['apFname'], $app['apLname'], $app['apMname'], $app['apSuffix'],
-        $app['apDepartment'], $app['apSection'], $app['apInstitution'], $app['apEmail']
+        "ssssssssssss",
+        $app['apFname'], 
+        $app['apLname'], 
+        $app['apMname'], 
+        $app['apSuffix'],
+        $app['apSalutations'],
+        $app['apPronouns'],
+        $app['apBirthDate'],
+        $app['apDepartment'], 
+        $app['apSection'], 
+        $app['apInstitution'], 
+        $app['apMobileNo'],
+        $app['apEmail']
     );
     $insert->execute();
 }
+
+// Delete the application from tbl_applications after approval and data transfer
+$delete = $conn->prepare("DELETE FROM tbl_applications WHERE apID = ?");
+$delete->bind_param("i", $apID);
+$delete->execute();
 
 echo json_encode(['success' => true]);

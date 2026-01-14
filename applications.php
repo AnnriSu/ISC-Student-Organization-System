@@ -179,7 +179,14 @@ function sendApprovalHandler() {
     .then(data => {
         if (data.success) {
             alert('Membership approved! Email has been sent.');
-            btn.textContent = 'Email Sent';
+            // Remove the application row from the table since it's been deleted
+            const row = btn.closest('tr');
+            row.remove();
+            // Check if table is empty and show message
+            const tbody = document.querySelector('tbody');
+            if (tbody && tbody.querySelectorAll('tr').length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7">No applications found.</td></tr>';
+            }
         } else {
             alert('Error: ' + data.message);
             btn.disabled = false;
