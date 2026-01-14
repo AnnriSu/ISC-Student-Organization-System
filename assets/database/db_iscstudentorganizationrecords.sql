@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2026 at 12:25 PM
+-- Generation Time: Jan 14, 2026 at 07:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -62,6 +62,13 @@ CREATE TABLE `tbl_announcements` (
   `anContent` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tbl_announcements`
+--
+
+INSERT INTO `tbl_announcements` (`anID`, `anTitle`, `anContent`) VALUES
+(1, 'Trial Announcement', 'This announcement informs members about the upcoming trial period, providing important details such as the schedule, purpose, and guidelines. It helps set expectations, encourage participation, and ensure everyone is prepared for the trial.');
+
 -- --------------------------------------------------------
 
 --
@@ -85,15 +92,6 @@ CREATE TABLE `tbl_applications` (
   `apStatusID` int(11) NOT NULL,
   `interviewSent` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_applications`
---
-
-INSERT INTO `tbl_applications` (`apID`, `apFname`, `apLname`, `apMname`, `apSuffix`, `apSalutations`, `apPronouns`, `apBirthDate`, `apDepartment`, `apSection`, `apInstitution`, `apMobileNo`, `apEmail`, `apStatusID`, `interviewSent`) VALUES
-(2, 'Anne', 'Sumague', 'De Guzman', '', 'mr', 'she', '2026-01-10', 'bsit', '3-1', 'Polytechnic University of the Philippines', '+639948669327', 'anneritchel.deguzman.sumague@gmail.com', 3, 0),
-(3, 'Anne Ritchel', 'Sumague', 'De Guzman', '', 'ms', 'she', '2004-10-03', 'bsit', '1-2', 'PUPSTC', '09276088189', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph', 1, 0),
-(4, 'Anne Ritchel', 'Sumague', 'De Guzman', '', 'ms', 'she', '2004-10-03', 'bsit', '3-2', 'PUPSTC', '09999999999', 'anneritcheldsumague@iskolarngbayan.pup.edu.ph', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -179,9 +177,7 @@ CREATE TABLE `tbl_events` (
 --
 
 INSERT INTO `tbl_events` (`evID`, `evTitle`, `evDesc`, `evDate`, `evTime`, `evVenue`, `evInstructor`, `evLink`, `evEvaluationLink`, `evStatusID`, `isHidden`) VALUES
-(1, 'try', 'try', '2026-01-12', '17:13:00', 'bahay', 'ako', 'https://github.com/', 'https://github.com/', 1, 0),
-(2, 'try', 'wdqdqd', '2026-01-12', '17:36:00', 'bahay', 'ako', 'https://github.com/', 'https://github.com/', 2, 0),
-(3, 'presentation', 'sdhajgdja', '2026-01-02', '18:08:00', 'sdhjajk', 'msndjkakjsdhk', 'http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=db_iscstudentorganizationrecords&table=tbl_admin', 'http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=db_iscstudentorganizationrecords&table=tbl_admin', 1, 0);
+(4, 'Final Presentation of the System', 'This presentation showcases the completed system, highlighting its core features, functionality, and overall workflow. It demonstrates how users interact with the system, how data is processed, and how the system meets its intended objectives. The presentation also emphasizes the system’s effectiveness, usability, and readiness for real-world implementation.', '2026-01-15', '09:00:00', 'PUPSTC - Comlab 1', 'Dr. Melanie Castillo, Sir. CJ De Claro, and Sir Aris Dela Rea', 'https://forms.gle/SiChvt64Wog52Deb9', 'https://forms.gle/SiChvt64Wog52Deb9', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -226,16 +222,14 @@ CREATE TABLE `tbl_feedback` (
 --
 
 INSERT INTO `tbl_feedback` (`fbID`, `fbContent`, `mbID`, `mbMobileNo`, `mbEmail`, `fbWebsiteName`, `fbCategory`, `fbName`, `fbStatus`) VALUES
-(18, 'sbdjkak', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'received'),
-(19, 'sabdnabmn', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'spam'),
-(20, 'updated na', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
-(21, 'try uli jsajdhka', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'received'),
-(22, 'tryyyyyyyyyyyyyyyyy', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'received'),
-(23, 'try email', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
-(24, 'julia acc', 2, '09602518774', 'juliaaquino071405@gmail.com', 'ISC Organization System', 'Complaint', 'Julia Aquino', 'open'),
-(25, 'try dupe', 2, '09602518774', 'juliaaquino071405@gmail.com', 'ISC Organization System', 'Feedback', 'Julia Aquino', 'open'),
-(26, 'anne acc', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'open'),
-(27, 'try dupe', 1, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'open');
+(28, 'Hello, this is a Trial feedback message.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
+(29, 'Hello, this is a Trial Complaint message.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'received'),
+(30, 'Hello, this is a Trial Report message.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'received'),
+(31, 'Hello, this is a Trial feedback message.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'received'),
+(32, 'Hello, this is a Trial Complaint message 2.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Complaint', 'Anne Sumague', 'open'),
+(33, 'Hello, this is a Trial feedback message 2.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Feedback', 'Anne Sumague', 'open'),
+(34, 'Hello, this is a Trial Report message 2.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'open'),
+(35, 'Hello, this is a Trial Report message 2.', 3, '09948669327', 'anneritchel.deguzman.sumague@gmail.com', 'ISC Organization System', 'Report', 'Anne Sumague', 'received');
 
 -- --------------------------------------------------------
 
@@ -264,8 +258,7 @@ CREATE TABLE `tbl_members` (
 --
 
 INSERT INTO `tbl_members` (`mbID`, `mbFname`, `mbLname`, `mbMname`, `mbSuffix`, `mbSalutations`, `mbPronouns`, `mbBirthDate`, `mbDepartment`, `mbSection`, `mbInstitution`, `mbMobileNo`, `mbEmail`) VALUES
-(1, 'Anne', 'Sumague', 'De Guzman', NULL, 'ms', 'she', '2004-10-03', 'bsit', '3-1', 'Polytechnic University of the Philippines', '09948669327', 'anneritchel.deguzman.sumague@gmail.com'),
-(2, 'Julia', 'Aquino', 'Velasco', NULL, 'ms', 'she', '2005-07-14', 'bsit', '3-1', 'PUP', '09602518774', 'juliaaquino071405@gmail.com');
+(3, 'Anne ', 'Sumague', 'De Guzman', '', 'Ms', 'She-Her', '2004-10-03', 'BSIT', '3-1', 'Polytechnic University of the Philippines', '09948669327', 'anneritchel.deguzman.sumague@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -279,6 +272,13 @@ CREATE TABLE `tbl_newsletter` (
   `mbID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tbl_newsletter`
+--
+
+INSERT INTO `tbl_newsletter` (`nlID`, `nlEmail`, `mbID`) VALUES
+(1, 'anneritchel.deguzman.sumague@gmail.com', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -289,14 +289,6 @@ CREATE TABLE `tbl_sponsors` (
   `spID` int(11) NOT NULL,
   `spName` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_sponsors`
---
-
-INSERT INTO `tbl_sponsors` (`spID`, `spName`) VALUES
-(1, 'Anne Ritchel'),
-(2, 'anonymous');
 
 --
 -- Indexes for dumped tables
@@ -398,37 +390,37 @@ ALTER TABLE `tbl_admin`
 -- AUTO_INCREMENT for table `tbl_announcements`
 --
 ALTER TABLE `tbl_announcements`
-  MODIFY `anID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `anID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `apID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `apID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_events`
 --
 ALTER TABLE `tbl_events`
-  MODIFY `evID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `evID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_feedback`
 --
 ALTER TABLE `tbl_feedback`
-  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `fbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tbl_members`
 --
 ALTER TABLE `tbl_members`
-  MODIFY `mbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `mbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_newsletter`
 --
 ALTER TABLE `tbl_newsletter`
-  MODIFY `nlID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `nlID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_sponsors`
