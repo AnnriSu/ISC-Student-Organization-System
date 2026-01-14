@@ -54,7 +54,7 @@ $eventsResult = $conn->query($eventsQuery);
     <link href="assets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="padding-bottom: 120px;">
 
     <nav class="navbar shadow-sm">
 
@@ -159,14 +159,7 @@ $eventsResult = $conn->query($eventsQuery);
                 </div>
             </div>
 
-
-            <!-- footer -->
-            <footer class="footer text-center text-lg-start mt-4">
-                <div class="text-center p-3">
-                    © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
-                </div>
-            </footer>
-
+            <?php include("shared/footer.php"); ?>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

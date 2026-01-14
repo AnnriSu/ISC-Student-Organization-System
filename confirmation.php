@@ -3,7 +3,7 @@ session_start();
 
 // Check if mobile number is sent from login.php
 $recipient = $_GET['mobile'] ?? ($_SESSION['mobileNumber'] ?? "+639922623280"); // fallback
-$userType  = $_GET['type'] ?? ($_SESSION['userType'] ?? "member"); // "member" or "admin"
+$userType = $_GET['type'] ?? ($_SESSION['userType'] ?? "member"); // "member" or "admin"
 
 // Ensure session has email and userType from login.php
 if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
@@ -16,8 +16,8 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
 $_SESSION['userType'] = $userType;
 
 $gateway_url = "http://192.168.168.70:8080";
-$username    = "ISCSystem";
-$password    = "ISC_2025";
+$username = "ISCSystem";
+$password = "ISC_2025";
 
 // Check if user submitted OTP
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
@@ -48,13 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
 
     $payload = [
         "phoneNumbers" => [$recipient],
-        "message"      => $message
+        "message" => $message
     ];
 
     $options = [
         'http' => [
-            'method'  => 'POST',
-            'header'  => [
+            'method' => 'POST',
+            'header' => [
                 'Content-Type: application/json',
                 'Authorization: Basic ' . base64_encode("$username:$password")
             ],
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         ]
     ];
 
-    $context  = stream_context_create($options);
+    $context = stream_context_create($options);
     $response = @file_get_contents($url, false, $context); // suppress errors
 
     // Show debug info
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
     // echo "<h4>API Response:</h4>";
     // echo "<pre>" . htmlspecialchars($response ?: "No response from SMS Gateway.") . "</pre>";
 
-  
+
 }
 ?>
 
@@ -84,7 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iskonnovators Student Community</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="assets/style.css" rel="stylesheet">
     <style>
         /* Error Modal Styles */
@@ -193,8 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
 
             <div class="d-flex gap-4 me-4">
                 <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
-                        height="auto" class="mt-1 mb-1">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
                 </a>
             </div>
         </div>
@@ -208,7 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
 
         <hr>
 
-        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">Enter One Time Password</h3>
+        <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">Enter One Time Password
+        </h3>
         <hr>
 
         <p class="text-center small">
@@ -234,8 +235,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         <hr>
         <p class="text-center">
             If you did not receive the text message or if the OTP has expired,
-            <a href="?resend=1&mobile=<?= rawurlencode($recipient) ?>&type=<?= rawurlencode($userType) ?>">click here to request a new OTP.</a>
-            
+            <a href="?resend=1&mobile=<?= rawurlencode($recipient) ?>&type=<?= rawurlencode($userType) ?>">click here to
+                request a new OTP.</a>
+
         </p>
         <hr>
 
@@ -253,12 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         </div>
     </div>
 
-    <!-- footer -->
-    <footer class="footer text-center text-lg-start mt-4  ">
-        <div class="text-center p-3">
-            © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
-        </div>
-    </footer>
+    <?php include("shared/footer.php"); ?>
+
 
     <script>
         // Handle okay button click - just hide modal
@@ -272,7 +270,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

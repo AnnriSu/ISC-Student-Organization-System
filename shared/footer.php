@@ -1,4 +1,4 @@
-   <footer class="footer text-center text-lg-start mt-4 ">
+   <footer class="footer text-center text-lg-start mt-4 fixed-bottom">
         <div class="text-center p-3">
             © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
         </div>
