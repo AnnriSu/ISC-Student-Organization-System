@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
             exit();
         }
     } else {
-        echo "<script>window.onload = function(){ alert('Invalid OTP. Please try again.'); };</script>";
+        $showErrorCard = true;
     }
 } else {
     // Generate OTP and send SMS
@@ -86,6 +86,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="assets/style.css" rel="stylesheet">
+    <style>
+        /* Error Modal Styles */
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error-modal.show {
+            display: flex;
+        }
+
+        .error-card {
+            background: white;
+            border-radius: 15px;
+            padding: 48px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-card h2 {
+            color: #dc3545;
+            font-weight: 800;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .error-card p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+
+        .btn-error-ok {
+            background-color: #3769b2;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-error-ok:hover {
+            background-color: #2a50a0;
+        }
+
+        .btn-error-resend {
+            background-color: #84152c;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .btn-error-resend:hover {
+            background-color: #6c1122;
+        }
+    </style>
 </head>
 
 <body>
@@ -114,6 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
 
         <h3 class="fw-bold mb-3 d-flex align-items-center justify-content-center text-center">Enter One Time Password</h3>
         <hr>
+
         <p class="text-center small">
             An OTP has been sent to your registered phone number:
             <strong><?= htmlspecialchars($recipient) ?></strong><br>
@@ -144,6 +241,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         <hr>
 
     </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="error-modal <?php echo (isset($showErrorCard) && $showErrorCard) ? 'show' : ''; ?>">
+        <div class="error-card">
+            <h2>Invalid OTP</h2>
+            <p>Invalid OTP. Please try again.</p>
+            <div class="button-group">
+                <button id="okayBtn" class="btn-error-ok">Okay</button>
+                <button id="resendBtn" class="btn-error-resend">Resend OTP</button>
+            </div>
+        </div>
+    </div>
+
     <!-- footer -->
     <footer class="footer text-center text-lg-start mt-4  ">
         <div class="text-center p-3">
@@ -151,6 +261,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         </div>
     </footer>
 
+    <script>
+        // Handle okay button click - just hide modal
+        document.getElementById('okayBtn')?.addEventListener('click', () => {
+            document.getElementById('errorModal').classList.remove('show');
+        });
+
+        // Handle resend button click - redirect to resend OTP
+        document.getElementById('resendBtn')?.addEventListener('click', () => {
+            window.location.href = '?resend=1&mobile=<?= rawurlencode($recipient) ?>&type=<?= rawurlencode($userType) ?>';
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
