@@ -69,7 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body style="padding-bottom: 120px;">
 
-    <?php include 'shared/navbar.php'; ?>
+    <nav> <?php include 'shared/navbar.php'; ?>
+    </nav>
+
 
     <div class="container">
 

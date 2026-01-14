@@ -167,11 +167,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
 
     <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
-        <div class="container-fluid sticky-top">
-            <a class="navbar-brand d-flex ms-4" href="index.php">
-                <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250" class="mt-1 mb-1">
-            </a>
-        </div>
+        <?php include("shared/navbar.php"); ?>
+
+        <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="homepage-member.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+
     </nav>
 
     <div class="container mt-5 mb-5" style="max-width: 1100px;">

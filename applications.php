@@ -53,11 +53,8 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
 <body>
 
     <nav class="navbar shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">
-                <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250">
-            </a>
-        </div>
+        <?php include("shared/navbar.php"); ?>
+
     </nav>
 
     <div class="container mt-4">
