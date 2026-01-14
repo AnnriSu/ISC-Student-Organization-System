@@ -57,6 +57,12 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             <a class="navbar-brand" href="index.php">
                 <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250">
             </a>
+
+            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="adminhomepage.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -95,10 +101,10 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                                             <?php foreach ($statusOptions as $status): ?>
                                                 <option value="<?= $status['apStatusID'] ?>" <?=
 
-                                                // Select Pending for applications already updated
-                                                ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '') 
+                                                          // Select Pending for applications already updated
+                                                      ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '')
 
-                                                ?>
+                                                      ?>
                                                     <?= (strtolower($status['apStatusDesc']) === 'for interview' && $row['interviewSent'] == 1) ? 'disabled' : '' ?>>
                                                     <?= htmlspecialchars($status['apStatusDesc']) ?>
                                                 </option>
