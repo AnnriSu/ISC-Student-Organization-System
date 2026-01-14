@@ -112,7 +112,15 @@ $eventsResult = $conn->query($eventsQuery);
                     <?php if ($eventsResult && $eventsResult->num_rows > 0): ?>
                         <?php while ($event = $eventsResult->fetch_assoc()):
                             $dateTime = date('M d, Y', strtotime($event['evDate'])) . ' ' . date('g:i A', strtotime($event['evTime']));
-                            ?>
+
+                            $status = strtolower(trim($event['evStatusDesc']));
+                            $statusClass = match ($status) {
+                                'upcoming' => 'bg-primary',
+                                'ongoing' => 'bg-warning',
+                                'completed' => 'bg-success',
+                                default => 'bg-secondary',
+                            };
+                        ?>
                             <div class="border rounded-3 p-3 mt-4 d-flex gap-3 align-items-start">
 
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
@@ -131,8 +139,9 @@ $eventsResult = $conn->query($eventsQuery);
                                         <?= htmlspecialchars($event['evVenue']) ?></small>
                                     <small class="d-block"><strong>Instructor:</strong>
                                         <?= htmlspecialchars($event['evInstructor']) ?></small>
-                                    <small class="d-block"><strong>Status:</strong> <span
-                                            class="badge bg-info"><?= htmlspecialchars($event['evStatusDesc']) ?></span></small>
+                                    <small class="d-block"><strong>Status:</strong><span
+                                            class="badge <?= $statusClass ?>"><?= htmlspecialchars($event['evStatusDesc']) ?></span>
+                                    </small>
 
                                     <div class="mt-2 d-flex gap-2">
                                         <?php if (!empty($event['evLink'])): ?>

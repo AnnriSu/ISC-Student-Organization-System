@@ -52,25 +52,21 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
 
 <body>
 
-    <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
 
-        <div class="container-fluid sticky-top">
-
-            <div class="d-flex gap-4 me-4">
-                <a class="navbar-brand d-flex ms-4" href="adminhomepage.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
-                        height="auto" class="mt-1 mb-1">
+        <div class="container-fluid d-flex align-items-center flex-wrap ">
+            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
+                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="adminhomepage.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
+                        style="max-width: 250px; width: auto;">
                 </a>
             </div>
 
-            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
-                <a class="navbar-brand d-flex" href="adminhomepage.php">
-                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
-                </a>
-            </div>
-            
+            <a class="navbar-brand d-flex" href="adminhomepage.php">
+                <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+            </a>
         </div>
+
     </nav>
 
 
@@ -95,7 +91,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                             <?php while ($row = $result->fetch_assoc()):
                                 $fullName = buildFullName($row['apFname'], $row['apLname'], $row['apMname'], $row['apSuffix']);
                                 $department = formatDepartment($row['apDepartment']);
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= htmlspecialchars($fullName) ?></td>
                                     <td><?= htmlspecialchars($department) ?></td>
@@ -109,10 +105,10 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                                             <?php foreach ($statusOptions as $status): ?>
                                                 <option value="<?= $status['apStatusID'] ?>" <?=
 
-                                                                                                // Select Pending for applications already updated
-                                                                                                ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '')
+                                                          // Select Pending for applications already updated
+                                                      ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '')
 
-                                                                                                ?>
+                                                      ?>
                                                     <?= (strtolower($status['apStatusDesc']) === 'for interview' && $row['interviewSent'] == 1) ? 'disabled' : '' ?>>
                                                     <?= htmlspecialchars($status['apStatusDesc']) ?>
                                                 </option>
@@ -129,6 +125,13 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                                             <button class="btn btn-primary btn-sm send-interview" data-id="<?= $row['apID'] ?>">Send
                                                 Interview Email</button>
                                         <?php endif; ?>
+
+                                        <?php if (strtolower($row['apStatusDesc']) === 'denied'): ?>
+                                            <button class="btn btn-danger btn-sm send-denial" data-id="<?= $row['apID'] ?>">
+                                                Send Denial Email
+                                            </button>
+                                        <?php endif; ?>
+
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -144,57 +147,45 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
     </div>
 
     <script>
-        // Status change handler
-        document.querySelectorAll('.status-select').forEach(select => {
-            select.addEventListener('change', function() {
-                const apID = this.dataset.id;
-                const oldStatus = this.dataset.statusId;
-                const newStatus = this.value;
-                if (newStatus === oldStatus) return;
+        document.addEventListener('DOMContentLoaded', () => {
 
-                this.disabled = true;
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', function () {
 
-                fetch('update_application_status.php', {
+                    const apID = this.dataset.id;
+                    const newStatus = this.value;
+
+                    // Disable to prevent double clicks
+                    this.disabled = true;
+
+                    fetch('update_application_status.php', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             apID: apID,
                             apStatusID: newStatus
                         })
                     })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.dataset.statusId = newStatus;
-
-                            if (data.statusDesc.toLowerCase() === 'approved') {
-                                this.disabled = true;
-                                const cell = this.closest('tr').querySelector('.action-cell');
-                                if (!cell.querySelector('.send-approval')) {
-                                    const btn = document.createElement('button');
-                                    btn.classList.add('btn', 'btn-success', 'btn-sm', 'send-approval');
-                                    btn.textContent = 'Send Membership Approval';
-                                    btn.dataset.id = apID;
-                                    cell.appendChild(btn);
-                                    btn.addEventListener('click', sendApprovalHandler);
-                                }
+                        .then(r => r.json())
+                        .then(data => {
+                            if (!data.success) {
+                                alert(data.message || 'Failed to update status');
+                                this.disabled = false;
+                                return;
                             }
-                        } else {
-                            alert(data.message || 'Error updating status');
-                            this.value = oldStatus;
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert('Error updating status');
-                        this.value = oldStatus;
-                    })
-                    .finally(() => {
-                        if (this.value.toLowerCase() !== 'approved') this.disabled = false;
-                    });
+
+                            // ✅ AUTO REFRESH FIX
+                            location.reload();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Server error');
+                            this.disabled = false;
+                        });
+
+                });
             });
+
         });
 
         // Send approval handler
@@ -204,14 +195,14 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             btn.disabled = true;
 
             fetch('send_approval.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        apID: apID
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    apID: apID
                 })
+            })
                 .then(r => r.json())
                 .then(data => {
                     if (data.success) {
@@ -241,14 +232,14 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             btn.disabled = true;
 
             fetch('send_interview.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        apID: apID
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    apID: apID
                 })
+            })
                 .then(r => r.json())
                 .then(data => {
                     if (data.success) {
@@ -290,6 +281,85 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
     </script>
 
     <?php include("shared/footer.php"); ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Attach existing denial buttons
+            document.querySelectorAll('.send-denial').forEach(btn => {
+                btn.addEventListener('click', sendDenialHandler);
+            });
+
+            // STATUS CHANGE HANDLER (ADD THIS INSIDE YOUR EXISTING STATUS CHANGE LOGIC)
+            document.querySelectorAll('.status-dropdown').forEach(select => {
+                select.addEventListener('change', function () {
+                    const apID = this.dataset.id;
+
+                    fetch('update_status.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            apID: apID,
+                            statusID: this.value
+                        })
+                    })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (!data.success) {
+                                alert(data.message);
+                                return;
+                            }
+
+                            if (data.statusDesc.toLowerCase() === 'denied') {
+                                const cell = this.closest('tr').querySelector('.action-cell');
+
+                                if (!cell.querySelector('.send-denial')) {
+                                    const btn = document.createElement('button');
+                                    btn.className = 'btn btn-danger btn-sm send-denial';
+                                    btn.textContent = 'Send Denial Email';
+                                    btn.dataset.id = apID;
+                                    btn.addEventListener('click', sendDenialHandler);
+                                    cell.appendChild(btn);
+                                }
+                            }
+                        });
+                });
+            });
+
+        });
+
+        // SEND DENIAL HANDLER
+        function sendDenialHandler() {
+            if (!confirm('Send denial email and permanently delete this application?')) {
+                return;
+            }
+
+            const btn = this;
+            const apID = btn.dataset.id;
+            btn.disabled = true;
+
+            fetch('send_denial.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ apID })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Denial email sent. Application deleted.');
+                        btn.closest('tr').remove();
+                    } else {
+                        alert(data.message);
+                        btn.disabled = false;
+                    }
+                })
+                .catch(() => {
+                    alert('Server error');
+                    btn.disabled = false;
+                });
+        }
+    </script>
+
 
 </body>
 
