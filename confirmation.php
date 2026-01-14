@@ -15,7 +15,7 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['userType'])) {
 // Store userType in session to use after redirect (in case it was passed via GET)
 $_SESSION['userType'] = $userType;
 
-$gateway_url = "http://192.168.168.70:8080";
+$gateway_url = "http://192.168.18.12:8080";
 $username = "ISCSystem";
 $password = "ISC_2025";
 

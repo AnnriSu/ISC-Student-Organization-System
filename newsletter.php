@@ -78,15 +78,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 
 <!-- Navigation Bar -->
-<nav class="navbar shadow-sm">
-    <div class="container-fluid sticky-top">
-        <div class="d-flex gap-4 me-4">
-            <a class="navbar-brand d-flex ms-4" href="homepage-member.php">
-                <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250">
-            </a>
+    <nav class="navbar shadow-sm">
+
+        <div class="container-fluid sticky-top">
+
+            <div class="d-flex gap-4 me-4">
+                <a class="navbar-brand d-flex ms-4" href="homepage-member.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
+                        height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+
+            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="homepage-member.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+            
         </div>
-    </div>
-</nav>
+    </nav>
 
 <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3" style="max-width: 500px;">
 

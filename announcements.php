@@ -67,35 +67,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "No newsletter subscribers found.";
         }
 
-        if (!empty($emails)) {
-            $gmail = new Gmail($client);
-            $sentCount = 0;
+        // Save announcement to database
+        $insertStmt = $conn->prepare("INSERT INTO tbl_announcements (anTitle, anContent) VALUES (?, ?)");
+        $insertStmt->bind_param("ss", $subject, $body);
+        
+        if ($insertStmt->execute()) {
+            $insertStmt->close();
+            
+            if (!empty($emails)) {
+                $gmail = new Gmail($client);
+                $sentCount = 0;
 
-            foreach ($emails as $to) {
-                $rawMessageString = "From: ISC Announcements <no-reply@yourdomain.com>\r\n";
-                $rawMessageString = "To: $to\r\n";
-                $rawMessageString .= "Subject: $subject\r\n";
-                $rawMessageString .= "Reply-To: no-reply@yourdomain.com\r\n";
-                $rawMessageString .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
-                $rawMessageString .= $body;
+                foreach ($emails as $to) {
+                    $rawMessageString = "From: ISC Announcements <no-reply@yourdomain.com>\r\n";
+                    $rawMessageString = "To: $to\r\n";
+                    $rawMessageString .= "Subject: $subject\r\n";
+                    $rawMessageString .= "Reply-To: no-reply@yourdomain.com\r\n";
+                    $rawMessageString .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
+                    $rawMessageString .= $body;
 
-                $encodedMessage = base64_encode($rawMessageString);
-                $encodedMessage = str_replace(['+', '/', '='], ['-', '_', ''], $encodedMessage);
+                    $encodedMessage = base64_encode($rawMessageString);
+                    $encodedMessage = str_replace(['+', '/', '='], ['-', '_', ''], $encodedMessage);
 
-                $message = new Message();
-                $message->setRaw($encodedMessage);
+                    $message = new Message();
+                    $message->setRaw($encodedMessage);
 
-                try {
-                    $gmail->users_messages->send('me', $message);
-                    $sentCount++;
-                } catch (Exception $e) {
-                    $error .= "Failed to send to $to: " . $e->getMessage() . "<br>";
+                    try {
+                        $gmail->users_messages->send('me', $message);
+                        $sentCount++;
+                    } catch (Exception $e) {
+                        $error .= "Failed to send to $to: " . $e->getMessage() . "<br>";
+                    }
                 }
-            }
 
-            if ($sentCount > 0) {
-                $success = "Announcements sent to $sentCount subscriber(s)!";
+                if ($sentCount > 0) {
+                    $success = "Announcement saved and sent to $sentCount subscriber(s)!";
+                } else {
+                    $success = "Announcement saved to database, but email sending failed.";
+                }
+            } else {
+                $success = "Announcement saved to database successfully.";
             }
+        } else {
+            $error = "Failed to save announcement to database: " . $conn->error;
+            $insertStmt->close();
         }
     } else {
         $error = "Subject and message cannot be empty.";

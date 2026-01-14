@@ -53,18 +53,22 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
 <body>
 
     <nav class="navbar shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">
-                <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250">
-            </a>
 
-            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
-                <a class="navbar-brand d-flex" href="adminhomepage.php">
-                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+        <div class="container-fluid d-flex align-items-center flex-wrap ">
+            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
+                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="adminhomepage.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
+                        style="max-width: 250px; width: auto;">
                 </a>
             </div>
+        
+            <a class="navbar-brand d-flex" href="adminhomepage.php">
+                <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+            </a>
         </div>
+
     </nav>
+
 
     <div class="container mt-4">
         <div class="bg-white rounded-4 p-4 shadow">
@@ -87,7 +91,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                             <?php while ($row = $result->fetch_assoc()):
                                 $fullName = buildFullName($row['apFname'], $row['apLname'], $row['apMname'], $row['apSuffix']);
                                 $department = formatDepartment($row['apDepartment']);
-                                ?>
+                            ?>
                                 <tr>
                                     <td><?= htmlspecialchars($fullName) ?></td>
                                     <td><?= htmlspecialchars($department) ?></td>
@@ -101,10 +105,10 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                                             <?php foreach ($statusOptions as $status): ?>
                                                 <option value="<?= $status['apStatusID'] ?>" <?=
 
-                                                          // Select Pending for applications already updated
-                                                      ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '')
+                                                                                                // Select Pending for applications already updated
+                                                                                                ($row['apStatusID'] == $status['apStatusID'] ? 'selected' : '')
 
-                                                      ?>
+                                                                                                ?>
                                                     <?= (strtolower($status['apStatusDesc']) === 'for interview' && $row['interviewSent'] == 1) ? 'disabled' : '' ?>>
                                                     <?= htmlspecialchars($status['apStatusDesc']) ?>
                                                 </option>
@@ -138,7 +142,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
     <script>
         // Status change handler
         document.querySelectorAll('.status-select').forEach(select => {
-            select.addEventListener('change', function () {
+            select.addEventListener('change', function() {
                 const apID = this.dataset.id;
                 const oldStatus = this.dataset.statusId;
                 const newStatus = this.value;
@@ -147,10 +151,15 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                 this.disabled = true;
 
                 fetch('update_application_status.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ apID: apID, apStatusID: newStatus })
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            apID: apID,
+                            apStatusID: newStatus
+                        })
+                    })
                     .then(r => r.json())
                     .then(data => {
                         if (data.success) {
@@ -191,10 +200,14 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             btn.disabled = true;
 
             fetch('send_approval.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ apID: apID })
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        apID: apID
+                    })
+                })
                 .then(r => r.json())
                 .then(data => {
                     if (data.success) {
@@ -224,10 +237,14 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
             btn.disabled = true;
 
             fetch('send_interview.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ apID: apID })
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        apID: apID
+                    })
+                })
                 .then(r => r.json())
                 .then(data => {
                     if (data.success) {
@@ -268,7 +285,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
         });
     </script>
 
-     <?php include("shared/footer.php"); ?>
+    <?php include("shared/footer.php"); ?>
 
 </body>
 
