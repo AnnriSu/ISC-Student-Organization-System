@@ -107,12 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
             </div>
 
-            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
-                <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\Log out.svg" alt="Logo" width="30"
-                        height="auto" class="mt-1 mb-1">
-                </a>
-            </div>
         </div>
     </nav>
 
@@ -254,12 +248,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-    <!-- footer -->
-    <footer class="footer text-center text-lg-start mt-4 relative-bottom ">
-        <div class="text-center p-3">
-            © 2025 Iskonnovators Student Community PUPSTC, All Rights Reserved
-        </div>
-    </footer>
+    <?php include("shared/footer.php"); ?>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
