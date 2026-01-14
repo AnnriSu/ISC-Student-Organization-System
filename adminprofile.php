@@ -145,8 +145,9 @@ if ($currentEmail) {
 </head>
 
 
-<body>
+<body style="padding-bottom: 100px;">
 
+<<<<<<< HEAD
     <nav class="navbar shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
@@ -160,6 +161,11 @@ if ($currentEmail) {
                 </a>
             </div>
         </div>
+=======
+    <nav class="navbar shadow-sm ">
+        <?php include("shared/navbar.php"); ?>
+
+>>>>>>> f377080909c2f33be7fc3b2682b30cf84af937fc
     </nav>
 
     <div class="container profile-container">

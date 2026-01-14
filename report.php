@@ -15,6 +15,15 @@ $memberMobileNo = null;
 $memberName = "Member"; // Default fallback
 $feedbackMessage = "";
 $feedbackType = ""; // 'success' or 'danger'
+$feedbackList = []; // List of feedback submitted by this member
+
+// Check for success/error messages from session (after redirect)
+if (isset($_SESSION['feedback_message'])) {
+    $feedbackMessage = $_SESSION['feedback_message'];
+    $feedbackType = $_SESSION['feedback_type'] ?? 'success';
+    unset($_SESSION['feedback_message']);
+    unset($_SESSION['feedback_type']);
+}
 
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
@@ -46,6 +55,19 @@ if (isset($_SESSION['email'])) {
         $fbName = trim($row['mbFname']) . " " . trim($row['mbLname']);
     }
     $stmt->close();
+}
+
+// Fetch submitted feedback for the logged-in member
+if ($memberID !== null) {
+    $fbStmt = $conn->prepare("SELECT fbContent, fbCategory, fbStatus FROM tbl_feedback WHERE mbID = ? ORDER BY fbID DESC");
+    $fbStmt->bind_param("i", $memberID);
+    if ($fbStmt->execute()) {
+        $fbResult = $fbStmt->get_result();
+        while ($fbRow = $fbResult->fetch_assoc()) {
+            $feedbackList[] = $fbRow;
+        }
+    }
+    $fbStmt->close();
 }
 
 // Handle form submission
@@ -97,11 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
         $stmt->bind_param("sissssss", $feedbackContent, $memberID, $memberMobileNo, $memberEmail, $fbWebsiteName, $feedbackCategory, $fbName, $fbStatus);
         
         if ($stmt->execute()) {
-            $feedbackMessage = "Thank you! Your feedback has been submitted successfully.";
-            $feedbackType = "success";
-            // Clear the form field by resetting POST data (will show empty on page reload)
-            $_POST['feedback'] = "";
-            $_POST['category'] = "";
+            // Store success message in session and redirect to prevent resubmission
+            $_SESSION['feedback_message'] = "Thank you! Your feedback has been submitted successfully.";
+            $_SESSION['feedback_type'] = "success";
+            $stmt->close();
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
         } else {
             $errorMsg = $conn->error;
             // If some columns don't exist, try with basic fields first
@@ -111,17 +134,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
             $stmt->bind_param("sis", $feedbackContent, $memberID, $memberMobileNo);
             
             if ($stmt->execute()) {
-                $feedbackMessage = "Thank you! Your feedback has been submitted successfully. (Note: Some fields may not be saved - please update database schema)";
-                $feedbackType = "success";
-                $_POST['feedback'] = "";
-                $_POST['category'] = "";
+                // Store success message in session and redirect to prevent resubmission
+                $_SESSION['feedback_message'] = "Thank you! Your feedback has been submitted successfully. (Note: Some fields may not be saved - please update database schema)";
+                $_SESSION['feedback_type'] = "success";
+                $stmt->close();
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
             } else {
+                // Database error - show error message without redirect (user can see the error)
                 $feedbackMessage = "Error submitting feedback: " . $conn->error . ". Please try again later.";
                 $feedbackType = "danger";
             }
         }
-        $stmt->close();
     }
+    // Note: Validation errors ($feedbackMessage) are displayed on the same page without redirect
+    // Only successful submissions trigger a redirect to prevent resubmission
 }
 ?>
 <!doctype html>
@@ -140,56 +167,92 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['feedback'])) {
 
     <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
-        <div class="container-fluid sticky-top">
-            <a class="navbar-brand d-flex ms-4" href="index.php">
-                <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250" class="mt-1 mb-1">
-            </a>
-        </div>
+        <?php include("shared/navbar.php"); ?>
+
+        <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="homepage-member.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
+            </div>
+
     </nav>
 
-    <div class="container form-container mt-5 mb-5 p-4 shadow-sm rounded-3" style="max-width: 500px;">
+    <div class="container mt-5 mb-5" style="max-width: 1100px;">
+        <div class="row g-4">
+            <!-- Feedback form card -->
+            <div class="col-md-6">
+                <div class="form-container p-4 shadow-sm rounded-3 h-100">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded icon-box">
+                        <img src="assets/img/ISC brand logo.png" alt="Application Received" width="150">
+                    </div>
 
-        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded icon-box">
-            <img src="assets/img/ISC brand logo.png" alt="Application Received" width="150">
+                    <hr>
+
+                    <h3 class="fw-bold mb-3 text-center">Give us your feedback!</h3>
+                    <hr>
+                    <p class="text-center small">
+                        We'd love to hear from you! Your thoughts, suggestions, and concerns help us improve and serve you better.<br>
+                    </p>
+
+                    <?php if (!empty($feedbackMessage)): ?>
+                        <div class="alert alert-<?= $feedbackType ?> alert-dismissible fade show" role="alert">
+                            <?= htmlspecialchars($feedbackMessage) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <h5 class="fw-bold mb-3">Submit new feedback</h5>
+                    <form method="POST" action="">
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Feedback Category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="Feedback" selected>Feedback</option>
+                                <option value="Complaint">Complaint</option>
+                                <option value="Report">Report</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="feedback" class="form-label">Your Feedback <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="5" maxlength="500" required placeholder="Please share your feedback below (max 500 characters)."></textarea>
+                            <small class="text-muted">
+                                <span id="charCount">0</span>/500 characters
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Submitted feedback card, outside the form but beside it -->
+            <div class="col-md-6" >
+                <div class="p-4 shadow-sm rounded-3 bg-white h-100" style="max-height: 850px; overflow-y: auto;">
+                    <h5 class="fw-bold mb-3">Your submitted feedback</h5>
+                    <?php if (!empty($feedbackList)): ?>
+                        <div class="list-group">
+                            <?php foreach ($feedbackList as $fb): ?>
+                                <div class="list-group-item mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="badge bg-secondary">
+                                            <?= htmlspecialchars($fb['fbCategory']) ?>
+                                        </span>
+                                        <span class="badge bg-<?= strtolower($fb['fbStatus']) === 'open' ? 'warning' : 'success' ?>">
+                                            <?= htmlspecialchars($fb['fbStatus']) ?>
+                                        </span>
+                                    </div>
+                                    <p class="mb-0 small"><?= nl2br(htmlspecialchars($fb['fbContent'])) ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted small mb-0">
+                            You have not submitted any feedback yet. Once you send feedback, it will appear here.
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
-
-        <hr>
-
-        <h3 class="fw-bold mb-3 text-center">Give us your feedback!</h3>
-        <hr>
-        <p class="text-center small">
-            We'd love to hear from you! Your thoughts, suggestions, and concerns help us improve and serve you better.<br>
-        </p>
-
-        <?php if (!empty($feedbackMessage)): ?>
-            <div class="alert alert-<?= $feedbackType ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($feedbackMessage) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="category" class="form-label">Feedback Category <span class="text-danger">*</span></label>
-                <select class="form-select" id="category" name="category" required>
-                    <option value="Feedback" <?= (isset($_POST['category']) && $_POST['category'] === 'Feedback') || !isset($_POST['category']) ? 'selected' : '' ?>>Feedback</option>
-                    <option value="Complaint" <?= isset($_POST['category']) && $_POST['category'] === 'Complaint' ? 'selected' : '' ?>>Complaint</option>
-                    <option value="Report" <?= isset($_POST['category']) && $_POST['category'] === 'Report' ? 'selected' : '' ?>>Report</option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="feedback" class="form-label">Your Feedback <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="feedback" name="feedback" rows="5" maxlength="500" required placeholder="Please share your feedback below (max 500 characters)."><?= isset($_POST['feedback']) && $feedbackType !== 'success' ? htmlspecialchars($_POST['feedback']) : '' ?></textarea>
-                <small class="text-muted">
-                    <span id="charCount">0</span>/500 characters
-                </small>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
-        </form>
-
-
     </div>
 
         <?php include("shared/footer.php"); ?>

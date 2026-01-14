@@ -32,13 +32,15 @@ $eventsResult = $conn->query($eventsQuery);
 <body style="padding-bottom: 120px;">
 
     <nav class="navbar shadow-sm">
-        <div class="container-fluid sticky-top">
-            <div class="d-flex gap-4 me-4">
-                <a class="navbar-brand d-flex ms-4" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250" height="auto" class="mt-1 mb-1">
-                </a>
-            </div>
+        <?php include("shared/navbar.php"); ?>
+
+        <div
+            class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+            <a class="navbar-brand d-flex" href="homepage-member.php">
+                <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+            </a>
         </div>
+
     </nav>
 
     <div class="container-fluid mt-4 mb-2">

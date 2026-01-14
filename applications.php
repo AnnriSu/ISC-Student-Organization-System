@@ -53,6 +53,7 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
 <body>
 
     <nav class="navbar shadow-sm">
+<<<<<<< HEAD
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
                 <img src="assets/img/isc_brand_bold.png" alt="Logo" width="250">
@@ -64,6 +65,10 @@ function buildFullName($fname, $lname, $mname = '', $suffix = '')
                 </a>
             </div>
         </div>
+=======
+        <?php include("shared/navbar.php"); ?>
+
+>>>>>>> f377080909c2f33be7fc3b2682b30cf84af937fc
     </nav>
 
     <div class="container mt-4">
