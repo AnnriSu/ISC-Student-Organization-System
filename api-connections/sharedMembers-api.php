@@ -1,29 +1,35 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-include("connect.php"); // Make sure $pdo (PDO connection) is properly set up
+// Handle CORS preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  http_response_code(204);
+  exit();
+}
+
+include("connect.php"); // provides mysqli $conn
 
 $method = $_SERVER['REQUEST_METHOD'];
 $input  = json_decode(file_get_contents("php://input"), true);
 
 switch ($method) {
   case 'GET':
-    handleGet($pdo);
+    handleGet($conn);
     break;
 
   case 'POST':
-    handlePost($pdo, $input);
+    handlePost($conn, $input);
     break;
 
   case 'PUT':
-    handlePut($pdo, $input);
+    handlePut($conn, $input);
     break;
 
   case 'DELETE':
-    handleDelete($pdo, $input);
+    handleDelete($conn, $input);
     break;
 
   default:
@@ -33,14 +39,19 @@ switch ($method) {
 
 /* =========================
    GET – FETCH LOCAL + REMOTE MEMBERS
+   (unchanged behaviour)
    ========================= */
-function handleGet($pdo)
+function handleGet($conn)
 {
   // 🔹 LOCAL MEMBERS
+  $localData = [];
   $sql = "SELECT * FROM tbl_members ORDER BY mbID DESC";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute();
-  $localData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  if ($result = $conn->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+      $localData[] = $row;
+    }
+    $result->free();
+  }
 
   // 🔹 REMOTE API (OTHER WEBSITE)
   $remoteUrl = "https://coletta-parecious-improperly.ngrok-free.dev/CampusWear/api/shared/isc.php"; // Replace with actual URL
@@ -66,71 +77,128 @@ function handleGet($pdo)
 }
 
 /* =========================
-   POST – CREATE NEW MEMBER
+   POST – RECEIVE REMOTE APPLICATION
+   and map it into tbl_applications
    ========================= */
-function handlePost($pdo, $input)
+function handlePost($conn, $input)
 {
-  if (!isset($input['firstName'], $input['lastName'], $input['email'])) {
-    echo json_encode(['error' => 'Missing required fields']);
+  if (!is_array($input)) {
+    echo json_encode(['success' => false, 'error' => 'Invalid JSON payload']);
     return;
   }
 
-  $sql = "INSERT INTO tbl_members (firstName, lastName, email)
-          VALUES (:firstName, :lastName, :email)";
+  // Expected fields from remote site
+  $required = [
+    'isc_applications_id',
+    'first_name',
+    'last_name',
+    'birth_date',
+    'department',
+    'section',
+    'institution',
+    'email',
+    'phone',
+    'salutation',
+    'pronoun',
+    'status'
+  ];
 
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([
-    'firstName' => $input['firstName'],
-    'lastName'  => $input['lastName'],
-    'email'     => $input['email']
-  ]);
+  foreach ($required as $field) {
+    if (!isset($input[$field]) || $input[$field] === '') {
+      echo json_encode(['success' => false, 'error' => "Missing required field: $field"]);
+      return;
+    }
+  }
 
-  echo json_encode(['message' => 'Member created successfully']);
+  // Map remote fields -> tbl_applications columns
+  $apFname       = $input['first_name'];
+  $apLname       = $input['last_name'];
+  $apMname       = $input['middle_name'] ?? null;
+  $apSuffix      = $input['suffix'] ?? null;
+  $apSalutations = $input['salutation'];
+  $apPronouns    = $input['pronoun'];
+  $apBirthDate   = $input['birth_date'];   // YYYY-MM-DD
+  $apDepartment  = $input['department'];
+  $apSection     = $input['section'];
+  $apInstitution = $input['institution'];
+  $apMobileNo    = $input['phone'];
+  $apEmail       = $input['email'];
+  $statusText    = $input['status'];       // e.g. "approved", "pending"
+
+  // Map status text -> apStatusID
+  $apStatusID = null;
+  if ($stmtStatus = $conn->prepare("SELECT apStatusID FROM tbl_applicationstatus WHERE LOWER(apStatusDesc) = LOWER(?) LIMIT 1")) {
+    $stmtStatus->bind_param("s", $statusText);
+    $stmtStatus->execute();
+    $stmtStatus->bind_result($foundStatusID);
+    if ($stmtStatus->fetch()) {
+      $apStatusID = $foundStatusID;
+    }
+    $stmtStatus->close();
+  }
+
+  // Default to Pending (usually ID 1) if status not found
+  if ($apStatusID === null) {
+    $apStatusID = 1;
+  }
+
+  // Insert into tbl_applications
+  $stmt = $conn->prepare("
+        INSERT INTO tbl_applications
+          (apFname, apLname, apMname, apSuffix, apSalutations, apPronouns, apBirthDate, apDepartment, apSection, apInstitution, apMobileNo, apEmail, apStatusID)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+  if (!$stmt) {
+    echo json_encode(['success' => false, 'error' => 'Database error: ' . $conn->error]);
+    return;
+  }
+
+  $stmt->bind_param(
+    "ssssssssssssi",
+    $apFname,
+    $apLname,
+    $apMname,
+    $apSuffix,
+    $apSalutations,
+    $apPronouns,
+    $apBirthDate,
+    $apDepartment,
+    $apSection,
+    $apInstitution,
+    $apMobileNo,
+    $apEmail,
+    $apStatusID
+  );
+
+  if ($stmt->execute()) {
+    $newId = $stmt->insert_id;
+    $stmt->close();
+    echo json_encode([
+      'success' => true,
+      'message' => 'Application saved to tbl_applications',
+      'apID'    => $newId
+    ]);
+  } else {
+    $error = $stmt->error;
+    $stmt->close();
+    echo json_encode(['success' => false, 'error' => 'Failed to save application: ' . $error]);
+  }
 }
 
 /* =========================
-   PUT – UPDATE MEMBER
+   PUT – not used here
    ========================= */
-function handlePut($pdo, $input)
+function handlePut($conn, $input)
 {
-  if (!isset($input['mbID'], $input['firstName'], $input['lastName'], $input['email'])) {
-    echo json_encode(['error' => 'Missing required fields']);
-    return;
-  }
-
-  $sql = "UPDATE tbl_members SET
-            firstName = :firstName,
-            lastName = :lastName,
-            email = :email
-          WHERE mbID = :mbID";
-
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([
-    'firstName' => $input['firstName'],
-    'lastName'  => $input['lastName'],
-    'email'     => $input['email'],
-    'mbID'      => $input['mbID']
-  ]);
-
-  echo json_encode(['message' => 'Member updated successfully']);
+  echo json_encode(['message' => 'PUT not implemented for this endpoint']);
 }
 
 /* =========================
-   DELETE – DELETE MEMBER
+   DELETE – not used here
    ========================= */
-function handleDelete($pdo, $input)
+function handleDelete($conn, $input)
 {
-  if (!isset($input['mbID'])) {
-    echo json_encode(['error' => 'Missing member ID']);
-    return;
-  }
-
-  $sql = "DELETE FROM tbl_members WHERE mbID = :mbID";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([
-    'mbID' => $input['mbID']
-  ]);
-
-  echo json_encode(['message' => 'Member deleted successfully']);
+  echo json_encode(['message' => 'DELETE not implemented for this endpoint']);
 }
 ?>
