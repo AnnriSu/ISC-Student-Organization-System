@@ -216,9 +216,9 @@ if ($currentEmail) {
                                         style="color: red;">*</span></label>
                                 <select class="form-select" id="salutation" name="salutation" required>
                                     <option value="" disabled>Select</option>
-                                    <option value="mr" <?= $adminData && $adminData['adSalutations'] == 'mr' ? 'selected' : '' ?>>Mr.</option>
-                                    <option value="ms" <?= $adminData && $adminData['adSalutations'] == 'ms' ? 'selected' : '' ?>>Ms.</option>
-                                    <option value="mrs" <?= $adminData && $adminData['adSalutations'] == 'mrs' ? 'selected' : '' ?>>Mrs.</option>
+                                    <option value="Mr" <?= $adminData && $adminData['adSalutations'] == 'Mr' ? 'selected' : '' ?>>Mr.</option>
+                                    <option value="Ms" <?= $adminData && $adminData['adSalutations'] == 'Ms' ? 'selected' : '' ?>>Ms.</option>
+                                    <option value="Mrs" <?= $adminData && $adminData['adSalutations'] == 'Mrs' ? 'selected' : '' ?>>Mrs.</option>
                                 </select>
                             </div>
                             <div class="col ps-1">
@@ -226,9 +226,9 @@ if ($currentEmail) {
                                         style="color: red;">*</span></label>
                                 <select class="form-select" id="genderPronoun" name="genderPronoun" required>
                                     <option value="" disabled>Select</option>
-                                    <option value="he" <?= $adminData && $adminData['adPronouns'] == 'he' ? 'selected' : '' ?>>He/Him</option>
-                                    <option value="she" <?= $adminData && $adminData['adPronouns'] == 'she' ? 'selected' : '' ?>>She/Her</option>
-                                    <option value="they" <?= $adminData && $adminData['adPronouns'] == 'they' ? 'selected' : '' ?>>They/Them</option>
+                                    <option value="He-Him" <?= $adminData && $adminData['adPronouns'] == 'He-Him' ? 'selected' : '' ?>>He/Him</option>
+                                    <option value="She-Her" <?= $adminData && $adminData['adPronouns'] == 'She-Her' ? 'selected' : '' ?>>She/Her</option>
+                                    <option value="They-Them" <?= $adminData && $adminData['adPronouns'] == 'They-Them' ? 'selected' : '' ?>>They/Them</option>
                                 </select>
                             </div>
                         </div>
@@ -251,27 +251,32 @@ if ($currentEmail) {
                                 style="color: red;">*</span></label>
                         <select class="form-select" id="department" name="department" required>
                             <option value="" disabled>Select</option>
-                            <option value="cs" <?= $adminData && $adminData['adDepartment'] == 'cs' ? 'selected' : '' ?>>
-                                Computer Science</option>
-                            <option value="it" <?= $adminData && $adminData['adDepartment'] == 'it' ? 'selected' : '' ?>>
-                                Information Technology</option>
-                            <option value="is" <?= $adminData && $adminData['adDepartment'] == 'is' ? 'selected' : '' ?>>
-                                Information Systems</option>
-                            <option value="bsit" <?= $adminData && $adminData['adDepartment'] == 'bsit' ? 'selected' : '' ?>>BSIT</option>
+                            <option value="BSENT" <?= $adminData && $adminData['adDepartment'] == 'BSENT' ? 'selected' : '' ?>>Bachelor of Science in Entrepreneurship (BSENT)</option>
+                            <option value="BSIT" <?= $adminData && $adminData['adDepartment'] == 'BSIT' ? 'selected' : '' ?>>Bachelor of Science in Information Technology (BSIT)</option>
+                            <option value="DOMT" <?= $adminData && $adminData['adDepartment'] == 'DOMT' ? 'selected' : '' ?>>Diploma in Office Management Technology (DOMT)</option>
+                            <option value="DIT" <?= $adminData && $adminData['adDepartment'] == 'DIT' ? 'selected' : '' ?>>Diploma in Information Technology (DIT)</option>
+                            <option value="BSA" <?= $adminData && $adminData['adDepartment'] == 'BSA' ? 'selected' : '' ?>>Bachelor of Science in Accountancy (BSA)</option>
+                            <option value="BSIE" <?= $adminData && $adminData['adDepartment'] == 'BSIE' ? 'selected' : '' ?>>Bachelor of Science in Industrial Engineering (BSIE)</option>
+                            <option value="BSECE" <?= $adminData && $adminData['adDepartment'] == 'BSECE' ? 'selected' : '' ?>>Bachelor of Science in Electronics Engineering (BSECE)</option>
+                            <option value="BTLED-ICT" <?= $adminData && $adminData['adDepartment'] == 'BTLED-ICT' ? 'selected' : '' ?>>Bachelor of Technology and Livelihood Education major in Information and Communication Technology (BTLED-ICT)</option>
+                            <option value="BSEDEN" <?= $adminData && $adminData['adDepartment'] == 'BSEDEN' ? 'selected' : '' ?>>Bachelor in Secondary Education major in English (BSEDEN)</option>
+                            <option value="BSPSY" <?= $adminData && $adminData['adDepartment'] == 'BSPSY' ? 'selected' : '' ?>>Bachelor of Science in Psychology (BSPSY)</option>
+                            <option value="BSEE" <?= $adminData && $adminData['adDepartment'] == 'BSEE' ? 'selected' : '' ?>>Bachelor of Science in Electrical Engineering (BSEE)</option>
+                            <option value="BPAFA" <?= $adminData && $adminData['adDepartment'] == 'BPAFA' ? 'selected' : '' ?>>Bachelor of Public Administration with Specialization in Fiscal Administration (BPAFA)</option>
                         </select>
                     </div>
                     <div class="col  px-1">
                         <label for="section" class="form-label ms-1">Section<span style="color: red;">*</span></label>
                         <select class="form-select" id="section" name="section" required>
                             <option value="" disabled>Select</option>
-                            <option value="a" <?= $adminData && $adminData['adSection'] == 'a' ? 'selected' : '' ?>>Section
-                                A</option>
-                            <option value="b" <?= $adminData && $adminData['adSection'] == 'b' ? 'selected' : '' ?>>Section
-                                B</option>
-                            <option value="c" <?= $adminData && $adminData['adSection'] == 'c' ? 'selected' : '' ?>>Section
-                                C</option>
-                            <option value="3-1" <?= $adminData && $adminData['adSection'] == '3-1' ? 'selected' : '' ?>>3-1
-                            </option>
+                            <option value="1-1" <?= $adminData && $adminData['adSection'] == '1-1' ? 'selected' : '' ?>>1-1</option>
+                            <option value="1-2" <?= $adminData && $adminData['adSection'] == '1-2' ? 'selected' : '' ?>>1-2</option>
+                            <option value="2-1" <?= $adminData && $adminData['adSection'] == '2-1' ? 'selected' : '' ?>>2-1</option>
+                            <option value="2-2" <?= $adminData && $adminData['adSection'] == '2-2' ? 'selected' : '' ?>>2-2</option>
+                            <option value="3-1" <?= $adminData && $adminData['adSection'] == '3-1' ? 'selected' : '' ?>>3-1</option>
+                            <option value="3-2" <?= $adminData && $adminData['adSection'] == '3-2' ? 'selected' : '' ?>>3-2</option>
+                            <option value="4-1" <?= $adminData && $adminData['adSection'] == '4-1' ? 'selected' : '' ?>>4-1</option>
+                            <option value="4-2" <?= $adminData && $adminData['adSection'] == '4-2' ? 'selected' : '' ?>>4-2</option>
                         </select>
                     </div>
                 </div>

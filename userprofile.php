@@ -146,15 +146,25 @@ if ($currentEmail) {
 
 <body>
 
-    <nav class="navbar shadow-sm ">
-        <div class="container-fluid d-flex align-items-center flex-wrap ">
-            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
-                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="homepage-member.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
-                        style="max-width: 250px; width: auto;">
+    <!-- Navigation Bar -->
+    <nav class="navbar shadow-sm">
+
+        <div class="container-fluid sticky-top">
+
+            <div class="d-flex gap-4 me-4">
+                <a class="navbar-brand d-flex ms-4" href="homepage-member.php">
+                    <img src="assets\img\isc_brand_bold.png" alt="Logo" width="250"
+                        height="auto" class="mt-1 mb-1">
                 </a>
             </div>
+
+            <div class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">
+                <a class="navbar-brand d-flex" href="homepage-member.php">
+                    <img src="assets\img\back.png" alt="Back" width="30" height="auto" class="mt-1 mb-1">
+                </a>
             </div>
+            
+        </div>
     </nav>
 
     <div class="container profile-container">
@@ -204,9 +214,9 @@ if ($currentEmail) {
                                         style="color: red;">*</span></label>
                                 <select class="form-select" id="salutation" name="salutation" required>
                                     <option value="" disabled>Select</option>
-                                    <option value="mr" <?= $memberData && $memberData['mbSalutations'] == 'mr' ? 'selected' : '' ?>>Mr.</option>
-                                    <option value="ms" <?= $memberData && $memberData['mbSalutations'] == 'ms' ? 'selected' : '' ?>>Ms.</option>
-                                    <option value="mrs" <?= $memberData && $memberData['mbSalutations'] == 'mrs' ? 'selected' : '' ?>>Mrs.</option>
+                                    <option value="Mr" <?= $memberData && $memberData['mbSalutations'] == 'Mr' ? 'selected' : '' ?>>Mr.</option>
+                                    <option value="Ms" <?= $memberData && $memberData['mbSalutations'] == 'Ms' ? 'selected' : '' ?>>Ms.</option>
+                                    <option value="Mrs" <?= $memberData && $memberData['mbSalutations'] == 'Mrs' ? 'selected' : '' ?>>Mrs.</option>
                                 </select>
                             </div>
                             <div class="col ps-1">
@@ -214,9 +224,9 @@ if ($currentEmail) {
                                         style="color: red;">*</span></label>
                                 <select class="form-select" id="genderPronoun" name="genderPronoun" required>
                                     <option value="" disabled>Select</option>
-                                    <option value="he" <?= $memberData && $memberData['mbPronouns'] == 'he' ? 'selected' : '' ?>>He/Him</option>
-                                    <option value="she" <?= $memberData && $memberData['mbPronouns'] == 'she' ? 'selected' : '' ?>>She/Her</option>
-                                    <option value="they" <?= $memberData && $memberData['mbPronouns'] == 'they' ? 'selected' : '' ?>>They/Them</option>
+                                    <option value="He-Him" <?= $memberData && $memberData['mbPronouns'] == 'He-Him' ? 'selected' : '' ?>>He/Him</option>
+                                    <option value="She-Her" <?= $memberData && $memberData['mbPronouns'] == 'She-Her' ? 'selected' : '' ?>>She/Her</option>
+                                    <option value="They-Them" <?= $memberData && $memberData['mbPronouns'] == 'They-Them' ? 'selected' : '' ?>>They/Them</option>
                                 </select>
                             </div>
                         </div>
@@ -239,27 +249,32 @@ if ($currentEmail) {
                                 style="color: red;">*</span></label>
                         <select class="form-select" id="department" name="department" required>
                             <option value="" disabled>Select</option>
-                            <option value="cs" <?= $memberData && $memberData['mbDepartment'] == 'cs' ? 'selected' : '' ?>>
-                                Computer Science</option>
-                            <option value="it" <?= $memberData && $memberData['mbDepartment'] == 'it' ? 'selected' : '' ?>>
-                                Information Technology</option>
-                            <option value="is" <?= $memberData && $memberData['mbDepartment'] == 'is' ? 'selected' : '' ?>>
-                                Information Systems</option>
-                            <option value="bsit" <?= $memberData && $memberData['mbDepartment'] == 'bsit' ? 'selected' : '' ?>>BSIT</option>
+                            <option value="BSENT" <?= $memberData && $memberData['mbDepartment'] == 'BSENT' ? 'selected' : '' ?>>Bachelor of Science in Entrepreneurship (BSENT)</option>
+                            <option value="BSIT" <?= $memberData && $memberData['mbDepartment'] == 'BSIT' ? 'selected' : '' ?>>Bachelor of Science in Information Technology (BSIT)</option>
+                            <option value="DOMT" <?= $memberData && $memberData['mbDepartment'] == 'DOMT' ? 'selected' : '' ?>>Diploma in Office Management Technology (DOMT)</option>
+                            <option value="DIT" <?= $memberData && $memberData['mbDepartment'] == 'DIT' ? 'selected' : '' ?>>Diploma in Information Technology (DIT)</option>
+                            <option value="BSA" <?= $memberData && $memberData['mbDepartment'] == 'BSA' ? 'selected' : '' ?>>Bachelor of Science in Accountancy (BSA)</option>
+                            <option value="BSIE" <?= $memberData && $memberData['mbDepartment'] == 'BSIE' ? 'selected' : '' ?>>Bachelor of Science in Industrial Engineering (BSIE)</option>
+                            <option value="BSECE" <?= $memberData && $memberData['mbDepartment'] == 'BSECE' ? 'selected' : '' ?>>Bachelor of Science in Electronics Engineering (BSECE)</option>
+                            <option value="BTLED-ICT" <?= $memberData && $memberData['mbDepartment'] == 'BTLED-ICT' ? 'selected' : '' ?>>Bachelor of Technology and Livelihood Education major in Information and Communication Technology (BTLED-ICT)</option>
+                            <option value="BSEDEN" <?= $memberData && $memberData['mbDepartment'] == 'BSEDEN' ? 'selected' : '' ?>>Bachelor in Secondary Education major in English (BSEDEN)</option>
+                            <option value="BSPSY" <?= $memberData && $memberData['mbDepartment'] == 'BSPSY' ? 'selected' : '' ?>>Bachelor of Science in Psychology (BSPSY)</option>
+                            <option value="BSEE" <?= $memberData && $memberData['mbDepartment'] == 'BSEE' ? 'selected' : '' ?>>Bachelor of Science in Electrical Engineering (BSEE)</option>
+                            <option value="BPAFA" <?= $memberData && $memberData['mbDepartment'] == 'BPAFA' ? 'selected' : '' ?>>Bachelor of Public Administration with Specialization in Fiscal Administration (BPAFA)</option>
                         </select>
                     </div>
                     <div class="col  px-1">
                         <label for="section" class="form-label ms-1">Section<span style="color: red;">*</span></label>
                         <select class="form-select" id="section" name="section" required>
                             <option value="" disabled>Select</option>
-                            <option value="a" <?= $memberData && $memberData['mbSection'] == 'a' ? 'selected' : '' ?>>
-                                Section A</option>
-                            <option value="b" <?= $memberData && $memberData['mbSection'] == 'b' ? 'selected' : '' ?>>
-                                Section B</option>
-                            <option value="c" <?= $memberData && $memberData['mbSection'] == 'c' ? 'selected' : '' ?>>
-                                Section C</option>
-                            <option value="3-1" <?= $memberData && $memberData['mbSection'] == '3-1' ? 'selected' : '' ?>>
-                                3-1</option>
+                            <option value="1-1" <?= $memberData && $memberData['mbSection'] == '1-1' ? 'selected' : '' ?>>1-1</option>
+                            <option value="1-2" <?= $memberData && $memberData['mbSection'] == '1-2' ? 'selected' : '' ?>>1-2</option>
+                            <option value="2-1" <?= $memberData && $memberData['mbSection'] == '2-1' ? 'selected' : '' ?>>2-1</option>
+                            <option value="2-2" <?= $memberData && $memberData['mbSection'] == '2-2' ? 'selected' : '' ?>>2-2</option>
+                            <option value="3-1" <?= $memberData && $memberData['mbSection'] == '3-1' ? 'selected' : '' ?>>3-1</option>
+                            <option value="3-2" <?= $memberData && $memberData['mbSection'] == '3-2' ? 'selected' : '' ?>>3-2</option>
+                            <option value="4-1" <?= $memberData && $memberData['mbSection'] == '4-1' ? 'selected' : '' ?>>4-1</option>
+                            <option value="4-2" <?= $memberData && $memberData['mbSection'] == '4-2' ? 'selected' : '' ?>>4-2</option>
                         </select>
                     </div>
                 </div>
@@ -295,7 +310,7 @@ if ($currentEmail) {
                 </div>
 
                 <div class="full-width">
-                    <a href="homepage-member.php" class="btn btn-back me-2 mt-3">Back</a>
+                    
                     <button type="submit" class="btn btn-update">Update</button>
                 </div>
             </form>
