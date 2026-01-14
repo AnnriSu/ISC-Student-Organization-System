@@ -120,7 +120,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <link href="assets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="padding-bottom: 120px;">
 
     <nav class="navbar shadow-sm">
         <div class="container-fluid sticky-top">
@@ -188,24 +188,81 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                                         <a href="admin-eventattendance.php?eventId=<?= htmlspecialchars($event['evID']) ?>" 
                                             class="btn btn-sm btn-primary">View Attendance</a>
 
-                                        <a href="admin-event-edit.php?eventId=<?= $event['evID'] ?>" 
+                                        <button type="button" 
                                             class="btn btn-sm btn-info"
-                                            onclick="return confirm('Edit this event?')">
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editModal<?= $event['evID'] ?>">
                                             Edit
-                                        </a>
+                                        </button>
+
+                                        <!-- Edit Confirmation Modal -->
+                                        <div class="modal fade" id="editModal<?= $event['evID'] ?>" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="card border-0">
+                                                        <div class="card-body text-center">
+                                                            <h5 class="card-title">Edit Event</h5>
+                                                            <p class="card-text">Are you sure you want to edit this event?</p>
+                                                            <div class="d-flex gap-2 justify-content-center mt-3">
+                                                                <a href="admin-event-edit.php?eventId=<?= $event['evID'] ?>" class="btn btn-primary">Okay</a>
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <?php if ($event['isHidden'] == 0): ?>
-                                            <a href="admin-events.php?hideEvent=1&eventId=<?= $event['evID'] ?>" 
+                                            <button type="button" 
                                                 class="btn btn-sm btn-warning"
-                                                onclick="return confirm('Hide this event? It will not be deleted.')">
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#hideModal<?= $event['evID'] ?>">
                                                 Hide
-                                            </a>
+                                            </button>
+
+                                            <!-- Hide Confirmation Modal -->
+                                            <div class="modal fade" id="hideModal<?= $event['evID'] ?>" tabindex="-1">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="card border-0">
+                                                            <div class="card-body text-center">
+                                                                <h5 class="card-title">Hide Event</h5>
+                                                                <p class="card-text">Hide this event? It will not be deleted.</p>
+                                                                <div class="d-flex gap-2 justify-content-center mt-3">
+                                                                    <a href="admin-events.php?hideEvent=1&eventId=<?= $event['evID'] ?>" class="btn btn-primary">Okay</a>
+                                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <?php else: ?>
-                                            <a href="admin-events.php?unhideEvent=1&eventId=<?= $event['evID'] ?>" 
+                                            <button type="button" 
                                                 class="btn btn-sm btn-success"
-                                                onclick="return confirm('Unhide this event?')">
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#unhideModal<?= $event['evID'] ?>">
                                                 Unhide
-                                            </a>
+                                            </button>
+
+                                            <!-- Unhide Confirmation Modal -->
+                                            <div class="modal fade" id="unhideModal<?= $event['evID'] ?>" tabindex="-1">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="card border-0">
+                                                            <div class="card-body text-center">
+                                                                <h5 class="card-title">Unhide Event</h5>
+                                                                <p class="card-text">Are you sure you want to unhide this event?</p>
+                                                                <div class="d-flex gap-2 justify-content-center mt-3">
+                                                                    <a href="admin-events.php?unhideEvent=1&eventId=<?= $event['evID'] ?>" class="btn btn-primary">Okay</a>
+                                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <?php endif; ?>
                                     </td>
 

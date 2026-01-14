@@ -145,7 +145,7 @@ if ($currentEmail) {
 </head>
 
 
-<body>
+<body style="padding-bottom: 100px;">
 
     <nav class="navbar shadow-sm ">
 

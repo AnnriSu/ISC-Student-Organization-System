@@ -119,13 +119,7 @@
 
     <!-- Navigation Bar -->
     <nav class="navbar shadow-sm navbar-expand-lg">
-        <div class="container-fluid d-flex align-items-center flex-wrap ">
-            <div class="d-flex gap-4 mx-auto mx-sm-0 me-xs-auto align-content-lg-center">
-                <a class="navbar-brand d-flex ms-2 ms-lg-4 justify-content-center" href="index.php">
-                    <img src="assets\img\isc_brand_bold.png" alt="Logo" height="auto" class="mt-1 mb-1"
-                        style="max-width: 250px; width: auto;">
-                </a>
-            </div>
+        <?php include("shared/navbar.php"); ?>
 
             <div
                 class="pe-sm-3 d-flex flex-column flex-sm-row gap-2 gap-lg-4 align-items-center justify-content-center justify-content-md-end ms-md-auto">

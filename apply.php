@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="assets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="padding-bottom: 100px;">
 
     <!-- Navigation Bar -->
     <nav class="navbar shadow-sm">
