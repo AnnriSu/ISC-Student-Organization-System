@@ -322,7 +322,7 @@ function saveSponsorToDatabase(string $sponsorName): int
                 <div class="donate-card"
                     style="height: 100%; max-height: 600px; overflow-y: auto; max-width: 360px; width: auto;">
                     <h2 class="text-center mb-2" style="color: var(--pink4); font-weight: 700;">SPECIAL THANKS</h2>
-                    <div class="text-center">
+                    <div class="text-center mb-3">
                         <small>to the following sponsors:</small>
                     </div>
 
